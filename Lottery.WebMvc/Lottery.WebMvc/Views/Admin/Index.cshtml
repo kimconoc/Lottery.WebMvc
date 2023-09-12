@@ -33,7 +33,7 @@
             margin-top: 8px;
             width: 100%;
         }
-        .btn_add_row {
+        .btn_add_custom {
             height: 28px;
             font-size: 12px;
             border-radius: 4px;
@@ -107,11 +107,11 @@
                     </div>
                 </div>
                 <div class="div_btn_add_row">
-                    <button style="margin-right: 35px;" class="btn_add_row btn-core-accept">Thêm dòng</button>
+                    <button id="btn_add_row" style="margin-right: 35px;" class="btn_add_custom btn-core-accept">Thêm dòng</button>
                 </div>
                 <div id="div_result" class="div_result">
                     <div style="display:flex;gap:10px;">
-                        <button style="" class="btn_add_row btn-core-accept">Tính tiền</button>
+                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept">Tính tiền</button>
                         <input style="height:28px;width:100px;" id="input2" required maxlength="10" placeholder="Nhập">
                     </div>
                     <div class="row" style="margin-top:15px;">
@@ -134,6 +134,14 @@
             placeholder: "Chọn nhà đài"
         });
         listObj.appendTo('#selectElement');
+
+        $('#btn_add_row').click(function (e) {
+            var originalElement = document.getElementById("div_row");
+            // Sao chép phần tử
+            var clonedElement = originalElement.cloneNode(true);
+            // Thêm phần tử sao chép vào một vị trí cụ thể trong DOM (ví dụ: sau phần tử gốc)
+            originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+        });
     </script>
 </body>
 </html>
