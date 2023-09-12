@@ -19,59 +19,111 @@
 <html>
 <head>
     <style>
+        .container {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            margin-top: 12px;
+            width: 100%;
+        }
+        .div_btn_add_row {
+            display: flex;
+            flex-flow: column;
+            align-items: flex-end;
+            margin-top: 8px;
+            width: 100%;
+        }
+        .btn_add_row {
+            height: 28px;
+            font-size: 12px;
+            border-radius: 4px;
+            font-weight: 400;
+            line-height: 1.4;
+            display: flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid rgb(7, 171, 226);
+            color: rgb(7, 171, 226);
+            background: white;
+        }
+        .span {
+            margin-left: 5px;
+            font-size: 15px;
+            font-weight: 800;
+        }
+        .div_result {
+            display: flex;
+            flex-flow: column;
+            align-items: start;
+            margin-top: 30px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     @Html.AntiForgeryToken()
-    <div style="padding:20px;">
-        <div>
-            <div class="row">
-                <div class="col-2">
-                    <select id="filterStatus" class="form-select" aria-label="Default select example">
-                        @{
-                            foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
-                            {
-                                <option value="@((int)item)"> @StringExtension.GetDescription((Enum)item)</option>
+    <div class="container">
+        <div style="width:1200px;">
+            <button style="background: forestgreen !important;" class="btn-core-accept">Thêm</button>
+            <div id="div_calculate">
+                <div id="div_row" style="margin-top:20px;" class="row">
+                    <div class="col-2">
+                        <select id="filterStatus" class="form-select" aria-label="Default select example">
+                            @{
+                                foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
+                                {
+                                    <option value="@((int)item)"> @StringExtension.GetDescription((Enum)item)</option>
+                                }
                             }
-                        }
-                    </select>
-                </div>
-                <div class="col-5">
-                    <div>
-                        <select id="selectElement">
-                            <optgroup label="Phía Bắc">
-                                <option value="1">Hà Nội</option>
-                                <option value="2">Bắc Ninh</option>
-                                <option value="3">Thanh Hóa</option>
-                            </optgroup>
-                            <optgroup label="Phía Nam">
-                                <option value="4">Sài Gòn</option>
-                                <option value="5">Đồng Nai</option>
-                                <option value="6">Đồng Tháp</option>
-                            </optgroup>
-
                         </select>
                     </div>
+                    <div class="col-6">
+                        <div>
+                            <select id="selectElement">
+                                <optgroup label="Phía Bắc">
+                                    <option value="1">Hà Nội</option>
+                                    <option value="2">Bắc Ninh</option>
+                                    <option value="3">Thanh Hóa</option>
+                                </optgroup>
+                                <optgroup label="Phía Nam">
+                                    <option value="4">Sài Gòn</option>
+                                    <option value="5">Đồng Nai</option>
+                                    <option value="6">Đồng Tháp</option>
+                                </optgroup>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-4" style="display: flex; gap: 10px;">
+                        <div id="box_login_form_account" class="box-input-login">
+                            <input style="height:38px;" id="input1" required maxlength="10" placeholder="Nhập">
+                        </div>
+                        <div id="box_login_form_account" class="box-input-login">
+                            <input style="height:38px;" id="input2" required maxlength="10" placeholder="Nhập">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <select id="filterStatus" class="form-select" aria-label="Default select example">
-                        @{
-                            foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
-                            {
-                                <option value="@((int)item)"> @StringExtension.GetDescription((Enum)item)</option>
-                            }
-                        }
-                    </select>
+                <div class="div_btn_add_row">
+                    <button style="margin-right: 35px;" class="btn_add_row btn-core-accept">Thêm dòng</button>
                 </div>
-                <div class="col-2">
-                    <select id="filterStatus" class="form-select" aria-label="Default select example">
-                        @{
-                            foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
-                            {
-                                <option value="@((int)item)"> @StringExtension.GetDescription((Enum)item)</option>
-                            }
-                        }
-                    </select>
+                <div id="div_result" class="div_result">
+                    <div style="display:flex;gap:10px;">
+                        <button style="" class="btn_add_row btn-core-accept">Tính tiền</button>
+                        <input style="height:28px;width:100px;" id="input2" required maxlength="10" placeholder="Nhập">
+                    </div>
+                    <div class="row" style="margin-top:15px;">
+                        <span class="col-4">Tiền xác</span>
+                        <span class="col-4">Tiền thưởng</span>
+                        <span class="col-4">Lable_viewTong</span>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <span class="col-4">lable_xac1</span>
+                        <span class="col-4">lable_thuong1</span>
+                        <span class="col-4">lable_tong1</span>
+                    </div>
                 </div>
             </div>
         </div>
