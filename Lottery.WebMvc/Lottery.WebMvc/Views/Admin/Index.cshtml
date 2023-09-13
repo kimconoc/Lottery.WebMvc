@@ -19,6 +19,17 @@
 <html>
 <head>
     <style>
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
         .container {
             display: flex;
             flex-flow: column;
@@ -58,7 +69,7 @@
             display: flex;
             flex-flow: column;
             align-items: start;
-            margin-top: 30px;
+            margin-top: 20px;
             width: 100%;
         }
     </style>
@@ -80,7 +91,7 @@
                             }
                         </select>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <div>
                             <select id="selectElement">
                                 <optgroup label="Phía Bắc">
@@ -97,43 +108,64 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-4" style="display: flex; gap: 10px;">
-                        <div id="box_login_form_account" class="box-input-login">
-                            <input style="height:38px;" id="input1" required maxlength="10" placeholder="Nhập">
+                    <div class="col-4">
+                        <div>
+                            <!--element which is going to render the MultiSelect-->
+                            <input type="text" tabindex="1" id="select_number">
                         </div>
+                    </div>
+                    <div class="col-2">
                         <div id="box_login_form_account" class="box-input-login">
-                            <input style="height:38px;" id="input2" required maxlength="10" placeholder="Nhập">
+                            <input style="height:38px;width:100px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập số">
                         </div>
                     </div>
                 </div>
                 <div class="div_btn_add_row">
-                    <button id="btn_add_row" style="margin-right: -62px;" class="btn_add_custom btn-core-accept">Thêm dòng</button>
+                    <button id="btn_add_row" style="margin-right: 25px;" class="btn_add_custom btn-core-accept">Thêm dòng</button>
                 </div>
                 <div id="div_result" class="div_result">
                     <div style="display:flex;gap:10px;">
                         <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept">Tính tiền</button>
-                        <input style="height:28px;width:100px;" id="input2" required maxlength="10" placeholder="Nhập">
+                        <input style="height:28px;width:50px;" id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
+                        <p id="validationMessage"></p>
                     </div>
-                    <div class="row" style="margin-top:15px;">
+                    <div class="row" style="margin-top: 15px; min-width: 320px;">
                         <span class="col-4">Tiền xác</span>
                         <span class="col-4">Tiền thưởng</span>
-                        <span class="col-4">Lable_viewTong</span>
+                        <span id="lable_viewTong" class="col-4"></span>
                     </div>
-                    <div class="row" style="margin-top: 15px;">
-                        <span class="col-4">lable_xac1</span>
-                        <span class="col-4">lable_thuong1</span>
-                        <span class="col-4">lable_tong1</span>
+                    <div class="row" style="margin-top: 15px;display:none">
+                        <span id="lable_xac1" class="col-4">lable_xac1</span>
+                        <span id="lable_thuong1" class="col-4">lable_thuong1</span>
+                        <span id="lable_tong1" class="col-4">lable_tong1</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
+
+        // initialize MultiSelect component
+        var sportsData = [];
+        for (var i = 0; i < 100; i++) {
+            // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
+            var numberStr = i < 10 ? '0' + i : i.toString();
+
+            // Thêm chuỗi numberStr vào mảng sportsData
+            sportsData.push(numberStr);
+        }
         var listObj = new ej.dropdowns.MultiSelect({
-            // set placeholder to MultiSelect input element
+            dataSource: sportsData,
+            placeholder: "Chọn số"
+        });
+        listObj.appendTo('#select_number');
+        
+        // initialize MultiSelect component have groupBy 
+        var listObj = new ej.dropdowns.MultiSelect({
             placeholder: "Chọn nhà đài"
         });
         listObj.appendTo('#selectElement');
+
 
         $('#btn_add_row').click(function (e) {
             var originalElement = document.getElementById("div_row");
@@ -142,6 +174,23 @@
             // Thêm phần tử sao chép vào một vị trí cụ thể trong DOM (ví dụ: sau phần tử gốc)
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
         });
+
+        function validaeInPutTyLeSap() {
+            var val = document.getElementById("input_ty_le_sap");
+            const value = parseFloat(val.value);
+            if (isNaN(value) || value < 0 || value >= 1) {
+                val.value = "0.75";
+            }
+        }
+
+        function validaeInPutNhapSoDiem() {
+            var val = document.getElementById("nhap_so_diem");
+            const value = parseFloat(val.value);
+            if (value < 0) {
+                val.value = "0";
+            }
+        }
+
     </script>
 </body>
 </html>

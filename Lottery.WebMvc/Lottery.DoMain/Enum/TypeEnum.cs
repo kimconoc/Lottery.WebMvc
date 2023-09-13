@@ -10,10 +10,10 @@ namespace Lottery.DoMain.Enum
     public enum LotteryEnum
     {
         [Description("Lô")]
-        DangXuLy = 0,
+        Lo = 0,
         [Description("Đề")]
-        DangVanChuyen = 1,
-        [Description("Lô xiên")]
-        DonDaGiao = 2,
+        De = 1,
+        [Description("Lô xiên 2")]
+        LoXien2 = 2,
     }
 }
