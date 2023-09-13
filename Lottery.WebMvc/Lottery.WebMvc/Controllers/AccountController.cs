@@ -25,41 +25,34 @@ namespace Amin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string ReturnUrl = "")
         {
-            var userBase = provider.PostAsync<User>(ApiUri.POST_UserLogin, model);
-            if (userBase == null || userBase.Result == null || userBase.Result.Data == null)
+            try
             {
-                ViewBag.Message = "Tài khoản đăng nhập không đúng";
-                return View(model);
-            }
-            var userData = userBase.Result.Data;
-            bool isValidADAccount = LoginAdAccount(model.LoginName, model.Password);
-            if (isValidADAccount)
-            {
-                try
+                var userBase = provider.PostAsync<User>(ApiUri.POST_UserLogin, model);
+                if (userBase == null || userBase.Result == null || userBase.Result.Data == null)
                 {
-                    if (userData == null)
-                    {
-                        ViewBag.Message = "User is not registered to application";
-                    }
-                    else
-                    {
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.LoginName, DateTime.Now, DateTime.Now.AddMinutes(720), false, JsonConvert.SerializeObject(userData), FormsAuthentication.FormsCookiePath);
-                        string hash = FormsAuthentication.Encrypt(ticket);
-                        HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
-                        Response.Cookies.Add(cookie);
-                        return RedirectToAction("Index", "Admin");
-                    }
+                    ViewBag.Message = "Tài khoản đăng nhập không đúng";
+                    return View(model);
                 }
-                catch(Exception ex)
-                {
-                    ViewBag.Message = "Have error when login. Please check with our Administrator";
-                }
+                var userData = userBase.Result.Data;
 
+                if (userData == null)
+                {
+                    ViewBag.Message = "User is not registered to application";
+                }
+                else
+                {
+                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.LoginName, DateTime.Now, DateTime.Now.AddMinutes(720), false, JsonConvert.SerializeObject(userData), FormsAuthentication.FormsCookiePath);
+                    string hash = FormsAuthentication.Encrypt(ticket);
+                    HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
+                    Response.Cookies.Add(cookie);
+                    return RedirectToAction("Index", "Admin");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ViewBag.Message = "Input informations is incorrect";
+                ViewBag.Message = "Have error when login. Please check with our Administrator";
             }
+
             return View(model);
         }
         public ActionResult Logout()
@@ -80,11 +73,6 @@ namespace Amin.Controllers
 
             return RedirectToAction("Login", "Account");
         }
-        private bool LoginAdAccount(string userName, string password)
-        {
-            return true;
-        }
-
         #endregion Login 
     }
 }
