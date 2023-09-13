@@ -1,11 +1,11 @@
 ﻿@using Newtonsoft.Json;
-@using Amin.Models;
+@using Lottery.DoMain.Models;
 @using Admin.Common;
 
 @{
     FormsIdentity id = (FormsIdentity)HttpContext.Current.User.Identity;
     FormsAuthenticationTicket ticket = id.Ticket;
-    var userData = JsonConvert.DeserializeObject<UserData>(ticket.UserData);
+    var userData = JsonConvert.DeserializeObject<User>(ticket.UserData);
 }
 
 <!DOCTYPE html>
@@ -45,7 +45,7 @@
                         <div class="dropdown" style="margin-top: 10px;">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true" style="font-size: 30px;">account_circle</i>
-                                <span class="user-name">@userData.DisplayName</span>
+                                <span class="user-name">@userData.UserName</span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="/Account/Logout">Đăng xuất</a>

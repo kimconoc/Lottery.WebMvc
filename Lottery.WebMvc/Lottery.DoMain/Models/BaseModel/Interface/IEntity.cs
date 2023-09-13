@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace Lottery.DoMain.Models.BaseModel.Interface
 {
-    public interface IEntity
+    public interface IEntity<Tkey>
     {
-        Guid Id { get; set; }
+        Tkey Id { get; set; }
         bool IsDeleted { get; set; }
-        string DeletedBy { get; set; }
-        Nullable<DateTime> DeletedAt { get; set; }
-        string CreatedBy { get; set; }
-        DateTime CreatedAt { get; set; }
-        string UpdatedBy { get; set; }
-        Nullable<DateTime> UpdatedAt { get; set; }
     }
 }

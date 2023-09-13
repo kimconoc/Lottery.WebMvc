@@ -42,10 +42,10 @@
                 </div>
 
                 <div id="box_login_form_account" class="box-input-login">
-                    <input id="userName" name="UserName" required maxlength="10" placeholder="Tài khoản" value="kimconoc">
+                    <input id="loginName" name="LoginName" required maxlength="10" placeholder="Tài khoản" value="phuongpv">
                 </div>
                 <div id="box_login_form_password" class="box-input-login">
-                    <input type="password" id="password" name="Password" required maxlength="50" placeholder="Mật Khẩu" value="ad1234567" />
+                    <input type="password" id="password" name="Password" required maxlength="50" placeholder="Mật Khẩu" value="123" />
                     <i id="hide_password" class="icon-show-password fa fa-eye-slash" aria-hidden="true"></i>
                     <i id="show_password" style="display:none;" class="icon-show-password fa fa-eye" aria-hidden="true"></i>
                 </div>
@@ -68,10 +68,10 @@
     <script>
         $(document).ready(function ()
         {
-            $('#userName').on('focus', function () {
+            $('#loginName').on('focus', function () {
                 document.getElementById("box_login_form_account").style.borderColor = "rgb(7, 171, 226)";
             });
-            $('#userName').on('blur', function () {
+            $('#loginName').on('blur', function () {
                 document.getElementById("box_login_form_account").style.borderColor = "rgba(0,0,0,.14)";
             });
             $('#password').on('focus', function () {

@@ -42,13 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constant\ApiUri.cs" />
     <Compile Include="Enum\TypeEnum.cs" />
     <Compile Include="Extentions\StringExtension.cs" />
     <Compile Include="FileLog\FileHelper.cs" />
     <Compile Include="Models\BaseModel\Interface\IEntity.cs" />
     <Compile Include="Models\BaseModel\ResponseBase.cs" />
     <Compile Include="Models\BaseModel\VBaseModel.cs" />
-    <Compile Include="Models\UserAdmin.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

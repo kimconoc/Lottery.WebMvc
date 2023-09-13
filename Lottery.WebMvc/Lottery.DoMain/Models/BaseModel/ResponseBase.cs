@@ -9,16 +9,8 @@ namespace Lottery.DoMain.Models.BaseModel
     public class ResponseBase<T>
     {
         public T Data { get; set; }
-
-        public bool Success { get; set; }
-
-        public int StatusCode { get; set; }
-
-        public ResponseMessage Message { get; set; }
-    }
-    public class ResponseMessage
-    {
-        public string ViMessage { get; set; }
-        public string EnMessage { get; set; }
+        public int Code { get; set; }
+        public bool IsSuccessful { get; set; }
+        public string Message { get; set; }
     }
 }

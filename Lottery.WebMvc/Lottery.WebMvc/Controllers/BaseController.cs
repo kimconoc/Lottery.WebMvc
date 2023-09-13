@@ -1,6 +1,9 @@
 ﻿using Amin.MemCached;
 using Amin.Models;
 using Lottery.DoMain.FileLog;
+using Lottery.DoMain.Models;
+using Lottery.Service.ServiceProvider;
+using Lottery.Service.ServiceProvider.Interface;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,21 +18,27 @@ namespace Amin.Controllers
 {
     public class BaseController : Controller
     {
+        protected IProvider provider = new Provider();
         protected override void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                provider.Dispose();// = null;
+                //((IDisposable)provider).Dispose();
+            }
             base.Dispose(disposing);
         }
 
-        public UserData GetCurrentUser()
+        public User GetCurrentUser()
         {
-            UserData userData = null;
+            User userData = null;
             var signinTokenCookie = Request.Cookies[GetSigninToken()];
             if (signinTokenCookie != null && !string.IsNullOrEmpty(signinTokenCookie.Value))
             {
                 try
                 {
                     var token = FormsAuthentication.Decrypt(signinTokenCookie.Value);
-                    userData = JsonConvert.DeserializeObject<UserData>(token.UserData);
+                    userData = JsonConvert.DeserializeObject<User>(token.UserData);
                 }
                 catch (Exception ex)
                 {

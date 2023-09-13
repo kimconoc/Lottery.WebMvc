@@ -1,0 +1,6 @@
+﻿[11:42:06] D:\Lottery.WebMvc\Lottery.WebMvc\Lottery.WebMvc\Views\Shared\_Layout.cshtml(8): error CS0246: The type or namespace name 'UserData' could not be found (are you missing a using directive or an assembly reference?)
+[11:42:07] D:\Lottery.WebMvc\Lottery.WebMvc\Lottery.WebMvc\Views\Shared\_Layout.cshtml(8): error CS0246: The type or namespace name 'UserData' could not be found (are you missing a using directive or an assembly reference?)
+[11:42:47] D:\Lottery.WebMvc\Lottery.WebMvc\Lottery.WebMvc\Views\Shared\_Layout.cshtml(8): error CS0246: The type or namespace name 'UserData' could not be found (are you missing a using directive or an assembly reference?)
+[11:42:57] D:\Lottery.WebMvc\Lottery.WebMvc\Lottery.WebMvc\Views\Shared\_Layout.cshtml(8): error CS0246: The type or namespace name 'UserData' could not be found (are you missing a using directive or an assembly reference?)
+[11:43:24] D:\Lottery.WebMvc\Lottery.WebMvc\Lottery.WebMvc\Views\Shared\_Layout.cshtml(8): error CS0246: The type or namespace name 'UserData' could not be found (are you missing a using directive or an assembly reference?)
+[11:43:35] D:\Lottery.WebMvc\Lottery.WebMvc\Lottery.WebMvc\Views\Shared\_Layout.cshtml(8): error CS0246: The type or namespace name 'UserData' could not be found (are you missing a using directive or an assembly reference?)

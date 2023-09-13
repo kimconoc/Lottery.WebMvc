@@ -2,6 +2,7 @@
 using Admin.Models;
 using Amin.CustomAuthen;
 using Amin.Models;
+using Lottery.DoMain.Constant;
 using Lottery.DoMain.Models;
 using Newtonsoft.Json;
 using System;
@@ -24,26 +25,25 @@ namespace Amin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model, string ReturnUrl = "")
         {
-            bool isValidADAccount = LoginAdAccount(model.UserName, model.Password);
+            var userBase = provider.PostAsync<User>(ApiUri.POST_UserLogin, model);
+            if (userBase == null || userBase.Result == null || userBase.Result.Data == null)
+            {
+                ViewBag.Message = "Tài khoản đăng nhập không đúng";
+                return View(model);
+            }
+            var userData = userBase.Result.Data;
+            bool isValidADAccount = LoginAdAccount(model.LoginName, model.Password);
             if (isValidADAccount)
             {
                 try
                 {
-                    var userAdmin = new UserAdmin()
-                    {
-                        Id = new Guid(),
-                        Username = model.UserName,
-                        DisplayName = model.UserName,
-                        Roles = Constant.AdminRoles.SuperAdmin,
-                    };
-                    if (userAdmin == null)
+                    if (userData == null)
                     {
                         ViewBag.Message = "User is not registered to application";
                     }
                     else
                     {
-                        var userData = StoreUserData(userAdmin);
-                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.UserName, DateTime.Now, DateTime.Now.AddMinutes(720), false, JsonConvert.SerializeObject(userData), FormsAuthentication.FormsCookiePath);
+                        FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.LoginName, DateTime.Now, DateTime.Now.AddMinutes(720), false, JsonConvert.SerializeObject(userData), FormsAuthentication.FormsCookiePath);
                         string hash = FormsAuthentication.Encrypt(ticket);
                         HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
                         Response.Cookies.Add(cookie);
@@ -83,17 +83,6 @@ namespace Amin.Controllers
         private bool LoginAdAccount(string userName, string password)
         {
             return true;
-        }
-        private UserData StoreUserData(UserAdmin userAdmin)
-        {
-            var userData = new UserData
-            {
-                UserId = userAdmin.Id,
-                Username = userAdmin.Username,
-                DisplayName = userAdmin.DisplayName,
-                Roles = userAdmin.Roles != null? new List<string>(userAdmin.Roles.Split(',')) : new List<string>(),
-            };
-            return userData;
         }
 
         #endregion Login 
