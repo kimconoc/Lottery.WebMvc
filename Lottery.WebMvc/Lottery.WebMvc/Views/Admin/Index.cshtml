@@ -16,6 +16,7 @@
 <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-buttons/styles/material.css" rel="stylesheet">
 <script src="https://cdn.syncfusion.com/ej2/22.2.5/dist/ej2.min.js" type="text/javascript"></script>
 <script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 <html>
 <head>
     <style>
@@ -35,6 +36,7 @@
             flex-flow: column;
             align-items: center;
             margin-top: 12px;
+            margin-bottom: 100px;
             width: 100%;
         }
         .div_btn_add_row {
@@ -78,8 +80,11 @@
     @Html.AntiForgeryToken()
     <div class="container">
         <div style="width:900px;">
-            <button style="background: forestgreen !important;" class="btn-core-accept">Thêm</button>
-            <div id="div_calculate">
+            <button id="btn_add_calculate" style="background: forestgreen !important;" class="btn-core-accept">
+                Thêm
+                <i style="margin-left:5px;" class="fa fa-user-plus"></i>
+            </button>
+            <div id="div_calculate" style="margin-top:30px;">
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
                         <select id="filterStatus" class="form-select" aria-label="Default select example">
@@ -92,7 +97,7 @@
                         </select>
                     </div>
                     <div class="col-4">
-                        <div>
+                        <div id="div_selectNhaDai">
                             <select id="selectNhaDai">
                                 <optgroup label="Phía Bắc">
                                     <option value="1">Hà Nội</option>
@@ -109,7 +114,7 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <div>
+                        <div id="div_select_number">
                             <!--element which is going to render the MultiSelect-->
                             <input type="text" tabindex="1" id="select_number">
                         </div>
@@ -121,7 +126,10 @@
                     </div>
                 </div>
                 <div class="div_btn_add_row">
-                    <button id="btn_add_row" style="margin-right: 25px;" class="btn_add_custom btn-core-accept">Thêm dòng</button>
+                    <button id="btn_add_row" style="margin-right: 25px;" class="btn_add_custom btn-core-accept">
+                        Thêm dòng
+                        <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
+                    </button>
                 </div>
                 <div id="div_result" class="div_result">
                     <div style="display:flex;gap:10px;">
@@ -141,39 +149,266 @@
                     </div>
                 </div>
             </div>
+
+            <div id="div_calculate_virtual" style="display:none;margin-top:50px;">
+                <div id="div_row" style="margin-top:20px;" class="row">
+                    <div class="col-2">
+                        <select id="filterStatus" class="form-select" aria-label="Default select example">
+                            @{
+                                foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
+                                {
+                                    <option value="@((int)item)"> @StringExtension.GetDescription((Enum)item)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <div id="div_selectNhaDai">
+                            <select id="selectNhaDai">
+                                <optgroup label="Phía Bắc">
+                                    <option value="1">Hà Nội</option>
+                                    <option value="2">Bắc Ninh</option>
+                                    <option value="3">Thanh Hóa</option>
+                                </optgroup>
+                                <optgroup label="Phía Nam">
+                                    <option value="4">Sài Gòn</option>
+                                    <option value="5">Đồng Nai</option>
+                                    <option value="6">Đồng Tháp</option>
+                                </optgroup>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div id="div_select_number">
+                            <!--element which is going to render the MultiSelect-->
+                            <input type="text" tabindex="1" id="select_number">
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div id="box_login_form_account" class="box-input-login">
+                            <input style="height:38px;width:100px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập số">
+                        </div>
+                    </div>
+                </div>
+                <div class="div_btn_add_row">
+                    <button id="btn_add_row" style="margin-right: 25px;" class="btn_add_custom btn-core-accept">
+                        Thêm dòng
+                        <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
+                    </button>
+                </div>
+                <div id="div_result" class="div_result">
+                    <div style="display:flex;gap:10px;">
+                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept">Tính tiền</button>
+                        <input style="height:28px;width:50px;" id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
+                        <p id="validationMessage"></p>
+                    </div>
+                    <div class="row" style="margin-top: 15px; min-width: 320px;">
+                        <span class="col-4">Tiền xác</span>
+                        <span class="col-4">Tiền thưởng</span>
+                        <span id="lable_viewTong" class="col-4"></span>
+                    </div>
+                    <div class="row" style="margin-top: 15px;display:none">
+                        <span id="lable_xac1" class="col-4">lable_xac1</span>
+                        <span id="lable_thuong1" class="col-4">lable_thuong1</span>
+                        <span id="lable_tong1" class="col-4">lable_tong1</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <script>
 
-        // initialize MultiSelect component
-        var sportsData = [];
-        for (var i = 0; i < 100; i++) {
-            // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
-            var numberStr = i < 10 ? '0' + i : i.toString();
+        $(document).ready(function () {
+            // initialize MultiSelect component
+            var sportsData = [];
+            for (var i = 0; i < 100; i++) {
+                // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
+                var numberStr = i < 10 ? '0' + i : i.toString();
 
-            // Thêm chuỗi numberStr vào mảng sportsData
-            sportsData.push(numberStr);
-        }
-        var listObj = new ej.dropdowns.MultiSelect({
-            dataSource: sportsData,
-            placeholder: "Chọn số"
-        });
-        listObj.appendTo('#select_number');
-        
-        // initialize MultiSelect component have groupBy 
-        var listObj = new ej.dropdowns.MultiSelect({
-            placeholder: "Chọn nhà đài"
-        });
-        listObj.appendTo('#selectNhaDai');
+                // Thêm chuỗi numberStr vào mảng sportsData
+                sportsData.push(numberStr);
+            }
+            var listObj = new ej.dropdowns.MultiSelect({
+                dataSource: sportsData,
+                placeholder: "Chọn số"
+            });
+            listObj.appendTo('#select_number');
 
+            // initialize MultiSelect component have groupBy
+            var listObj = new ej.dropdowns.MultiSelect({
+                placeholder: "Chọn nhà đài"
+            });
+            listObj.appendTo('#selectNhaDai');
+        });
+
+        $('#btn_add_calculate').click(function (e) {
+
+            var originalElement = document.getElementById("div_calculate_virtual");
+            var clonedElement = originalElement.cloneNode(true);
+
+            // Đặt ID mới cho phần tử sao chép
+            clonedElement.id = "div_calculate_virtual_new";
+
+            //Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
+            function changeIds(element) {
+                if (element.id && element.id == "div_selectNhaDai") {
+                    element.id = element.id + "_clone";
+                }
+                if (element.id && element.id == "div_select_number") {
+                    element.id = element.id + "_clone";
+                }
+                if (element.children && element.children.length > 0) {
+                    for (var i = 0; i < element.children.length; i++) {
+                        changeIds(element.children[i]); // Đệ quy cho các phần tử con
+                    }
+                }
+            }
+
+            changeIds(clonedElement);
+
+            // Thêm phần tử sao chép vào DOM sau phần tử gốc
+            originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+
+            // Lấy tham chiếu đến phần tử bằng ID
+            var element = document.getElementById("div_calculate_virtual_new");
+
+            if (element) {
+                element.style.display = "block";
+            }
+
+            createMultiSelectNhaDaiClone();
+            createMultiSelectNumberClone();
+
+        });
 
         $('#btn_add_row').click(function (e) {
             var originalElement = document.getElementById("div_row");
-            // Sao chép phần tử
             var clonedElement = originalElement.cloneNode(true);
-            // Thêm phần tử sao chép vào một vị trí cụ thể trong DOM (ví dụ: sau phần tử gốc)
+
+            // Đặt ID mới cho phần tử sao chép
+            clonedElement.id = "div_row_new";
+
+            // Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
+            function changeIds(element) {
+                if (element.id && element.id == "div_selectNhaDai") {
+                    element.id = element.id + "_clone2";
+                }
+                if (element.id && element.id == "div_select_number") {
+                    element.id = element.id + "_clone2";
+                }
+                if (element.children && element.children.length > 0) {
+                    for (var i = 0; i < element.children.length; i++) {
+                        changeIds(element.children[i]); // Đệ quy cho các phần tử con
+                    }
+                }
+            }
+
+            changeIds(clonedElement);
+
+            // Thêm phần tử sao chép vào DOM sau phần tử gốc
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+
+            createMultiSelectNhaDaiClone2();
+            createMultiSelectNumberClone2();
+
         });
+
+        function createMultiSelectNhaDaiClone() {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById("div_selectNhaDai_clone");
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<select id="selectNhaDai1">' +
+                '<optgroup label="Phía Bắc">' +
+                '<option value="1">Hà Nội</option>' +
+                '<option value="2">Bắc Ninh</option>' +
+                '<option value="3">Thanh Hóa</option>' +
+                '</optgroup>' +
+                '<optgroup label="Phía Nam">' +
+                '<option value="4">Sài Gòn</option>' +
+                '<option value="5">Đồng Nai</option>' +
+                '<option value="6">Đồng Tháp</option>' +
+                '</optgroup>' +
+                '</select>';
+
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            var listObj = new ej.dropdowns.MultiSelect({
+                placeholder: "Chọn nhà đài"
+            });
+            listObj.appendTo('#selectNhaDai1');
+        }
+
+        function createMultiSelectNumberClone() {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById("div_select_number_clone");
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<input type="text" tabindex="1" id="select_number1">';
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            var sportsData = [];
+            for (var i = 0; i < 100; i++) {
+                // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
+                var numberStr = i < 10 ? '0' + i : i.toString();
+
+                // Thêm chuỗi numberStr vào mảng sportsData
+                sportsData.push(numberStr);
+            }
+            var listObj = new ej.dropdowns.MultiSelect({
+                dataSource: sportsData,
+                placeholder: "Chọn số"
+            });
+            listObj.appendTo('#select_number1');
+        }
+
+        function createMultiSelectNhaDaiClone2()
+        {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById("div_selectNhaDai_clone2");
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<select id="selectNhaDai2">' +
+                '<optgroup label="Phía Bắc">' +
+                '<option value="1">Hà Nội</option>' +
+                '<option value="2">Bắc Ninh</option>' +
+                '<option value="3">Thanh Hóa</option>' +
+                '</optgroup>' +
+                '<optgroup label="Phía Nam">' +
+                '<option value="4">Sài Gòn</option>' +
+                '<option value="5">Đồng Nai</option>' +
+                '<option value="6">Đồng Tháp</option>' +
+                '</optgroup>' +
+                '</select>';
+
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            var listObj = new ej.dropdowns.MultiSelect({
+                placeholder: "Chọn nhà đài"
+            });
+            listObj.appendTo('#selectNhaDai2');
+        }
+
+        function createMultiSelectNumberClone2() {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById("div_select_number_clone2");
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<input type="text" tabindex="1" id="select_number2">';
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            var sportsData = [];
+            for (var i = 0; i < 100; i++) {
+                // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
+                var numberStr = i < 10 ? '0' + i : i.toString();
+
+                // Thêm chuỗi numberStr vào mảng sportsData
+                sportsData.push(numberStr);
+            }
+            var listObj = new ej.dropdowns.MultiSelect({
+                dataSource: sportsData,
+                placeholder: "Chọn số"
+            });
+            listObj.appendTo('#select_number2');
+        }
 
         function validaeInPutTyLeSap() {
             var val = document.getElementById("input_ty_le_sap");
