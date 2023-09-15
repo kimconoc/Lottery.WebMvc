@@ -1,7 +1,20 @@
 ﻿@using Lottery.DoMain.Enum;
 @using Lottery.DoMain.Extentions;
+@using Lottery.Service.ServiceProvider;
+@using Lottery.Service.ServiceProvider.Interface;
+@using Lottery.DoMain.Models;
+@using Lottery.DoMain.Constant;
+@using Lottery.DoMain.Models;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    IProvider provider = new Provider();
+
+    List<ChanelGroup> dataChanel = new List<ChanelGroup>();
+    var dataBase = provider.GetAsync<List<ChanelGroup>>(ApiUri.Get_CommonChanels);
+    if (dataBase != null && dataBase.Result != null && dataBase.Result.Data != null)
+    {
+        dataChanel = dataBase.Result.Data;
+    }
 }
 
 <!DOCTYPE html>
@@ -27,6 +40,7 @@
             appearance: none;
             margin: 0;
         }
+
         input[type="number"] {
             -moz-appearance: textfield;
         }
@@ -39,6 +53,7 @@
             margin-bottom: 100px;
             width: 100%;
         }
+
         .div_btn_add_row {
             display: flex;
             flex-flow: column;
@@ -46,6 +61,7 @@
             margin-top: 8px;
             width: 100%;
         }
+
         .btn_add_custom {
             height: 28px;
             font-size: 12px;
@@ -62,11 +78,13 @@
             color: rgb(7, 171, 226);
             background: white;
         }
+
         .span {
             margin-left: 5px;
             font-size: 15px;
             font-weight: 800;
         }
+
         .div_result {
             display: flex;
             flex-flow: column;
@@ -115,17 +133,21 @@
                     <div class="col-4">
                         <div id="div_selectNhaDai">
                             <select id="selectNhaDai">
-                                <optgroup label="Phía Bắc">
-                                    <option value="1">Hà Nội</option>
-                                    <option value="2">Bắc Ninh</option>
-                                    <option value="3">Thanh Hóa</option>
-                                </optgroup>
-                                <optgroup label="Phía Nam">
-                                    <option value="4">Sài Gòn</option>
-                                    <option value="5">Đồng Nai</option>
-                                    <option value="6">Đồng Tháp</option>
-                                </optgroup>
+                                @{
+                                    if (dataChanel != null && dataChanel.Count > 0)
+                                    {
+                                        foreach (var chanels in dataChanel)
+                                        {
+                                            <optgroup label="@chanels.Key">
+                                                @foreach(var chanel in chanels.Value)
+                                                {
+                                                    <option value="@chanel.Key">@chanel.Value</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
 
+                                }
                             </select>
                         </div>
                     </div>
@@ -181,18 +203,22 @@
                     </div>
                     <div class="col-4">
                         <div id="div_selectNhaDai">
-                            <select id="selectNhaDai">
-                                <optgroup label="Phía Bắc">
-                                    <option value="1">Hà Nội</option>
-                                    <option value="2">Bắc Ninh</option>
-                                    <option value="3">Thanh Hóa</option>
-                                </optgroup>
-                                <optgroup label="Phía Nam">
-                                    <option value="4">Sài Gòn</option>
-                                    <option value="5">Đồng Nai</option>
-                                    <option value="6">Đồng Tháp</option>
-                                </optgroup>
+                            <select id="selectNhaDai_virtual">
+                                @{
+                                    if (dataChanel != null && dataChanel.Count > 0)
+                                    {
+                                        foreach (var chanels in dataChanel)
+                                        {
+                                            <optgroup label="@chanels.Key">
+                                                @foreach (var chanel in chanels.Value)
+                                                {
+                                                    <option value="@chanel.Key">@chanel.Value</option>
+                                                }
+                                            </optgroup>
+                                        }
+                                    }
 
+                                }
                             </select>
                         </div>
                     </div>
@@ -258,6 +284,7 @@
                 placeholder: "Chọn nhà đài"
             });
             listObj.appendTo('#selectNhaDai');
+
         });
 
         $('#btn_add_calculate').click(function (e) {
@@ -390,23 +417,16 @@
             listObj.appendTo('#select_number1');
         }
 
-        function createMultiSelectNhaDaiClone2()
-        {
+        function createMultiSelectNhaDaiClone2() {
             // Lấy đối tượng div theo ID
             var divToReplace = document.getElementById("div_selectNhaDai_clone2");
             // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
-            var selectHtml = '<select id="selectNhaDai2">' +
-                '<optgroup label="Phía Bắc">' +
-                '<option value="1">Hà Nội</option>' +
-                '<option value="2">Bắc Ninh</option>' +
-                '<option value="3">Thanh Hóa</option>' +
-                '</optgroup>' +
-                '<optgroup label="Phía Nam">' +
-                '<option value="4">Sài Gòn</option>' +
-                '<option value="5">Đồng Nai</option>' +
-                '<option value="6">Đồng Tháp</option>' +
-                '</optgroup>' +
-                '</select>';
+
+            var element = document.getElementById("selectNhaDai_virtual");
+            var htmlContent = element.outerHTML;
+            htmlContent = htmlContent.replace("selectNhaDai_virtual", "selectNhaDai2");
+            
+            var selectHtml = htmlContent;
 
             // Thay thế nội dung của div bằng nội dung mới
             divToReplace.innerHTML = selectHtml;

@@ -9,5 +9,6 @@ namespace Lottery.DoMain.Constant
     public class ApiUri
     {
         public const string POST_UserLogin = "User/login";
+        public const string Get_CommonChanels = "Common/chanels";
     }
 }
