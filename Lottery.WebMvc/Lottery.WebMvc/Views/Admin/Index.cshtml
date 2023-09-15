@@ -74,6 +74,21 @@
             margin-top: 20px;
             width: 100%;
         }
+
+        .bordered-div {
+            border: 1.5px dashed rgb(0, 153, 0);
+            padding: 10px;
+            position: relative;
+        }
+
+        .name-input {
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            background-color: white;
+            padding: 2px;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -85,6 +100,7 @@
                 <i style="margin-left:5px;" class="fa fa-user-plus"></i>
             </button>
             <div id="div_calculate" style="margin-top:30px;">
+                <input type="text" style="display:none;" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
                         <select id="filterStatus" class="form-select" aria-label="Default select example">
@@ -126,7 +142,7 @@
                     </div>
                 </div>
                 <div class="div_btn_add_row">
-                    <button id="btn_add_row" style="margin-right: 25px;" class="btn_add_custom btn-core-accept">
+                    <button id="btn_add_row" onclick="addRowClick()" style="margin-right: 26px;" class="btn_add_custom btn-core-accept">
                         Thêm dòng
                         <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
                     </button>
@@ -150,7 +166,8 @@
                 </div>
             </div>
 
-            <div id="div_calculate_virtual" style="display:none;margin-top:50px;">
+            <div id="div_calculate_virtual" class="bordered-div" style="display:none;margin-top:50px;">
+                <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
                         <select id="filterStatus" class="form-select" aria-label="Default select example">
@@ -192,7 +209,7 @@
                     </div>
                 </div>
                 <div class="div_btn_add_row">
-                    <button id="btn_add_row" style="margin-right: 25px;" class="btn_add_custom btn-core-accept">
+                    <button id="btn_add_row" onclick="addRowClick()" style="margin-right: 22px;" class="btn_add_custom btn-core-accept">
                         Thêm dòng
                         <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
                     </button>
@@ -245,6 +262,13 @@
 
         $('#btn_add_calculate').click(function (e) {
 
+            var div_calculateElement = document.getElementById("div_calculate");
+            div_calculateElement.classList.add("bordered-div");
+            var nameInputElement = document.getElementById("nameInput");
+            nameInputElement.style.display = "block";
+            var btn_add_rowElement = document.getElementById("btn_add_row");
+            btn_add_rowElement.style.marginRight = "22px";
+
             var originalElement = document.getElementById("div_calculate_virtual");
             var clonedElement = originalElement.cloneNode(true);
 
@@ -283,7 +307,7 @@
 
         });
 
-        $('#btn_add_row').click(function (e) {
+        function addRowClick() {
             var originalElement = document.getElementById("div_row");
             var clonedElement = originalElement.cloneNode(true);
 
@@ -313,7 +337,7 @@
             createMultiSelectNhaDaiClone2();
             createMultiSelectNumberClone2();
 
-        });
+        }
 
         function createMultiSelectNhaDaiClone() {
             // Lấy đối tượng div theo ID
