@@ -103,7 +103,7 @@
                 <input type="text" style="display:none;" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
-                        <select id="filterStatus" class="form-select" aria-label="Default select example">
+                        <select id="combo_LoDeXien" class="form-select" aria-label="Default select example">
                             @{
                                 foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
                                 {
@@ -149,7 +149,7 @@
                 </div>
                 <div id="div_result" class="div_result">
                     <div style="display:flex;gap:10px;">
-                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept">Tính tiền</button>
+                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept" onclick="executeCalculate()">Tính tiền</button>
                         <input style="height:28px;width:50px;" id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
                         <p id="validationMessage"></p>
                     </div>
@@ -159,9 +159,9 @@
                         <span id="lable_viewTong" class="col-4"></span>
                     </div>
                     <div class="row" style="margin-top: 15px;display:none">
-                        <span id="lable_xac1" class="col-4">lable_xac1</span>
-                        <span id="lable_thuong1" class="col-4">lable_thuong1</span>
-                        <span id="lable_tong1" class="col-4">lable_tong1</span>
+                        <span id="lable_xac" class="col-4">lable_xac</span>
+                        <span id="lable_thuong" class="col-4">lable_thuong</span>
+                        <span id="lable_tong" class="col-4">lable_tong</span>
                     </div>
                 </div>
             </div>
@@ -170,7 +170,7 @@
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
-                        <select id="filterStatus" class="form-select" aria-label="Default select example">
+                        <select id="combo_LoDeXien" class="form-select" aria-label="Default select example">
                             @{
                                 foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
                                 {
@@ -216,7 +216,7 @@
                 </div>
                 <div id="div_result" class="div_result">
                     <div style="display:flex;gap:10px;">
-                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept">Tính tiền</button>
+                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept" onclick="executeCalculate()">Tính tiền</button>
                         <input style="height:28px;width:50px;" id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
                         <p id="validationMessage"></p>
                     </div>
@@ -226,9 +226,9 @@
                         <span id="lable_viewTong" class="col-4"></span>
                     </div>
                     <div class="row" style="margin-top: 15px;display:none">
-                        <span id="lable_xac1" class="col-4">lable_xac1</span>
-                        <span id="lable_thuong1" class="col-4">lable_thuong1</span>
-                        <span id="lable_tong1" class="col-4">lable_tong1</span>
+                        <span id="lable_xac" class="col-4">lable_xac</span>
+                        <span id="lable_thuong" class="col-4">lable_thuong</span>
+                        <span id="lable_tong" class="col-4">lable_tong</span>
                     </div>
                 </div>
             </div>
@@ -452,6 +452,10 @@
             if (value < 0) {
                 val.value = "0";
             }
+        }
+
+        function executeCalculate() {
+            alert("oke");
         }
 
     </script>
