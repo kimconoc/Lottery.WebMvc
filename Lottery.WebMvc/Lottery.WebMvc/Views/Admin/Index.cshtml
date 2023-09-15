@@ -262,12 +262,7 @@
 
         $('#btn_add_calculate').click(function (e) {
 
-            var div_calculateElement = document.getElementById("div_calculate");
-            div_calculateElement.classList.add("bordered-div");
-            var nameInputElement = document.getElementById("nameInput");
-            nameInputElement.style.display = "block";
-            var btn_add_rowElement = document.getElementById("btn_add_row");
-            btn_add_rowElement.style.marginRight = "22px";
+            setPropertyWhenAddCalculate();
 
             var originalElement = document.getElementById("div_calculate_virtual");
             var clonedElement = originalElement.cloneNode(true);
@@ -306,6 +301,15 @@
             createMultiSelectNumberClone();
 
         });
+
+        function setPropertyWhenAddCalculate() {
+            var div_calculateElement = document.getElementById("div_calculate");
+            div_calculateElement.classList.add("bordered-div");
+            var nameInputElement = document.getElementById("nameInput");
+            nameInputElement.style.display = "block";
+            var btn_add_rowElement = document.getElementById("btn_add_row");
+            btn_add_rowElement.style.marginRight = "22px";
+        }
 
         function addRowClick() {
             var originalElement = document.getElementById("div_row");
