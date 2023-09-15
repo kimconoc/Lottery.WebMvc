@@ -263,6 +263,21 @@
     </div>
     <script>
 
+        var managerDiv = {
+            div_calculate: {
+                key: "000",
+                div_row: {
+                    data: ["000"] 
+                }
+            }
+        };
+
+        // Thêm dữ liệu vào mảng data của div_row
+        managerDiv.div_calculate.div_row.data.push("Dòng 1");
+        managerDiv.div_calculate.div_row.data.push("Dòng 2");
+        managerDiv.div_calculate.div_row.data.push("Dòng 3");
+        var randomCode = generateRandomCode(3);
+
         $(document).ready(function () {
             // initialize MultiSelect component
             var sportsData = [];
@@ -476,6 +491,18 @@
 
         function executeCalculate() {
             alert("oke");
+        }
+
+        function generateRandomCode(length) {
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var code = '';
+
+            for (var i = 0; i < length; i++) {
+                var randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters.charAt(randomIndex);
+            }
+
+            return code;
         }
 
     </script>
