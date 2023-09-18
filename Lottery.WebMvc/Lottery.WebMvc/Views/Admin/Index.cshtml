@@ -107,6 +107,46 @@
             padding: 2px;
             border: none;
         }
+
+        .delete-div-row {
+            margin-top:10px;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 16px;
+            color: #d9534f;
+            display: none;
+        }
+
+        .btn-danger {
+            display: inline-block;
+            margin-bottom: 0;
+            font-weight: normal;
+            text-align: center;
+            vertical-align: middle;
+            touch-action: manipulation;
+            cursor: pointer;
+            background-image: none;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            border-radius: 4px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            color: #fff;
+            background-color: #d9534f;
+            border-color: #d43f3a;
+            position: absolute;
+            top: -15px;
+            right: 10px;
+            padding: 2px;
+            border: none;
+            display:none;
+        }
+
     </style>
 </head>
 <body>
@@ -114,13 +154,14 @@
     <div class="container">
         <div style="width:900px;">
 
-            <button id="btn_add_calculate" style="background: forestgreen !important;" class="btn-core-accept">
+            <button id="btn_add_calculate" style="background: forestgreen !important;margin-bottom:-10px;" class="btn-core-accept">
                 Thêm
                 <i style="margin-left:5px;" class="fa fa-user-plus"></i>
             </button>
             
             <div id="div_calculate_virtual" style="display:none;margin-top:50px;">
                 <input type="text" style="display:none;" class="name-input" id="nameInput" placeholder="Nhập tên">
+                <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
                         <select id="combo_loDeXien" class="form-select" aria-label="Default select example">
@@ -160,8 +201,9 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <div id="box_login_form_account" class="box-input-login">
-                            <input style="height:38px;width:100px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập số">
+                        <div style="display:flex;">
+                            <input style="height:38px;width:90px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập số">
+                            <i onclick="deleteRow(this)" id="delete_row" class="delete-div-row fa fa-trash" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
@@ -174,6 +216,7 @@
                 <div id="div_result" class="div_result">
                     <div style="display:flex;gap:10px;">
                         <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept" onclick="executeCalculate()">Tính tiền</button>
+                        <input style="height:28px;width:50px;" id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
                         <input style="height:28px;width:50px;" id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
                         <p id="validationMessage"></p>
                     </div>
@@ -195,8 +238,10 @@
     <script>
 
         var div_calculate = "div_calculate";
+        var delete_div_calculate = "delete_div_calculate";
         var nameInput = "nameInput";
         var div_row = "div_row";
+        var delete_row = "delete_row";
         var btn_add_row = "btn_add_row";
         var btn_send_result = "btn_send_result";
         var combo_loDeXien = "combo_loDeXien";
@@ -206,6 +251,7 @@
         var select_number = "select_number";
         var nhap_so_diem = "nhap_so_diem";
         var div_result = "div_result";
+        var input_ty_le_thuong = "input_ty_le_thuong";
         var input_ty_le_sap = "input_ty_le_sap";
         var lbl_viewTong = "lbl_viewTong";
         var lbl_xac = "lbl_xac";
@@ -234,6 +280,9 @@
                 if (element.id && element.id == nameInput) {
                     element.id = element.id + randomIdOut;
                 }
+                if (element.id && element.id == delete_div_calculate) {
+                    element.id = element.id + randomIdOut;
+                }
                 if (element.id && element.id == btn_add_row) {
                     element.id = element.id + randomIdOut;
                 }
@@ -252,7 +301,13 @@
                 if (element.id && element.id == nhap_so_diem) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
+                if (element.id && element.id == delete_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
                 if (element.id && element.id == btn_send_result) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == input_ty_le_thuong) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == input_ty_le_sap) {
@@ -271,7 +326,7 @@
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
 
             // Lấy tham chiếu đến phần tử bằng ID
-            var element = document.getElementById("div_calculate" + randomIdOut);
+            var element = document.getElementById(div_calculate + randomIdOut);
 
             if (element) {
                 element.style.display = "block";
@@ -281,19 +336,43 @@
             createMultiSelectNumberClone(randomIdOut, randomIdIn);
         }
 
+        function deleteDivCalculate(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var elementToRemove = document.getElementById(div_calculate + randomIdOut);
+            elementToRemove.remove();
+            setPropertyWhenAddCalculate();
+        }
+
         function setPropertyWhenAddCalculate() {
-            var idDiv_calculateList = getListIdAsRequired(div_calculate);
-            for (var itemId of idDiv_calculateList) {
+            var ListidDiv_calculate = getListIdAsRequired(div_calculate);
+            for (var itemId of ListidDiv_calculate) {
                 var div_calculateElement = document.getElementById(itemId);
                 div_calculateElement.classList.add("bordered-div");
             }
-            var idBtn_add_rowList = getListIdAsRequired(btn_add_row);
-            for (var itemId of idBtn_add_rowList) {
+
+            var ListidDelete_div_calculate = getListIdAsRequired(delete_div_calculate);
+            if (ListidDelete_div_calculate.length > 2) {
+                for (var itemId of ListidDelete_div_calculate) {
+                    var delete_div_calculateElement = document.getElementById(itemId);
+                    delete_div_calculateElement.style.display = "block";
+                }
+            }
+            else {
+                for (var itemId of ListidDelete_div_calculate) {
+                    var delete_div_calculateElement = document.getElementById(itemId);
+                    delete_div_calculateElement.style.display = "none";
+                }
+            }
+
+            var ListidBtn_add_row = getListIdAsRequired(btn_add_row);
+            for (var itemId of ListidBtn_add_row) {
                 var btn_add_rowElement = document.getElementById(itemId);
                 btn_add_rowElement.style.marginRight = "22px";
             }
-            var idNameInputList = getListIdAsRequired(nameInput);
-            for (var itemId of idNameInputList) {
+
+            var ListidNameInput = getListIdAsRequired(nameInput);
+            for (var itemId of ListidNameInput) {
                 var nameInputElement = document.getElementById(itemId);
                 nameInputElement.style.display = "block";
             }
@@ -326,6 +405,9 @@
                 if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
                     element.id = nhap_so_diem + randomIdOut + randomIdIn;;
                 }
+                if (element.id && element.id.indexOf(delete_row) !== -1) {
+                    element.id = delete_row + randomIdOut + randomIdIn;;
+                }
                 if (element.children && element.children.length > 0) {
                     for (var i = 0; i < element.children.length; i++) {
                         changeIds(element.children[i]); // Đệ quy cho các phần tử con
@@ -338,7 +420,33 @@
 
             createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
             createMultiSelectNumberClone(randomIdOut, randomIdIn);
+            setPropertyWhenAddRow(randomIdOut);
 
+        }
+
+        function deleteRow(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdfull = IdBtnAddRow.substring(IdBtnAddRow.length - 10);
+            var randomIdOut = randomIdfull.substring(0,5);
+            var elementToRemove = document.getElementById(div_row + randomIdfull); 
+            elementToRemove.remove();
+            setPropertyWhenAddRow(randomIdOut);
+        }
+
+        function setPropertyWhenAddRow(randomIdOut) {
+            var Listiddelete_row = getListIdAsRequired(delete_row + randomIdOut);
+            if (Listiddelete_row.length > 1) {
+                for (var itemId of Listiddelete_row) {
+                    var delete_rowElement = document.getElementById(itemId);
+                    delete_rowElement.style.display = "inline";
+                }
+            }
+            else {
+                for (var itemId of Listiddelete_row) {
+                    var delete_rowElement = document.getElementById(itemId);
+                    delete_rowElement.style.display = "none";
+                }
+            }
         }
 
         function createMultiSelectNhaDaiClone(randomIdOut, randomIdIn) {
