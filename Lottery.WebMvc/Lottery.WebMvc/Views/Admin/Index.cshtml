@@ -113,15 +113,17 @@
     @Html.AntiForgeryToken()
     <div class="container">
         <div style="width:900px;">
+
             <button id="btn_add_calculate" style="background: forestgreen !important;" class="btn-core-accept">
                 Thêm
                 <i style="margin-left:5px;" class="fa fa-user-plus"></i>
             </button>
-            <div id="div_calculate" style="margin-top:30px;">
+            
+            <div id="div_calculate_virtual" style="display:none;margin-top:50px;">
                 <input type="text" style="display:none;" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
-                        <select id="combo_LoDeXien" class="form-select" aria-label="Default select example">
+                        <select id="combo_loDeXien" class="form-select" aria-label="Default select example">
                             @{
                                 foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
                                 {
@@ -131,79 +133,8 @@
                         </select>
                     </div>
                     <div class="col-4">
-                        <div id="div_selectNhaDai">
-                            <select id="selectNhaDai">
-                                @{
-                                    if (dataChanel != null && dataChanel.Count > 0)
-                                    {
-                                        foreach (var chanels in dataChanel)
-                                        {
-                                            <optgroup label="@chanels.Key">
-                                                @foreach(var chanel in chanels.Value)
-                                                {
-                                                    <option value="@chanel.Key">@chanel.Value</option>
-                                                }
-                                            </optgroup>
-                                        }
-                                    }
-
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div id="div_select_number">
-                            <!--element which is going to render the MultiSelect-->
-                            <input type="text" tabindex="1" id="select_number">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div id="box_login_form_account" class="box-input-login">
-                            <input style="height:38px;width:100px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập số">
-                        </div>
-                    </div>
-                </div>
-                <div class="div_btn_add_row">
-                    <button id="btn_add_row" onclick="addRowClick()" style="margin-right: 26px;" class="btn_add_custom btn-core-accept">
-                        Thêm dòng
-                        <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
-                    </button>
-                </div>
-                <div id="div_result" class="div_result">
-                    <div style="display:flex;gap:10px;">
-                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept" onclick="executeCalculate()">Tính tiền</button>
-                        <input style="height:28px;width:50px;" id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
-                        <p id="validationMessage"></p>
-                    </div>
-                    <div class="row" style="margin-top: 15px; min-width: 320px;">
-                        <span class="col-4">Tiền xác</span>
-                        <span class="col-4">Tiền thưởng</span>
-                        <span id="lable_viewTong" class="col-4"></span>
-                    </div>
-                    <div class="row" style="margin-top: 15px;display:none">
-                        <span id="lable_xac" class="col-4">lable_xac</span>
-                        <span id="lable_thuong" class="col-4">lable_thuong</span>
-                        <span id="lable_tong" class="col-4">lable_tong</span>
-                    </div>
-                </div>
-            </div>
-
-            <div id="div_calculate_virtual" class="bordered-div" style="display:none;margin-top:50px;">
-                <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
-                <div id="div_row" style="margin-top:20px;" class="row">
-                    <div class="col-2">
-                        <select id="combo_LoDeXien" class="form-select" aria-label="Default select example">
-                            @{
-                                foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
-                                {
-                                    <option value="@((int)item)"> @StringExtension.GetDescription((Enum)item)</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="col-4">
-                        <div id="div_selectNhaDai">
-                            <select id="selectNhaDai_virtual">
+                        <div id="div_select_nhaDai">
+                            <select id="select_nhaDai">
                                 @{
                                     if (dataChanel != null && dataChanel.Count > 0)
                                     {
@@ -235,7 +166,7 @@
                     </div>
                 </div>
                 <div class="div_btn_add_row">
-                    <button id="btn_add_row" onclick="addRowClick()" style="margin-right: 22px;" class="btn_add_custom btn-core-accept">
+                    <button id="btn_add_row" onclick="addRowClick(this)" style="margin-right: 26px;" class="btn_add_custom btn-core-accept">
                         Thêm dòng
                         <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
                     </button>
@@ -249,12 +180,12 @@
                     <div class="row" style="margin-top: 15px; min-width: 320px;">
                         <span class="col-4">Tiền xác</span>
                         <span class="col-4">Tiền thưởng</span>
-                        <span id="lable_viewTong" class="col-4"></span>
+                        <span id="lbl_viewTong" class="col-4"></span>
                     </div>
                     <div class="row" style="margin-top: 15px;display:none">
-                        <span id="lable_xac" class="col-4">lable_xac</span>
-                        <span id="lable_thuong" class="col-4">lable_thuong</span>
-                        <span id="lable_tong" class="col-4">lable_tong</span>
+                        <span id="lbl_xac" class="col-4">lable_xac</span>
+                        <span id="lbl_thuong" class="col-4">lable_thuong</span>
+                        <span id="lbl_tong" class="col-4">lable_tong</span>
                     </div>
                 </div>
             </div>
@@ -263,62 +194,69 @@
     </div>
     <script>
 
-        var managerDiv = {
-            div_calculate: {
-                key: "000",
-                div_row: {
-                    data: ["000"] 
-                }
-            }
-        };
-
-        // Thêm dữ liệu vào mảng data của div_row
-        managerDiv.div_calculate.div_row.data.push("Dòng 1");
-        managerDiv.div_calculate.div_row.data.push("Dòng 2");
-        managerDiv.div_calculate.div_row.data.push("Dòng 3");
-        var randomCode = generateRandomCode(3);
-
+        var div_calculate = "div_calculate";
+        var nameInput = "nameInput";
+        var div_row = "div_row";
+        var btn_add_row = "btn_add_row";
+        var btn_send_result = "btn_send_result";
+        var combo_loDeXien = "combo_loDeXien";
+        var div_select_nhaDai = "div_select_nhaDai";
+        var select_nhaDai = "select_nhaDai";    
+        var div_select_number = "div_select_number";
+        var select_number = "select_number";
+        var nhap_so_diem = "nhap_so_diem";
+        var div_result = "div_result";
+        var input_ty_le_sap = "input_ty_le_sap";
+        var lbl_viewTong = "lbl_viewTong";
+        var lbl_xac = "lbl_xac";
+        var lbl_thuong = "lbl_thuong";  
+        var lbl_tong = "lbl_tong";    
+        
         $(document).ready(function () {
-            // initialize MultiSelect component
-            var sportsData = [];
-            for (var i = 0; i < 100; i++) {
-                // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
-                var numberStr = i < 10 ? '0' + i : i.toString();
-
-                // Thêm chuỗi numberStr vào mảng sportsData
-                sportsData.push(numberStr);
-            }
-            var listObj = new ej.dropdowns.MultiSelect({
-                dataSource: sportsData,
-                placeholder: "Chọn số"
-            });
-            listObj.appendTo('#select_number');
-
-            // initialize MultiSelect component have groupBy
-            var listObj = new ej.dropdowns.MultiSelect({
-                placeholder: "Chọn nhà đài"
-            });
-            listObj.appendTo('#selectNhaDai');
-
+            getDesignDivCalculate();
         });
 
         $('#btn_add_calculate').click(function (e) {
-
+            getDesignDivCalculate();
             setPropertyWhenAddCalculate();
+        });
 
+        function getDesignDivCalculate() {
             var originalElement = document.getElementById("div_calculate_virtual");
             var clonedElement = originalElement.cloneNode(true);
-
+            var randomIdOut = generateRandomCode(5);
+            var randomIdIn = generateRandomCode(5);
             // Đặt ID mới cho phần tử sao chép
-            clonedElement.id = "div_calculate_virtual_new";
+            clonedElement.id = div_calculate + randomIdOut;
 
             //Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
             function changeIds(element) {
-                if (element.id && element.id == "div_selectNhaDai") {
-                    element.id = element.id + "_clone";
+                if (element.id && element.id == nameInput) {
+                    element.id = element.id + randomIdOut;
                 }
-                if (element.id && element.id == "div_select_number") {
-                    element.id = element.id + "_clone";
+                if (element.id && element.id == btn_add_row) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == div_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == combo_loDeXien) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == div_select_nhaDai) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == div_select_number) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == nhap_so_diem) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == btn_send_result) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == input_ty_le_sap) {
+                    element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.children && element.children.length > 0) {
                     for (var i = 0; i < element.children.length; i++) {
@@ -333,40 +271,60 @@
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
 
             // Lấy tham chiếu đến phần tử bằng ID
-            var element = document.getElementById("div_calculate_virtual_new");
+            var element = document.getElementById("div_calculate" + randomIdOut);
 
             if (element) {
                 element.style.display = "block";
             }
 
-            createMultiSelectNhaDaiClone();
-            createMultiSelectNumberClone();
-
-        });
-
-        function setPropertyWhenAddCalculate() {
-            var div_calculateElement = document.getElementById("div_calculate");
-            div_calculateElement.classList.add("bordered-div");
-            var nameInputElement = document.getElementById("nameInput");
-            nameInputElement.style.display = "block";
-            var btn_add_rowElement = document.getElementById("btn_add_row");
-            btn_add_rowElement.style.marginRight = "22px";
+            createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
+            createMultiSelectNumberClone(randomIdOut, randomIdIn);
         }
 
-        function addRowClick() {
-            var originalElement = document.getElementById("div_row");
+        function setPropertyWhenAddCalculate() {
+            var idDiv_calculateList = getListIdAsRequired(div_calculate);
+            for (var itemId of idDiv_calculateList) {
+                var div_calculateElement = document.getElementById(itemId);
+                div_calculateElement.classList.add("bordered-div");
+            }
+            var idBtn_add_rowList = getListIdAsRequired(btn_add_row);
+            for (var itemId of idBtn_add_rowList) {
+                var btn_add_rowElement = document.getElementById(itemId);
+                btn_add_rowElement.style.marginRight = "22px";
+            }
+            var idNameInputList = getListIdAsRequired(nameInput);
+            for (var itemId of idNameInputList) {
+                var nameInputElement = document.getElementById(itemId);
+                nameInputElement.style.display = "block";
+            }
+        }
+
+        function addRowClick(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var idDiv_rowList = getListIdAsRequired(div_row + randomIdOut);
+            var div_rowClone = idDiv_rowList[idDiv_rowList.length - 1];
+
+            var originalElement = document.getElementById(div_rowClone);
             var clonedElement = originalElement.cloneNode(true);
 
+            var randomIdIn = generateRandomCode(5);
             // Đặt ID mới cho phần tử sao chép
-            clonedElement.id = "div_row_new";
+            clonedElement.id = div_row + randomIdOut + randomIdIn;
 
             // Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
             function changeIds(element) {
-                if (element.id && element.id == "div_selectNhaDai") {
-                    element.id = element.id + "_clone2";
+                if (element.id && element.id.indexOf(combo_loDeXien) !== -1) {
+                    element.id = combo_loDeXien + randomIdOut + randomIdIn;
                 }
-                if (element.id && element.id == "div_select_number") {
-                    element.id = element.id + "_clone2";
+                if (element.id && element.id.indexOf(div_select_nhaDai) !== -1) {
+                    element.id = div_select_nhaDai + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(div_select_number) !== -1) {
+                    element.id = div_select_number + randomIdOut + randomIdIn;;
+                }
+                if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
+                    element.id = nhap_so_diem + randomIdOut + randomIdIn;;
                 }
                 if (element.children && element.children.length > 0) {
                     for (var i = 0; i < element.children.length; i++) {
@@ -374,73 +332,25 @@
                     }
                 }
             }
-
             changeIds(clonedElement);
-
             // Thêm phần tử sao chép vào DOM sau phần tử gốc
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
 
-            createMultiSelectNhaDaiClone2();
-            createMultiSelectNumberClone2();
+            createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
+            createMultiSelectNumberClone(randomIdOut, randomIdIn);
 
         }
 
-        function createMultiSelectNhaDaiClone() {
+        function createMultiSelectNhaDaiClone(randomIdOut, randomIdIn) {
             // Lấy đối tượng div theo ID
-            var divToReplace = document.getElementById("div_selectNhaDai_clone");
-            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
-            var selectHtml = '<select id="selectNhaDai1">' +
-                '<optgroup label="Phía Bắc">' +
-                '<option value="1">Hà Nội</option>' +
-                '<option value="2">Bắc Ninh</option>' +
-                '<option value="3">Thanh Hóa</option>' +
-                '</optgroup>' +
-                '<optgroup label="Phía Nam">' +
-                '<option value="4">Sài Gòn</option>' +
-                '<option value="5">Đồng Nai</option>' +
-                '<option value="6">Đồng Tháp</option>' +
-                '</optgroup>' +
-                '</select>';
-
-            // Thay thế nội dung của div bằng nội dung mới
-            divToReplace.innerHTML = selectHtml;
-            var listObj = new ej.dropdowns.MultiSelect({
-                placeholder: "Chọn nhà đài"
-            });
-            listObj.appendTo('#selectNhaDai1');
-        }
-
-        function createMultiSelectNumberClone() {
-            // Lấy đối tượng div theo ID
-            var divToReplace = document.getElementById("div_select_number_clone");
-            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
-            var selectHtml = '<input type="text" tabindex="1" id="select_number1">';
-            // Thay thế nội dung của div bằng nội dung mới
-            divToReplace.innerHTML = selectHtml;
-            var sportsData = [];
-            for (var i = 0; i < 100; i++) {
-                // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
-                var numberStr = i < 10 ? '0' + i : i.toString();
-
-                // Thêm chuỗi numberStr vào mảng sportsData
-                sportsData.push(numberStr);
-            }
-            var listObj = new ej.dropdowns.MultiSelect({
-                dataSource: sportsData,
-                placeholder: "Chọn số"
-            });
-            listObj.appendTo('#select_number1');
-        }
-
-        function createMultiSelectNhaDaiClone2() {
-            // Lấy đối tượng div theo ID
-            var divToReplace = document.getElementById("div_selectNhaDai_clone2");
+            var divToReplace = document.getElementById("div_select_nhaDai" + randomIdOut + randomIdIn);
             // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
 
-            var element = document.getElementById("selectNhaDai_virtual");
+            var element = document.getElementById("select_nhaDai");
             var htmlContent = element.outerHTML;
-            htmlContent = htmlContent.replace("selectNhaDai_virtual", "selectNhaDai2");
-            
+            var newSelect_nhaDai = "select_nhaDai" + randomIdOut + randomIdIn
+            htmlContent = htmlContent.replace("select_nhaDai", newSelect_nhaDai);
+
             var selectHtml = htmlContent;
 
             // Thay thế nội dung của div bằng nội dung mới
@@ -448,14 +358,16 @@
             var listObj = new ej.dropdowns.MultiSelect({
                 placeholder: "Chọn nhà đài"
             });
-            listObj.appendTo('#selectNhaDai2');
+            listObj.appendTo('#' + newSelect_nhaDai);
         }
 
-        function createMultiSelectNumberClone2() {
+        function createMultiSelectNumberClone(randomIdOut, randomIdIn) {
             // Lấy đối tượng div theo ID
-            var divToReplace = document.getElementById("div_select_number_clone2");
+            var divToReplace = document.getElementById(div_select_number + randomIdOut + randomIdIn);
             // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
-            var selectHtml = '<input type="text" tabindex="1" id="select_number2">';
+            var selectHtml = '<input type="text" tabindex="1" id="select_number">';
+            var newSelect_number = "select_number" + randomIdOut + randomIdIn;
+            selectHtml = selectHtml.replace("select_number", newSelect_number);
             // Thay thế nội dung của div bằng nội dung mới
             divToReplace.innerHTML = selectHtml;
             var sportsData = [];
@@ -470,7 +382,7 @@
                 dataSource: sportsData,
                 placeholder: "Chọn số"
             });
-            listObj.appendTo('#select_number2');
+            listObj.appendTo('#' + newSelect_number);
         }
 
         function validaeInPutTyLeSap() {
@@ -505,6 +417,23 @@
             return code;
         }
 
+        function getListIdAsRequired(idInput) {
+            var idList = [];
+            var allElements = document.getElementsByTagName("*"); // Lấy tất cả các phần tử DOM
+
+            for (var i = 0; i < allElements.length; i++) {
+                var element = allElements[i];
+                var elementId = element.id; // Lấy id của phần tử
+
+                if (elementId && elementId.indexOf(idInput) !== -1) {
+                    idList.push(elementId);
+                }
+            }
+
+            return idList;
+
+        }
+            
     </script>
 </body>
 </html>
