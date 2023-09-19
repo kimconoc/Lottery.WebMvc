@@ -247,7 +247,7 @@
                 <div class="div_calculate_result">
                     <div class="div_calculate">
                         <div>
-                            <button id="btn_send_result" style="height: 55px;" class="btn_add_custom btn-core-accept" onclick="executeCalculate()">Tính tiền</button>
+                            <button id="btn_send_result" style="height: 55px;" class="btn_add_custom btn-core-accept" onclick="executeCalculate(this)">Tính tiền</button>
                         </div>
                         <div>
                             <span>Xác</span>
@@ -347,22 +347,22 @@
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == btn_send_result) {
-                    element.id = element.id + randomIdOut + randomIdIn;
-                }
-                if (element.id && element.id == input_ty_le_thuong) {
-                    element.id = element.id + randomIdOut + randomIdIn;
+                    element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == input_ty_le_sap) {
-                    element.id = element.id + randomIdOut + randomIdIn;
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_thuong) {
+                    element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == lbl_xac) {
-                    element.id = element.id + randomIdOut + randomIdIn;
+                    element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == lbl_thuong) {
-                    element.id = element.id + randomIdOut + randomIdIn;
+                    element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == lbl_result) {
-                    element.id = element.id + randomIdOut + randomIdIn;
+                    element.id = element.id + randomIdOut ;
                 }
                 if (element.children && element.children.length > 0) {
                     for (var i = 0; i < element.children.length; i++) {
@@ -587,8 +587,21 @@
             }
         }
 
-        function executeCalculate() {
-            alert("oke");
+        function executeCalculate(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var ListidCombo_loDeXien = getListIdAsRequired(combo_loDeXien + randomIdOut);
+            for (var itemId of ListidCombo_loDeXien) {
+                var randomIdfull = itemId.substring(itemId.length - 10);
+                var idCombo_loDeXien = combo_loDeXien + randomIdfull;
+                var idSelect_nhaDai = select_nhaDai + randomIdfull;
+                var idSelect_number = select_number + randomIdfull;
+                var idLbl_xac = lbl_xac + randomIdOut;
+                var idLbl_thuong = lbl_thuong + randomIdOut;
+                var rowData = {
+                    lotteryType: document.getElementById(idCombo_loDeXien).value,
+                }
+            }
         }
 
         function generateRandomCode(length) {
