@@ -195,7 +195,7 @@
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
-                        <select id="combo_loDeXien" class="form-select" aria-label="Default select example">
+                        <select onchange="comboLoDeXienchange(this)" id="combo_loDeXien" class="form-select" aria-label="Default select example">
                             @{
                                 foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
                                 {
@@ -288,7 +288,7 @@
         var btn_send_result = "btn_send_result";
         var combo_loDeXien = "combo_loDeXien";
         var div_select_nhaDai = "div_select_nhaDai";
-        var select_nhaDai = "select_nhaDai";    
+        var select_nhaDai = "select_nhaDai";
         var div_select_number = "div_select_number";
         var select_number = "select_number";
         var nhap_so_diem = "nhap_so_diem";
@@ -297,9 +297,9 @@
         var input_ty_le_sap = "input_ty_le_sap";
         var lbl_viewTong = "lbl_viewTong";
         var lbl_xac = "lbl_xac";
-        var lbl_thuong = "lbl_thuong";  
-        var lbl_result = "lbl_result";    
-        
+        var lbl_thuong = "lbl_thuong";
+        var lbl_result = "lbl_result";
+
         $(document).ready(function () {
             getDesignDivCalculate();
         });
@@ -479,7 +479,7 @@
             var IdBtnAddRow = dom.id;
             var randomIdfull = IdBtnAddRow.substring(IdBtnAddRow.length - 10);
             var randomIdOut = randomIdfull.substring(0,5);
-            var elementToRemove = document.getElementById(div_row + randomIdfull); 
+            var elementToRemove = document.getElementById(div_row + randomIdfull);
             elementToRemove.remove();
             setPropertyWhenAddRow(randomIdOut);
         }
@@ -520,7 +520,7 @@
             listObj.appendTo('#' + newSelect_nhaDai);
         }
 
-        function createMultiSelectNumberClone(randomIdOut, randomIdIn) {
+        function createMultiSelectNumberClone(randomIdOut, randomIdIn, typeLot = 100) {
             // Lấy đối tượng div theo ID
             var divToReplace = document.getElementById(div_select_number + randomIdOut + randomIdIn);
             // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
@@ -530,18 +530,45 @@
             // Thay thế nội dung của div bằng nội dung mới
             divToReplace.innerHTML = selectHtml;
             var sportsData = [];
-            for (var i = 0; i < 100; i++) {
-                // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
-                var numberStr = i < 10 ? '0' + i : i.toString();
+            if (typeLot == 1000) {
+                for (var i = 0; i <= 999; i++) {
+                    // Chuyển số i thành chuỗi, và thêm '0' ở trước nếu cần
+                    var numberStr = i.toString().padStart(3, '0');
 
-                // Thêm chuỗi numberStr vào mảng sportsData
-                sportsData.push(numberStr);
+                    // Thêm chuỗi numberStr vào mảng sportsData
+                    sportsData.push(numberStr);
+                }
+            }
+            else {
+                for (var i = 0; i < 100; i++) {
+                    // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
+                    var numberStr = i < 10 ? '0' + i : i.toString();
+
+                    // Thêm chuỗi numberStr vào mảng sportsData
+                    sportsData.push(numberStr);
+                }
             }
             var listObj = new ej.dropdowns.MultiSelect({
                 dataSource: sportsData,
                 placeholder: "Chọn số"
             });
             listObj.appendTo('#' + newSelect_number);
+        }
+
+        function comboLoDeXienchange(dom) {
+            var selectedValue = dom.value;
+            var IdCbbAddRow = dom.id;
+            var randomIdfull = IdCbbAddRow.substring(IdCbbAddRow.length - 10);
+            var randomIdOut = randomIdfull.substring(0, 5);
+            var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+            if (selectedValue == @((int)LotteryEnum.BaCangDau)
+                || selectedValue == @((int)LotteryEnum.BaCangDuoi)
+                || selectedValue == @((int)LotteryEnum.BaCangDauDuoi)) {
+                createMultiSelectNumberClone(randomIdOut, randomIdIn, 1000);
+            }
+            else {
+                createMultiSelectNumberClone(randomIdOut, randomIdIn, 100);
+            }
         }
 
         function validaeInPutTyLeSap() {
@@ -592,7 +619,7 @@
             return idList;
 
         }
-            
+
     </script>
 </body>
 </html>
