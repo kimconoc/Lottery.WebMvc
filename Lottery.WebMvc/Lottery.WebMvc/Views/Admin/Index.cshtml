@@ -44,6 +44,11 @@
         input[type="number"] {
             -moz-appearance: textfield;
         }
+        input {
+            background-color: white;
+            padding:10px;
+            border: none;
+        }
 
         .container {
             display: flex;
@@ -85,17 +90,43 @@
             font-weight: 800;
         }
 
-        .div_result {
-            display: flex;
-            flex-flow: column;
-            align-items: start;
-            margin-top: 20px;
-            width: 100%;
+        .div_calculate_result {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 50px;
         }
+            .div_calculate_result .div_calculate {
+                display: flex;
+                flex-flow: row;
+                gap:30px;
+            }
+                .div_calculate_result .div_calculate div{
+                    display: flex;
+                    flex-flow: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
+            .div_calculate_result .div_result {
+                display: flex;
+                flex-flow: row;
+                gap: 30px;
+            }
+                .div_calculate_result .div_result div {
+                    display: flex;
+                    flex-flow: column;
+                    align-items: center;
+                    text-align: center;
+                }
+                .div_calculate_result .div_result .div-lbl-result {
+                    color:red;
+                }
 
         .bordered-div {
             border: 1.5px dashed rgb(0, 153, 0);
             padding: 10px;
+            padding-bottom:15px;
             position: relative;
         }
 
@@ -202,7 +233,7 @@
                     </div>
                     <div class="col-2">
                         <div style="display:flex;">
-                            <input style="height:38px;width:90px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập số">
+                            <input style="height:38px;width:90px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập điểm">
                             <i onclick="deleteRow(this)" id="delete_row" class="delete-div-row fa fa-trash" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -213,22 +244,33 @@
                         <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
                     </button>
                 </div>
-                <div id="div_result" class="div_result">
-                    <div style="display:flex;gap:10px;">
-                        <button id="btn_send_result" style="" class="btn_add_custom btn-core-accept" onclick="executeCalculate()">Tính tiền</button>
-                        <input style="height:28px;width:50px;" id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
-                        <input style="height:28px;width:50px;" id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
-                        <p id="validationMessage"></p>
+                <div class="div_calculate_result">
+                    <div class="div_calculate">
+                        <div>
+                            <button id="btn_send_result" style="height: 55px;" class="btn_add_custom btn-core-accept" onclick="executeCalculate()">Tính tiền</button>
+                        </div>
+                        <div>
+                            <span>Xác</span>
+                            <input style="height: 28px; width: 60px; padding-left: 15px " id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
+                        </div>
+                        <div>
+                            <span>Thưởng</span>
+                            <input style="height: 28px; width: 60px; padding-left: 20px " id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" value="75">
+                        </div>
                     </div>
-                    <div class="row" style="margin-top: 15px; min-width: 320px;">
-                        <span class="col-4">Tiền xác</span>
-                        <span class="col-4">Tiền thưởng</span>
-                        <span id="lbl_viewTong" class="col-4"></span>
-                    </div>
-                    <div class="row" style="margin-top: 15px;display:none">
-                        <span id="lbl_xac" class="col-4">lable_xac</span>
-                        <span id="lbl_thuong" class="col-4">lable_thuong</span>
-                        <span id="lbl_tong" class="col-4">lable_tong</span>
+                    <div class="div_result">
+                        <div>
+                            <span>Tiền xác</span>
+                            <strong id="lbl_xac">0</strong>
+                        </div>
+                        <div>
+                            <span>Tiền thưởng</span>
+                            <strong id="lbl_thuong">0</strong>
+                        </div>
+                        <div id="div_lbl_result" class="div-lbl-result">
+                            <span>Lời</span>
+                            <strong id="lbl_result">0</strong>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -256,7 +298,7 @@
         var lbl_viewTong = "lbl_viewTong";
         var lbl_xac = "lbl_xac";
         var lbl_thuong = "lbl_thuong";  
-        var lbl_tong = "lbl_tong";    
+        var lbl_result = "lbl_result";    
         
         $(document).ready(function () {
             getDesignDivCalculate();
@@ -311,6 +353,15 @@
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == input_ty_le_sap) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == lbl_xac) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == lbl_thuong) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == lbl_result) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.children && element.children.length > 0) {
