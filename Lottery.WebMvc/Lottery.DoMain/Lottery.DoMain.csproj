@@ -49,6 +49,7 @@
     <Compile Include="Models\BaseModel\Interface\IEntity.cs" />
     <Compile Include="Models\BaseModel\ResponseBase.cs" />
     <Compile Include="Models\BaseModel\VBaseModel.cs" />
+    <Compile Include="Models\Calculation.cs" />
     <Compile Include="Models\Chanel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -10,5 +10,6 @@ namespace Lottery.DoMain.Constant
     {
         public const string POST_UserLogin = "User/login";
         public const string Get_CommonChanels = "Common/chanels";
+        public const string POST_CalculationCal1 = "Calculation/cal-1";
     }
 }

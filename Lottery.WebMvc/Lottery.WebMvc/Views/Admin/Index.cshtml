@@ -34,6 +34,10 @@
 <head>
     <style>
 
+        .temporary-border {
+            border: 1px solid red; 
+        }
+
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -591,17 +595,148 @@
             var IdBtnAddRow = dom.id;
             var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
             var ListidCombo_loDeXien = getListIdAsRequired(combo_loDeXien + randomIdOut);
+
+            var isValidate = false;
             for (var itemId of ListidCombo_loDeXien) {
+
                 var randomIdfull = itemId.substring(itemId.length - 10);
+                var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+
+                if (validateData(randomIdOut, randomIdIn)) {
+                    isValidate = true;
+                }
+            }
+            if (isValidate) {
+                return;
+            }
+
+            var calculationModel = [];
+            for (var itemId of ListidCombo_loDeXien) {
+
+                var randomIdfull = itemId.substring(itemId.length - 10);
+                var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+
                 var idCombo_loDeXien = combo_loDeXien + randomIdfull;
                 var idSelect_nhaDai = select_nhaDai + randomIdfull;
                 var idSelect_number = select_number + randomIdfull;
-                var idLbl_xac = lbl_xac + randomIdOut;
-                var idLbl_thuong = lbl_thuong + randomIdOut;
+                var idNhap_so_diem = nhap_so_diem + randomIdfull;
+                var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
+                var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
+
+                var idSelect_numberElement = document.getElementById(idSelect_number);
+                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+                var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
+                var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
+
                 var rowData = {
                     lotteryType: document.getElementById(idCombo_loDeXien).value,
+                    numbers: idSelect_numberValue,
+                    chanels: idSelect_nhaDaiValue,
+                    sl: document.getElementById(idNhap_so_diem).value,
+                    tileXac: document.getElementById(idInput_ty_le_sap).value,
+                    tileThuong: document.getElementById(idInput_ty_le_thuong).value,
                 }
+
+                calculationModel.push(rowData);
+
             }
+
+            calculationJsons = JSON.stringify(calculationModel);
+            $.ajax({
+                    type: "POST",
+                    traditional: true,
+                    async: false,
+                    data:
+                    {
+                        "calculationJson": calculationJsons,
+                    },
+                    url: "@Url.Action("ExecuteCalculation", "Admin")",
+                    success: function (data)
+                    {
+                        if (data.Success && data.Data) {
+                            var idLbl_xac = lbl_xac + randomIdOut;
+                            var idLbl_thuong = lbl_thuong + randomIdOut;
+                            var idLbl_result = lbl_result + randomIdOut;
+
+                            document.getElementById(idLbl_xac).textContent = data.Data.Xac;
+                            document.getElementById(idLbl_thuong).textContent = data.Data.Thuong;
+                            document.getElementById(idLbl_result).textContent = data.Data.Loi;
+                            if (data.Data.Loi > 0) {
+                                document.getElementById(idLbl_result).style.color = "#1f75cb";
+                            }
+                        }
+                        else {
+                            alert("Có lỗi xảy ra!");
+                        }
+                    },
+                })
+
+        }
+
+        function validateData(randomIdOut, randomIdIn) {
+
+            var randomIdfull = randomIdOut + randomIdIn
+            var idCombo_loDeXien = combo_loDeXien + randomIdfull;
+            var idSelect_nhaDai = select_nhaDai + randomIdfull;
+            var idSelect_number = select_number + randomIdfull;
+            var idNhap_so_diem = nhap_so_diem + randomIdfull;
+            var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
+            var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
+
+            var idSelect_numberElement = document.getElementById(idSelect_number);
+            var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+            var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
+            var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
+
+            var elementArr = [];
+
+            if (document.getElementById(idCombo_loDeXien).value === "") {
+                var element = document.getElementById(idCombo_loDeXien);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (idSelect_numberValue == null || idSelect_numberValue.length == 0) {
+                var idDiv_select_number = div_select_number + randomIdfull;
+                var element = document.getElementById(idDiv_select_number);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (idSelect_nhaDaiValue == null || idSelect_nhaDaiValue.length == 0) {
+                var idDiv_select_nhaDai = div_select_nhaDai + randomIdfull;
+                var element = document.getElementById(idDiv_select_nhaDai);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idNhap_so_diem).value === "") {
+                var element = document.getElementById(idNhap_so_diem);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idInput_ty_le_sap).value === "") {
+                var element = document.getElementById(idInput_ty_le_sap);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idInput_ty_le_thuong).value === "") {
+                var element = document.getElementById(idInput_ty_le_thuong);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+
+            setTimeout(function () {
+
+                for (var i = 0; i < elementArr.length; i++) {
+                    var element = elementArr[i];
+                    element.classList.remove("temporary-border");
+                }
+            }, 5000);
+
+            if (elementArr.length > 0) {
+                return true;
+            }
+
+            return false;
+
         }
 
         function generateRandomCode(length) {

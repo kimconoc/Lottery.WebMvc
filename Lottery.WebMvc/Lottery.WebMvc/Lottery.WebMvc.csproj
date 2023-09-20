@@ -265,6 +265,7 @@
     <Compile Include="Common\Constant.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="CustomAuthen\SessionAuthen.cs" />
+    <Compile Include="Models\CalculationModel.cs" />
     <Compile Include="Models\DataResponse.cs" />
     <Compile Include="Models\DataTablesQueryModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
