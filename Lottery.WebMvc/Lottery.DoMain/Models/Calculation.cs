@@ -11,6 +11,6 @@ namespace Lottery.DoMain.Models
         public double Xac { get; set; }
         public double Thuong { get; set; }
         public double Loi { get; set; }
-        public List<string> message { get; set; }
+        public List<string> Message { get; set; }
     }
 }

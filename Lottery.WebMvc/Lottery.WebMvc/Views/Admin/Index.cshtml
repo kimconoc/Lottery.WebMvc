@@ -179,6 +179,57 @@
             display:none;
         }
 
+        .box-more-message {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: -8px;
+            display:none;
+        }
+
+        .box-more-message-title {
+            font-size: 14px;
+            width: 100%;
+            background-color: #e9eaef;
+            color: rgb(7, 171, 226);
+        }
+
+            .box-more-message-title span {
+                margin-right: 2px;
+                cursor: pointer;
+            }
+
+                .box-more-message-title span:hover {
+                    text-decoration: underline;
+                }
+
+        .box-more-message-content {
+            text-align: start;
+            min-height: fit-content;
+            transition: min-height 1s ease;
+            padding: 10px 10px 5px 10px;
+            display: flex !important;
+            flex-flow: row !important;
+            gap: 5px;
+        }
+
+        .box-more-message-content-✓ {
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            font-size: 12px;
+            border-radius: 50%;
+            font-weight: 600;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .box-more-message-content-detailt {
+            width: calc(100% - 25px);
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -274,6 +325,24 @@
                         </div>
                     </div>
                 </div>
+                <div id="div_box_more_message">
+                    <div id="box_more_message" class="box-more-message">
+                        <div class="box-more-message-title">
+                            <span id="target_onclick" onclick="targetOnclick(this)" data-toggle="collapse" data-target="#showLotterymessage_content">Mở rộng</span>
+                            <i id="showLotterymessage_icon" class="fa fa-angle-double-down"></i>
+                        </div>
+                        <div id="showLotterymessage_content" class="collapse">
+                            <div class="box-more-message-content">
+                                <div class="box-more-message-content-✓">
+                                    ✓
+                                </div>
+                                <div class="box-more-message-content-detailt">
+                                    Không có thông tin nào
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -301,6 +370,11 @@
         var lbl_thuong = "lbl_thuong";
         var div_lbl_result = "div_lbl_result";
         var lbl_result = "lbl_result";
+        var div_box_more_message = "div_box_more_message";
+        var box_more_message = "box_more_message";
+        var target_onclick = "target_onclick";
+        var showLotterymessage_icon = "showLotterymessage_icon";
+        var showLotterymessage_content = "showLotterymessage_content";
 
         $(document).ready(function () {
             getDesignDivCalculate();
@@ -369,6 +443,21 @@
                 if (element.id && element.id == lbl_result) {
                     element.id = element.id + randomIdOut ;
                 }
+                if (element.id && element.id == div_box_more_message) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == box_more_message) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == target_onclick) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == showLotterymessage_icon) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == showLotterymessage_content) {
+                    element.id = element.id + randomIdOut;
+                }
                 if (element.children && element.children.length > 0) {
                     for (var i = 0; i < element.children.length; i++) {
                         changeIds(element.children[i]); // Đệ quy cho các phần tử con
@@ -390,6 +479,7 @@
 
             createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
             createMultiSelectNumberClone(randomIdOut, randomIdIn);
+            createDataTargetClone(randomIdOut);
         }
 
         function deleteDivCalculate(dom) {
@@ -496,7 +586,7 @@
 
             var element = document.getElementById("select_nhaDai");
             var htmlContent = element.outerHTML;
-            var newSelect_nhaDai = "select_nhaDai" + randomIdOut + randomIdIn
+            var newSelect_nhaDai = "select_nhaDai" + randomIdOut + randomIdIn;
             htmlContent = htmlContent.replace("select_nhaDai", newSelect_nhaDai);
 
             var selectHtml = htmlContent;
@@ -542,6 +632,23 @@
                 placeholder: "Chọn số"
             });
             listObj.appendTo('#' + newSelect_number);
+        }
+
+        function createDataTargetClone(randomIdOut) {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(div_box_more_message + randomIdOut);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+
+            var element = document.getElementById("box_more_message" + randomIdOut);
+            var htmlContent = element.outerHTML;
+            var newTargetId = "#showLotterymessage_content" + randomIdOut;
+            htmlContent = htmlContent.replace("#showLotterymessage_content", newTargetId);
+
+            var selectHtml = htmlContent;
+
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+         
         }
 
         function comboLoDeXienchange(dom) {
@@ -654,6 +761,12 @@
                             if (data.Data.Loi > 0) {
                                 spanElement.style.color = "blue"
                                 strongElement.style.color = "blue"
+                                var idBox_more_message = box_more_message + randomIdOut;
+                                var element_more_message = document.getElementById(idBox_more_message);
+                                if (element_more_message) {
+                                    element_more_message.style.display = "block";
+                                }
+                                showLotteryMessageContent(randomIdOut ,data.Data.Message)
                             }
                             else {
                                 spanElement.style.color = "red"
@@ -666,6 +779,49 @@
                     },
                 })
 
+        }
+
+        function showLotteryMessageContent(randomIdOut, listMessage) {
+            // Lấy đối tượng div theo ID
+            if (listMessage == null || listMessage.length == 0) {
+                return;
+            }
+
+            var divToReplace = document.getElementById(showLotterymessage_content + randomIdOut);
+            var htmlContents = '';
+
+            for (var i = 0; i < listMessage.length; i++) {
+                var msg = listMessage[i];
+                var htmlContent = `
+                                    <div class="box-more-message-content">
+                                        <div class="box-more-message-content-✓">
+                                            ✓
+                                        </div>
+                                        <div class="box-more-message-content-detailt">
+                                            ${msg}
+                                        </div>
+                                    </div>
+                                `;
+
+                htmlContents = htmlContents + htmlContent;
+            }
+
+            divToReplace.innerHTML = htmlContents;
+        }
+
+        function targetOnclick(dom) {
+            var IdTarget = dom.id;
+            var randomIdOut = IdTarget.substring(IdTarget.length - 5);
+            if (dom.innerHTML.indexOf('Mở rộng') >= 0) {
+                dom.innerText = "Thu lại";
+                const element = document.getElementById(showLotterymessage_icon + randomIdOut);
+                element.className = "fa fa-angle-double-up";
+            }
+            else {
+                dom.innerText = "Mở rộng";
+                const element = document.getElementById(showLotterymessage_icon + randomIdOut);
+                element.className = "fa fa-angle-double-down";
+            }
         }
 
         function validateData(randomIdOut, randomIdIn) {
