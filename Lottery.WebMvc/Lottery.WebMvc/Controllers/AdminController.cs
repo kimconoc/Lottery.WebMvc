@@ -1,5 +1,5 @@
-﻿using Admin.Models;
-using Amin.Controllers;
+﻿using Lottery.WebMvc.Models;
+using Lottery.WebMvc.Controllers;
 using Lottery.DoMain.Constant;
 using Lottery.DoMain.Models;
 using Newtonsoft.Json;
@@ -10,7 +10,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Admin.Controllers
+namespace Lottery.WebMvc.Controllers
 {
     public class AdminController : BaseController
     {

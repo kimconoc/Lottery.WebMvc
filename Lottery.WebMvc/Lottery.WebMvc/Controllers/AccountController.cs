@@ -1,7 +1,6 @@
-﻿using Admin.Common;
-using Admin.Models;
+﻿using Lottery.WebMvc.Models;
 using Amin.CustomAuthen;
-using Amin.Models;
+using Lottery.WebMvc.Models;
 using Lottery.DoMain.Constant;
 using Lottery.DoMain.Models;
 using Newtonsoft.Json;
@@ -12,7 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace Amin.Controllers
+namespace Lottery.WebMvc.Controllers
 {
     public class AccountController : BaseController
     {

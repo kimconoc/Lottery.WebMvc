@@ -1,6 +1,5 @@
 ﻿@using Newtonsoft.Json;
 @using Lottery.DoMain.Models;
-@using Admin.Common;
 
 @{
     FormsIdentity id = (FormsIdentity)HttpContext.Current.User.Identity;
@@ -13,7 +12,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@*@ViewBag.Title*@ Admin manager</title>
+    <title>@*@ViewBag.Title*@Trang tính</title>
     @Styles.Render("~/bundles/css")
     @Styles.Render("~/bundles/js")
     <link href="~/assets/css/theme.css" rel="stylesheet" />

@@ -1,4 +1,4 @@
-﻿using Amin.Models;
+﻿using Lottery.WebMvc.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

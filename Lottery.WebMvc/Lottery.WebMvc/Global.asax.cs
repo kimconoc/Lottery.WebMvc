@@ -1,4 +1,4 @@
-﻿using Amin.Model;
+﻿using Lottery.WebMvc.Model;
 using Amin.MemCached;
 using Newtonsoft.Json;
 using System;
@@ -11,7 +11,7 @@ using System.Web.Security;
 using System.Configuration;
 using System.Net.Http;
 using System.Net;
-using Amin.Models;
+using Lottery.WebMvc.Models;
 
 namespace Amin
 {

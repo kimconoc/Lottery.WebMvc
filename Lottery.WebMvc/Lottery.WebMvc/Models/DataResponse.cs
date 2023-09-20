@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Amin.Models
+namespace Lottery.WebMvc.Models
 {
     public class StatusResponse
     {

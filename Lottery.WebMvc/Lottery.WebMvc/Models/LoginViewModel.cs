@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Admin.Models
+namespace Lottery.WebMvc.Models
 {
     public class LoginViewModel
     {

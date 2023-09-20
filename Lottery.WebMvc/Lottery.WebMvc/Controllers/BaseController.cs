@@ -1,9 +1,8 @@
-﻿using Amin.MemCached;
-using Amin.Models;
-using Lottery.DoMain.FileLog;
+﻿using Lottery.DoMain.FileLog;
 using Lottery.DoMain.Models;
 using Lottery.Service.ServiceProvider;
 using Lottery.Service.ServiceProvider.Interface;
+using Lottery.WebMvc.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace Amin.Controllers
+namespace Lottery.WebMvc.Controllers
 {
     public class BaseController : Controller
     {

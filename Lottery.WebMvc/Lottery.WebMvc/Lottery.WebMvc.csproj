@@ -13,7 +13,7 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Admin</RootNamespace>
+    <RootNamespace>Lottery.WebMvc</RootNamespace>
     <AssemblyName>Seafood</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
@@ -262,7 +262,6 @@
     <Content Include="assets\helpers\awesome-alert-main\LICENSE" />
     <Content Include="assets\helpers\awesome-alert-main\README.md" />
     <Content Include="assets\css\order.css" />
-    <Compile Include="Common\Constant.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="CustomAuthen\SessionAuthen.cs" />
     <Compile Include="Models\CalculationModel.cs" />
