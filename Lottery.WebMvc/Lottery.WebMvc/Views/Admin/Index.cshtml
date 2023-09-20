@@ -123,9 +123,6 @@
                     align-items: center;
                     text-align: center;
                 }
-                .div_calculate_result .div_result .div-lbl-result {
-                    color:red;
-                }
 
         .bordered-div {
             border: 1.5px dashed rgb(0, 153, 0);
@@ -194,8 +191,8 @@
                 <i style="margin-left:5px;" class="fa fa-user-plus"></i>
             </button>
             
-            <div id="div_calculate_virtual" style="display:none;margin-top:50px;">
-                <input type="text" style="display:none;" class="name-input" id="nameInput" placeholder="Nhập tên">
+            <div id="div_calculate_virtual" class="bordered-div" style="display:none;margin-top:50px;">
+                <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" style="margin-top:20px;" class="row">
                     <div class="col-2">
@@ -243,7 +240,7 @@
                     </div>
                 </div>
                 <div class="div_btn_add_row">
-                    <button id="btn_add_row" onclick="addRowClick(this)" style="margin-right: 26px;" class="btn_add_custom btn-core-accept">
+                    <button id="btn_add_row" onclick="addRowClick(this)" style="margin-right: 22.5px;" class="btn_add_custom btn-core-accept">
                         Thêm dòng
                         <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
                     </button>
@@ -302,6 +299,7 @@
         var lbl_viewTong = "lbl_viewTong";
         var lbl_xac = "lbl_xac";
         var lbl_thuong = "lbl_thuong";
+        var div_lbl_result = "div_lbl_result";
         var lbl_result = "lbl_result";
 
         $(document).ready(function () {
@@ -365,6 +363,9 @@
                 if (element.id && element.id == lbl_thuong) {
                     element.id = element.id + randomIdOut;
                 }
+                if (element.id && element.id == div_lbl_result) {
+                    element.id = element.id + randomIdOut;
+                }
                 if (element.id && element.id == lbl_result) {
                     element.id = element.id + randomIdOut ;
                 }
@@ -400,11 +401,6 @@
         }
 
         function setPropertyWhenAddCalculate() {
-            var ListidDiv_calculate = getListIdAsRequired(div_calculate);
-            for (var itemId of ListidDiv_calculate) {
-                var div_calculateElement = document.getElementById(itemId);
-                div_calculateElement.classList.add("bordered-div");
-            }
 
             var ListidDelete_div_calculate = getListIdAsRequired(delete_div_calculate);
             if (ListidDelete_div_calculate.length > 2) {
@@ -420,17 +416,6 @@
                 }
             }
 
-            var ListidBtn_add_row = getListIdAsRequired(btn_add_row);
-            for (var itemId of ListidBtn_add_row) {
-                var btn_add_rowElement = document.getElementById(itemId);
-                btn_add_rowElement.style.marginRight = "22px";
-            }
-
-            var ListidNameInput = getListIdAsRequired(nameInput);
-            for (var itemId of ListidNameInput) {
-                var nameInputElement = document.getElementById(itemId);
-                nameInputElement.style.display = "block";
-            }
         }
 
         function addRowClick(dom) {
@@ -565,7 +550,8 @@
             var randomIdfull = IdCbbAddRow.substring(IdCbbAddRow.length - 10);
             var randomIdOut = randomIdfull.substring(0, 5);
             var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
-            if (selectedValue == @((int)LotteryEnum.BaCangDau)
+            if (selectedValue == @((int)LotteryEnum.BaoBaCang) 
+                || selectedValue == @((int)LotteryEnum.BaCangDau)
                 || selectedValue == @((int)LotteryEnum.BaCangDuoi)
                 || selectedValue == @((int)LotteryEnum.BaCangDauDuoi)) {
                 createMultiSelectNumberClone(randomIdOut, randomIdIn, 1000);
@@ -661,8 +647,17 @@
                             document.getElementById(idLbl_xac).textContent = data.Data.Xac;
                             document.getElementById(idLbl_thuong).textContent = data.Data.Thuong;
                             document.getElementById(idLbl_result).textContent = data.Data.Loi;
+                            var idDiv_lbl_result = div_lbl_result + randomIdOut;
+                            var divElement = document.getElementById(idDiv_lbl_result);
+                            var spanElement = divElement.querySelector("span");
+                            var strongElement = divElement.querySelector("strong");
                             if (data.Data.Loi > 0) {
-                                document.getElementById(idLbl_result).style.color = "#1f75cb";
+                                spanElement.style.color = "blue"
+                                strongElement.style.color = "blue"
+                            }
+                            else {
+                                spanElement.style.color = "red"
+                                strongElement.style.color = "red"
                             }
                         }
                         else {
@@ -729,7 +724,7 @@
                     var element = elementArr[i];
                     element.classList.remove("temporary-border");
                 }
-            }, 5000);
+            }, 4000);
 
             if (elementArr.length > 0) {
                 return true;
