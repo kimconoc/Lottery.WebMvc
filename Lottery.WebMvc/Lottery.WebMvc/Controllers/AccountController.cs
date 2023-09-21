@@ -44,7 +44,7 @@ namespace Lottery.WebMvc.Controllers
                     string hash = FormsAuthentication.Encrypt(ticket);
                     HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
                     Response.Cookies.Add(cookie);
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Calculation");
                 }
             }
             catch (Exception ex)

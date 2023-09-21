@@ -22,7 +22,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Typescript UI Controls">
 <meta name="author" content="Syncfusion">
-<link href="styles.css" rel="stylesheet">
+<link href="~/assets/css/calculation.css" rel="stylesheet" />
 <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-base/styles/material.css" rel="stylesheet">
 <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-inputs/styles/material.css" rel="stylesheet">
 <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-dropdowns/styles/material.css" rel="stylesheet">
@@ -53,183 +53,6 @@
             padding:10px;
             border: none;
         }
-
-        .container {
-            display: flex;
-            flex-flow: column;
-            align-items: center;
-            margin-top: 12px;
-            margin-bottom: 100px;
-            width: 100%;
-        }
-
-        .div_btn_add_row {
-            display: flex;
-            flex-flow: column;
-            align-items: flex-end;
-            margin-top: 8px;
-            width: 100%;
-        }
-
-        .btn_add_custom {
-            height: 28px;
-            font-size: 12px;
-            border-radius: 4px;
-            font-weight: 400;
-            line-height: 1.4;
-            display: flex;
-            -webkit-box-pack: center;
-            justify-content: center;
-            -webkit-box-align: center;
-            align-items: center;
-            cursor: pointer;
-            border: 1px solid rgb(7, 171, 226);
-            color: rgb(7, 171, 226);
-            background: white;
-        }
-
-        .span {
-            margin-left: 5px;
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-        .div_calculate_result {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            height: 50px;
-        }
-            .div_calculate_result .div_calculate {
-                display: flex;
-                flex-flow: row;
-                gap:30px;
-            }
-                .div_calculate_result .div_calculate div{
-                    display: flex;
-                    flex-flow: column;
-                    align-items: center;
-                    text-align: center;
-                }
-
-            .div_calculate_result .div_result {
-                display: flex;
-                flex-flow: row;
-                gap: 30px;
-            }
-                .div_calculate_result .div_result div {
-                    display: flex;
-                    flex-flow: column;
-                    align-items: center;
-                    text-align: center;
-                }
-
-        .bordered-div {
-            border: 1.5px dashed rgb(0, 153, 0);
-            padding: 10px;
-            padding-bottom:15px;
-            position: relative;
-        }
-
-        .name-input {
-            position: absolute;
-            top: -15px;
-            left: 10px;
-            background-color: white;
-            padding: 2px;
-            border: none;
-        }
-
-        .delete-div-row {
-            margin-top:10px;
-            cursor: pointer;
-            margin-left: 5px;
-            font-size: 16px;
-            color: #d9534f;
-            display: none;
-        }
-
-        .btn-danger {
-            display: inline-block;
-            margin-bottom: 0;
-            font-weight: normal;
-            text-align: center;
-            vertical-align: middle;
-            touch-action: manipulation;
-            cursor: pointer;
-            background-image: none;
-            border: 1px solid transparent;
-            white-space: nowrap;
-            padding: 6px 12px;
-            font-size: 14px;
-            line-height: 1.42857143;
-            border-radius: 4px;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            color: #fff;
-            background-color: #d9534f;
-            border-color: #d43f3a;
-            position: absolute;
-            top: -15px;
-            right: 10px;
-            padding: 2px;
-            border: none;
-            display:none;
-        }
-
-        .box-more-message {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: -8px;
-            display:none;
-        }
-
-        .box-more-message-title {
-            font-size: 14px;
-            width: 100%;
-            background-color: #e9eaef;
-            color: rgb(7, 171, 226);
-        }
-
-            .box-more-message-title span {
-                margin-right: 2px;
-                cursor: pointer;
-            }
-
-                .box-more-message-title span:hover {
-                    text-decoration: underline;
-                }
-
-        .box-more-message-content {
-            text-align: start;
-            min-height: fit-content;
-            transition: min-height 1s ease;
-            padding: 10px 10px 5px 10px;
-            display: flex !important;
-            flex-flow: row !important;
-            gap: 5px;
-        }
-
-        .box-more-message-content-✓ {
-            width: 16px;
-            height: 16px;
-            text-align: center;
-            font-size: 12px;
-            border-radius: 50%;
-            font-weight: 600;
-            background-color: #5cb85c;
-            color: white;
-        }
-
-        .box-more-message-content-detailt {
-            width: calc(100% - 25px);
-            font-size: 13px;
-        }
     </style>
 </head>
 <body>
@@ -242,10 +65,10 @@
                 <i style="margin-left:5px;" class="fa fa-user-plus"></i>
             </button>
             
-            <div id="div_calculate_virtual" class="bordered-div" style="display:none;margin-top:50px;">
+            <div id="div_calculate_virtual" class="bordered-div">
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
-                <div id="div_row" style="margin-top:20px;" class="row">
+                <div id="div_row" class="div-row row">
                     <div class="col-2">
                         <select onchange="comboLoDeXienchange(this)" id="combo_loDeXien" class="form-select" aria-label="Default select example">
                             @{
@@ -284,33 +107,33 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <div style="display:flex;">
-                            <input style="height:38px;width:90px;" id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập điểm">
-                            <i onclick="deleteRow(this)" id="delete_row" class="delete-div-row fa fa-trash" aria-hidden="true"></i>
+                        <div class="nhap-so-diem">
+                            <input id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập điểm">
+                            <i onclick="deleteRow(this)" id="delete_row" class="fa fa-trash" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
-                <div class="div_btn_add_row">
-                    <button id="btn_add_row" onclick="addRowClick(this)" style="margin-right: 22.5px;" class="btn_add_custom btn-core-accept">
+                <div class="div-btn-add-row">
+                    <button id="btn_add_row" onclick="addRowClick(this)" class="btn-custom btn-core-accept">
                         Thêm dòng
-                        <i style="margin-left:5px;" class="fa fa-plus-circle"></i>
+                        <i class="fa fa-plus-circle"></i>
                     </button>
                 </div>
-                <div class="div_calculate_result">
-                    <div class="div_calculate">
+                <div class="div-calculate-result">
+                    <div class="div-calculate">
                         <div>
-                            <button id="btn_send_result" style="height: 55px;" class="btn_add_custom btn-core-accept" onclick="executeCalculate(this)">Tính tiền</button>
+                            <button id="btn_send_result" class="btn-custom btn-core-accept" onclick="executeCalculate(this)">Tính tiền</button>
                         </div>
                         <div>
                             <span>Xác</span>
-                            <input style="height: 28px; width: 60px; padding-left: 15px " id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
+                            <input style="padding-left: 15px " id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
                         </div>
                         <div>
                             <span>Thưởng</span>
-                            <input style="height: 28px; width: 60px; padding-left: 20px " id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" value="75">
+                            <input style="padding-left: 20px " id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" value="75">
                         </div>
                     </div>
-                    <div class="div_result">
+                    <div class="div-result">
                         <div>
                             <span>Tiền xác</span>
                             <strong id="lbl_xac">0</strong>
@@ -743,7 +566,7 @@
                     {
                         "calculationJson": calculationJsons,
                     },
-                    url: "@Url.Action("ExecuteCalculation", "Admin")",
+                    url: "@Url.Action("ExecuteCalculation", "Calculation")",
                     success: function (data)
                     {
                         if (data.Success && data.Data) {
@@ -758,11 +581,11 @@
                             var divElement = document.getElementById(idDiv_lbl_result);
                             var spanElement = divElement.querySelector("span");
                             var strongElement = divElement.querySelector("strong");
+                            var idBox_more_message = box_more_message + randomIdOut;
+                            var element_more_message = document.getElementById(idBox_more_message);
                             if (data.Data.Loi > 0) {
                                 spanElement.style.color = "blue"
                                 strongElement.style.color = "blue"
-                                var idBox_more_message = box_more_message + randomIdOut;
-                                var element_more_message = document.getElementById(idBox_more_message);
                                 if (element_more_message) {
                                     element_more_message.style.display = "block";
                                 }
@@ -771,6 +594,9 @@
                             else {
                                 spanElement.style.color = "red"
                                 strongElement.style.color = "red"
+                                if (element_more_message) {
+                                    element_more_message.style.display = "none";
+                                }
                             }
                         }
                         else {

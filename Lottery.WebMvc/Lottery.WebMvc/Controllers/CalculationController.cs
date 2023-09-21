@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace Lottery.WebMvc.Controllers
 {
-    public class AdminController : BaseController
+    public class CalculationController : BaseController
     {
         public ActionResult Index()
         {

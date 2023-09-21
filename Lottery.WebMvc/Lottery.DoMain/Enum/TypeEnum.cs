@@ -11,21 +11,21 @@ namespace Lottery.DoMain.Enum
     {
         [Description("Bao lô")]
         Lo = 0,
-        [Description("Xiên")]
+        [Description("Đá xiên")]
         Xien = 1,
-        [Description("Lô Bao đầu")]
+        [Description("Đầu")]
         LoDau = 2,
-        [Description("Lô Bao đuôi")]
+        [Description("Đuôi")]
         LoDuoi = 3,
-        [Description("Lô đầu đuôi")]
+        [Description("Đầu đuôi")]
         LoDauDuoi = 4,
-        [Description("Bao ba càng")]
+        [Description("Bao ba con")]
         BaoBaCang = 5,
-        [Description("Ba càng đầu")]
+        [Description("Ba con đầu")]
         BaCangDau = 6,
-        [Description("Ba càng đuôi")]
+        [Description("Ba con đuôi")]
         BaCangDuoi = 7,
-        [Description("Ba càng đầu đuôi")]
+        [Description("Xỉu chủ")]
         BaCangDauDuoi = 8
     }
 }

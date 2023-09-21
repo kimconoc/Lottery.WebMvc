@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="assets\css\calculation.css" />
     <Content Include="assets\css\demo\style.css" />
     <Content Include="assets\css\login.css" />
     <Content Include="assets\helpers\awesome-alert-main\awesomeAlert.js" />
@@ -261,8 +262,7 @@
     <Content Include="assets\helpers\tui.pagination-3.4.0\tuidoc.config.json" />
     <Content Include="assets\helpers\awesome-alert-main\LICENSE" />
     <Content Include="assets\helpers\awesome-alert-main\README.md" />
-    <Content Include="assets\css\order.css" />
-    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CalculationController.cs" />
     <Compile Include="CustomAuthen\SessionAuthen.cs" />
     <Compile Include="Models\CalculationModel.cs" />
     <Compile Include="Models\DataResponse.cs" />
@@ -558,7 +558,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Calculation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
