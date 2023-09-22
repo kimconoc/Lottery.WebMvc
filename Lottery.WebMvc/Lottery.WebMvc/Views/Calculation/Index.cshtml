@@ -422,39 +422,58 @@
             listObj.appendTo('#' + newSelect_nhaDai);
         }
 
-        function createMultiSelectNumberClone(randomIdOut, randomIdIn, typeLot = 100) {
+        function createMultiSelectNumberClone(randomIdOut, randomIdIn) {
             // Lấy đối tượng div theo ID
             var divToReplace = document.getElementById(div_select_number + randomIdOut + randomIdIn);
+            var elementDiv_select_number = document.getElementById(div_select_number + randomIdOut + randomIdIn);
             // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
             var selectHtml = '<input type="text" tabindex="1" id="select_number">';
             var newSelect_number = "select_number" + randomIdOut + randomIdIn;
             selectHtml = selectHtml.replace("select_number", newSelect_number);
             // Thay thế nội dung của div bằng nội dung mới
             divToReplace.innerHTML = selectHtml;
-            var sportsData = [];
-            if (typeLot == 1000) {
-                for (var i = 0; i <= 999; i++) {
-                    // Chuyển số i thành chuỗi, và thêm '0' ở trước nếu cần
-                    var numberStr = i.toString().padStart(3, '0');
 
-                    // Thêm chuỗi numberStr vào mảng sportsData
-                    sportsData.push(numberStr);
-                }
+            var idCombo_loDeXien = combo_loDeXien + randomIdOut + randomIdIn;
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).value;
+            elementDiv_select_number.style.marginTop = '0px';
+
+            if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
+                var inputobj = new ej.inputs.TextBox({
+                    placeholder: 'Nhập số: 00, 01 ...',
+                    floatLabelType: 'Auto'
+                });
+                inputobj.appendTo('#' + newSelect_number);
+                elementDiv_select_number.style.marginTop = '-10px';
             }
             else {
-                for (var i = 0; i < 100; i++) {
-                    // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
-                    var numberStr = i < 10 ? '0' + i : i.toString();
+                var sportsData = [];
+                if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
+                    for (var i = 0; i <= 999; i++) {
+                        // Chuyển số i thành chuỗi, và thêm '0' ở trước nếu cần
+                        var numberStr = i.toString().padStart(3, '0');
 
-                    // Thêm chuỗi numberStr vào mảng sportsData
-                    sportsData.push(numberStr);
+                        // Thêm chuỗi numberStr vào mảng sportsData
+                        sportsData.push(numberStr);
+                    }
                 }
+                else {
+                    for (var i = 0; i < 100; i++) {
+                        // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
+                        var numberStr = i < 10 ? '0' + i : i.toString();
+
+                        // Thêm chuỗi numberStr vào mảng sportsData
+                        sportsData.push(numberStr);
+                    }
+                }
+                var listObj = new ej.dropdowns.MultiSelect({
+                    dataSource: sportsData,
+                    placeholder: "Chọn số"
+                });
+                listObj.appendTo('#' + newSelect_number);
             }
-            var listObj = new ej.dropdowns.MultiSelect({
-                dataSource: sportsData,
-                placeholder: "Chọn số"
-            });
-            listObj.appendTo('#' + newSelect_number);
         }
 
         function createDataTargetClone(randomIdOut) {
@@ -480,15 +499,7 @@
             var randomIdfull = IdCbbAddRow.substring(IdCbbAddRow.length - 10);
             var randomIdOut = randomIdfull.substring(0, 5);
             var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
-            if (selectedValue == @((int)LotteryEnum.BaoBaCang) 
-                || selectedValue == @((int)LotteryEnum.BaCangDau)
-                || selectedValue == @((int)LotteryEnum.BaCangDuoi)
-                || selectedValue == @((int)LotteryEnum.BaCangDauDuoi)) {
-                createMultiSelectNumberClone(randomIdOut, randomIdIn, 1000);
-            }
-            else {
-                createMultiSelectNumberClone(randomIdOut, randomIdIn, 100);
-            }
+            createMultiSelectNumberClone(randomIdOut, randomIdIn);
         }
 
         function validaeInPutTyLeSap() {
@@ -539,8 +550,15 @@
                 var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
                 var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
+                var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).value;
+
                 var idSelect_numberElement = document.getElementById(idSelect_number);
-                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+                if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
+                    var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value.split(',');;
+                }
+                else {
+                    var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+                }
                 var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
                 var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
 
@@ -660,8 +678,15 @@
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).value;
+
             var idSelect_numberElement = document.getElementById(idSelect_number);
-            var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+            if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
+                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value.split(',');;
+            }
+            else {
+                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+            }
             var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
             var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
 
@@ -677,6 +702,24 @@
                 var element = document.getElementById(idDiv_select_number);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
+            }
+            else {
+                var isValid = false;
+                for (var i = 0; i < idSelect_numberValue.length; i++) {
+                    var element = idSelect_numberValue[i];
+
+                    // Kiểm tra xem phần tử có đúng định dạng không (ví dụ: hai ký tự số)
+                    if (!/^\d{2}$/.test(element.trim())) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (isValid) {
+                    var idDiv_select_number = div_select_number + randomIdfull;
+                    var element = document.getElementById(idDiv_select_number);
+                    element.classList.add("temporary-border");
+                    elementArr.push(element);
+                }
             }
             if (idSelect_nhaDaiValue == null || idSelect_nhaDaiValue.length == 0) {
                 var idDiv_select_nhaDai = div_select_nhaDai + randomIdfull;
