@@ -2,7 +2,7 @@
 @media only screen and (max-width: 600px) {
 	input::placeholder,
 	textarea::placeholder {
-		font-size: 12px !important;
+		font-size: 8px !important;
 	}
 
 	.container {
@@ -14,18 +14,29 @@
 	.name-input {
 		width: 120px !important;
 	}
-	.form-select {
-		margin-top: 5px;
-		font-size: 12px;
+
+	.bordered-div .div-row {
+		gap: 5px !important;
 	}
-	.bordered-div .div-row .nhap-so-diem input {
+
+	.bordered-div .div-row .div-comboLoDeXien {
+		width: 60px !important;
+	}
+	.e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
+		font-size: 8px !important;
+	}
+	.e-ddl.e-input-group.e-control-wrapper .e-ddl-icon::before {
+		font-size: 8px;
+	}
+
+	.bordered-div .div-row .div-nhap-so-diem .nhap-so-diem input {
 		height: 35px !important;
 		width: 70px !important;
 		margin-left: -15px !important;
 		padding-left: 3px;
 	}
-	.bordered-div .div-row .nhap-so-diem i {
-		font-size:12px;
+	.bordered-div .div-row .div-nhap-so-diem .nhap-so-diem i {
+		font-size: 12px;
 	}
 	.bordered-div .div-btn-add-row button {
 		margin-right: 0px !important;
@@ -51,7 +62,6 @@
 	flex-flow: column;
 	margin-top: 12px;
 	max-width:900px;
-	overflow:auto;
 }
 
 .btn-custom {
@@ -128,30 +138,47 @@
 	position: relative;
 	display: none;
 	margin-top: 50px;
-	min-width: 600px;
 }
 
 	.bordered-div .div-row {
+		display: flex;
 		margin-top: 20px;
+		gap:30px;
 	}
-
-		.bordered-div .div-row .nhap-so-diem {
-			display: flex;
+		.bordered-div .div-row .div-comboLoDeXien {
+			width: 150px;
 		}
 
-			.bordered-div .div-row .nhap-so-diem input {
-				height: 38px;
-				width: 90px;
+		.bordered-div .div-row .div-select-nhaDai {
+			flex: 1;
+		}
+
+		.bordered-div .div-row .div-select-number {
+			flex: 1;
+		}
+
+		.bordered-div .div-row .div-nhap-so-diem {
+			width: 70px;
+		}
+
+			.bordered-div .div-row .div-nhap-so-diem .nhap-so-diem {
+				display: flex;
 			}
 
-			.bordered-div .div-row .nhap-so-diem i {
-				margin-top: 10px;
-				cursor: pointer;
-				margin-left: 5px;
-				font-size: 16px;
-				color: #d9534f;
-				display: none;
-			}
+				.bordered-div .div-row .div-nhap-so-diem .nhap-so-diem input {
+					height: 38px;
+					width: 52.5px;
+				}
+
+				.bordered-div .div-row .div-nhap-so-diem .nhap-so-diem i {
+					flex: 1;
+					margin-top: 10px;
+					cursor: pointer;
+					margin-left: 5px;
+					font-size: 16px;
+					color: #d9534f;
+					display: none;
+				}
 
 	.bordered-div .div-btn-add-row {
 		display: flex;
@@ -162,7 +189,7 @@
 	}
 
 		.bordered-div .div-btn-add-row button {
-			margin-right: 18px;
+			margin-right: 17px;
 		}
 
 			.bordered-div .div-btn-add-row button i {

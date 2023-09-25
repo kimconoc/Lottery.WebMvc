@@ -75,13 +75,13 @@
             <div id="div_calculate_virtual" class="bordered-div">
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
-                <div id="div_row" class="div-row row">
-                    <div class="col-2">
+                <div id="div_row" class="div-row">
+                    <div class="div-comboLoDeXien">
                         <div id="div_comboLoDeXien">
                             <input type="text" tabindex="1" id="combo_loDeXien">
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="div-select-nhaDai">
                         <div id="div_select_nhaDai">
                             <select id="select_nhaDai">
                                 @{
@@ -102,15 +102,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="div-select-number" style="flex: 1;">
                         <div id="div_select_number">
                             <!--element which is going to render the MultiSelect-->
                             <input type="text" tabindex="1" id="select_number">
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="div-nhap-so-diem">
                         <div class="nhap-so-diem">
-                            <input id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem(this)" required maxlength="10" placeholder="Nhập điểm">
+                            <input id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem(this)" required maxlength="4" placeholder="Điểm">
                             <i onclick="deleteRow(this)" id="delete_row" class="fa fa-trash" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -441,7 +441,7 @@
                 //set the data to dataSource property
                 dataSource: sportsData,
                 // maps the appropriate column to fields property
-                fields: { value: 'Game' },
+                fields: { text: 'Game', value: 'Id' },
                 value: initialValue,
                 placeholder: "Chọn loại"
             });
@@ -502,7 +502,7 @@
             divToReplace.innerHTML = selectHtml;
 
             var idCombo_loDeXien = combo_loDeXien + randomIdOut + randomIdIn;
-            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index;
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
             elementDiv_select_number.style.marginTop = '0px';
 
             if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
@@ -626,7 +626,7 @@
                 var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
                 var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
-                var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index;
+                var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
 
                 var idSelect_numberElement = document.getElementById(idSelect_number);
                 if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
@@ -639,7 +639,7 @@
                 var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
 
                 var rowData = {
-                    lotteryType: document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index,
+                    lotteryType: document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value,
                     numbers: idSelect_numberValue,
                     chanels: idSelect_nhaDaiValue,
                     sl: document.getElementById(idNhap_so_diem).value,
@@ -758,11 +758,11 @@
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
-            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index;
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
 
             var idSelect_numberElement = document.getElementById(idSelect_number);
             if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
-                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value.split(',');;
+                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value?.split(',');;
             }
             else {
                 var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
