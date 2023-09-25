@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-2">
                         <div class="nhap-so-diem">
-                            <input id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem()" required maxlength="10" placeholder="Nhập điểm">
+                            <input id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem(this)" required maxlength="10" placeholder="Nhập điểm">
                             <i onclick="deleteRow(this)" id="delete_row" class="fa fa-trash" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                         </div>
                         <div>
                             <span>Xác</span>
-                            <input style="padding-left: 15px " id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap()" value="0.75">
+                            <input style="padding-left: 15px " id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap(this)" value="0.75">
                         </div>
                         <div>
                             <span>Thưởng</span>
@@ -435,13 +435,14 @@
                 { Id: '7', Game: 'Ba con đuôi' },
                 { Id: '8', Game: 'Xỉu chủ' }
             ];
+            var initialValue = "Bao lô";
             // initialize ComboBox component
             var listObj = new ej.dropdowns.ComboBox({
                 //set the data to dataSource property
                 dataSource: sportsData,
                 // maps the appropriate column to fields property
                 fields: { value: 'Game' },
-                // set placeholder to ComboBox input element
+                value: initialValue,
                 placeholder: "Chọn loại"
             });
             listObj.change = function (e) {
@@ -569,16 +570,16 @@
 
         }
 
-        function validaeInPutTyLeSap() {
-            var val = document.getElementById("input_ty_le_sap");
+        function validaeInPutTyLeSap(dom) {
+            var val = document.getElementById(dom.id);
             const value = parseFloat(val.value);
             if (isNaN(value) || value < 0 || value >= 1) {
                 val.value = "0.75";
             }
         }
 
-        function validaeInPutNhapSoDiem() {
-            var val = document.getElementById("nhap_so_diem");
+        function validaeInPutNhapSoDiem(dom) {
+            var val = document.getElementById(dom.id);
             const value = parseFloat(val.value);
             if (value < 0) {
                 val.value = "0";
@@ -807,17 +808,17 @@
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }
-            if (document.getElementById(idNhap_so_diem).value === "") {
+            if (document.getElementById(idNhap_so_diem).value === "" || !isNumber(document.getElementById(idNhap_so_diem).value)) {
                 var element = document.getElementById(idNhap_so_diem);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }
-            if (document.getElementById(idInput_ty_le_sap).value === "") {
+            if (document.getElementById(idInput_ty_le_sap).value === "" || !isNumber(document.getElementById(idInput_ty_le_sap).value)) {
                 var element = document.getElementById(idInput_ty_le_sap);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }
-            if (document.getElementById(idInput_ty_le_thuong).value === "") {
+            if (document.getElementById(idInput_ty_le_thuong).value === "" || !isNumber(document.getElementById(idInput_ty_le_thuong).value)) {
                 var element = document.getElementById(idInput_ty_le_thuong);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
@@ -837,6 +838,10 @@
 
             return false;
 
+        }
+
+        function isNumber(value) {
+            return !isNaN(value);
         }
 
         function generateRandomCode(length) {
