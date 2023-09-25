@@ -53,6 +53,13 @@
             padding:10px;
             border: none;
         }
+
+        .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input, .e-input-group textarea.e-input, .e-input-group.e-control-wrapper textarea.e-input {
+            font-size: 14px;
+        }
+        .e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -70,14 +77,9 @@
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" class="div-row row">
                     <div class="col-2">
-                        <select onchange="comboLoDeXienchange(this)" id="combo_loDeXien" class="form-select" aria-label="Default select example">
-                            @{
-                                foreach (var item in Enum.GetValues(typeof(LotteryEnum)))
-                                {
-                                    <option value="@((int)item)"> @StringExtension.GetDescription((Enum)item)</option>
-                                }
-                            }
-                        </select>
+                        <div id="div_comboLoDeXien">
+                            <input type="text" tabindex="1" id="combo_loDeXien">
+                        </div>
                     </div>
                     <div class="col-4">
                         <div id="div_select_nhaDai">
@@ -179,6 +181,7 @@
         var delete_row = "delete_row";
         var btn_add_row = "btn_add_row";
         var btn_send_result = "btn_send_result";
+        var div_comboLoDeXien = "div_comboLoDeXien";
         var combo_loDeXien = "combo_loDeXien";
         var div_select_nhaDai = "div_select_nhaDai";
         var select_nhaDai = "select_nhaDai";
@@ -228,6 +231,9 @@
                     element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == div_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == div_comboLoDeXien) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == combo_loDeXien) {
@@ -300,6 +306,7 @@
                 element.style.display = "block";
             }
 
+            createComboboxLoDeXien(randomIdOut, randomIdIn);
             createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
             createMultiSelectNumberClone(randomIdOut, randomIdIn);
             createDataTargetClone(randomIdOut);
@@ -346,6 +353,9 @@
 
             // Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
             function changeIds(element) {
+                if (element.id && element.id.indexOf(div_comboLoDeXien) !== -1) {
+                    element.id = div_comboLoDeXien + randomIdOut + randomIdIn;
+                }
                 if (element.id && element.id.indexOf(combo_loDeXien) !== -1) {
                     element.id = combo_loDeXien + randomIdOut + randomIdIn;
                 }
@@ -371,6 +381,7 @@
             // Thêm phần tử sao chép vào DOM sau phần tử gốc
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
 
+            createComboboxLoDeXien(randomIdOut, randomIdIn);
             createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
             createMultiSelectNumberClone(randomIdOut, randomIdIn);
             setPropertyWhenAddRow(randomIdOut);
@@ -402,29 +413,85 @@
             }
         }
 
-        function createMultiSelectNhaDaiClone(randomIdOut, randomIdIn) {
+        function createComboboxLoDeXien(randomIdOut, randomIdIn) {
             // Lấy đối tượng div theo ID
-            var divToReplace = document.getElementById("div_select_nhaDai" + randomIdOut + randomIdIn);
+            var divToReplace = document.getElementById(div_comboLoDeXien + randomIdOut + randomIdIn);
+            var elementDiv_comboLoDeXien = document.getElementById(div_comboLoDeXien + randomIdOut + randomIdIn);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<input type="text" tabindex="1" id="combo_loDeXien">';
+            var newCombo_loDeXien = "combo_loDeXien" + randomIdOut + randomIdIn;
+            selectHtml = selectHtml.replace("combo_loDeXien", newCombo_loDeXien);
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            elementDiv_comboLoDeXien.style.marginTop = '5px';
+            let sportsData = [
+                { Id: '0', Game: 'Bao lô' },
+                { Id: '1', Game: 'Đá xiên' },
+                { Id: '2', Game: 'Đầu' },
+                { Id: '3', Game: 'Đuôi' },
+                { Id: '4', Game: 'Đầu đuôi' },
+                { Id: '5', Game: 'Bao ba con' },
+                { Id: '6', Game: 'Ba con đầu' },
+                { Id: '7', Game: 'Ba con đuôi' },
+                { Id: '8', Game: 'Xỉu chủ' }
+            ];
+            // initialize ComboBox component
+            var listObj = new ej.dropdowns.ComboBox({
+                //set the data to dataSource property
+                dataSource: sportsData,
+                // maps the appropriate column to fields property
+                fields: { value: 'Game' },
+                // set placeholder to ComboBox input element
+                placeholder: "Chọn loại"
+            });
+            listObj.change = function (e) {
+                var IdCbbChange = newCombo_loDeXien;
+                var randomIdfull = IdCbbChange.substring(IdCbbChange.length - 10);
+                var randomIdOut = randomIdfull.substring(0, 5);
+                var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+                createMultiSelectNumberClone(randomIdOut, randomIdIn);
+            };
+            listObj.appendTo('#' + newCombo_loDeXien);
+
+        }
+
+        function createMultiSelectNhaDaiClone(randomIdOut, randomIdIn) {
+            var newDiv_select_nhaDaiId = div_select_nhaDai + randomIdOut + randomIdIn;
+            var elementDiv_select_nhaDai = document.getElementById(newDiv_select_nhaDaiId);
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(newDiv_select_nhaDaiId);
             // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
 
             var element = document.getElementById("select_nhaDai");
             var htmlContent = element.outerHTML;
             var newSelect_nhaDai = "select_nhaDai" + randomIdOut + randomIdIn;
             htmlContent = htmlContent.replace("select_nhaDai", newSelect_nhaDai);
-
             var selectHtml = htmlContent;
 
             // Thay thế nội dung của div bằng nội dung mới
             divToReplace.innerHTML = selectHtml;
+            elementDiv_select_nhaDai.style.marginTop = '0';
+
             var listObj = new ej.dropdowns.MultiSelect({
                 placeholder: "Chọn nhà đài"
+            });
+            listObj.addEventListener('change', function (e) {
+
+                if (e.value.length > 0) {
+                    elementDiv_select_nhaDai.style.marginTop = '5px';
+                }
+                else
+                {
+                    elementDiv_select_nhaDai.style.marginTop = '0';
+                }
             });
             listObj.appendTo('#' + newSelect_nhaDai);
         }
 
         function createMultiSelectNumberClone(randomIdOut, randomIdIn) {
+            var newDiv_select_numberId = div_select_number + randomIdOut + randomIdIn;
             // Lấy đối tượng div theo ID
-            var divToReplace = document.getElementById(div_select_number + randomIdOut + randomIdIn);
+            var divToReplace = document.getElementById(newDiv_select_numberId);
             var elementDiv_select_number = document.getElementById(div_select_number + randomIdOut + randomIdIn);
             // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
             var selectHtml = '<input type="text" tabindex="1" id="select_number">';
@@ -434,7 +501,7 @@
             divToReplace.innerHTML = selectHtml;
 
             var idCombo_loDeXien = combo_loDeXien + randomIdOut + randomIdIn;
-            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).value;
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index;
             elementDiv_select_number.style.marginTop = '0px';
 
             if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
@@ -472,6 +539,15 @@
                     dataSource: sportsData,
                     placeholder: "Chọn số"
                 });
+                listObj.addEventListener('change', function (e) {
+                    var elementDiv_select_number = document.getElementById(newDiv_select_numberId);
+                    if (e.value.length > 0) {
+                        elementDiv_select_number.style.marginTop = '5px';
+                    }
+                    else {
+                        elementDiv_select_number.style.marginTop = '0';
+                    }
+                });
                 listObj.appendTo('#' + newSelect_number);
             }
         }
@@ -490,16 +566,7 @@
 
             // Thay thế nội dung của div bằng nội dung mới
             divToReplace.innerHTML = selectHtml;
-         
-        }
 
-        function comboLoDeXienchange(dom) {
-            var selectedValue = dom.value;
-            var IdCbbAddRow = dom.id;
-            var randomIdfull = IdCbbAddRow.substring(IdCbbAddRow.length - 10);
-            var randomIdOut = randomIdfull.substring(0, 5);
-            var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
-            createMultiSelectNumberClone(randomIdOut, randomIdIn);
         }
 
         function validaeInPutTyLeSap() {
@@ -526,6 +593,10 @@
             var isValidate = false;
             for (var itemId of ListidCombo_loDeXien) {
 
+                if (itemId && itemId.indexOf("_hidden") !== -1) {
+                    continue;
+                }
+
                 var randomIdfull = itemId.substring(itemId.length - 10);
                 var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
 
@@ -540,6 +611,10 @@
             var calculationModel = [];
             for (var itemId of ListidCombo_loDeXien) {
 
+                if (itemId && itemId.indexOf("_hidden") !== -1) {
+                    continue;
+                }
+
                 var randomIdfull = itemId.substring(itemId.length - 10);
                 var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
 
@@ -550,7 +625,7 @@
                 var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
                 var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
-                var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).value;
+                var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index;
 
                 var idSelect_numberElement = document.getElementById(idSelect_number);
                 if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
@@ -563,7 +638,7 @@
                 var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
 
                 var rowData = {
-                    lotteryType: document.getElementById(idCombo_loDeXien).value,
+                    lotteryType: document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index,
                     numbers: idSelect_numberValue,
                     chanels: idSelect_nhaDaiValue,
                     sl: document.getElementById(idNhap_so_diem).value,
@@ -604,14 +679,18 @@
                             if (data.Data.Loi > 0) {
                                 spanElement.style.color = "blue"
                                 strongElement.style.color = "blue"
-                                if (element_more_message) {
-                                    element_more_message.style.display = "block";
-                                }
-                                showLotteryMessageContent(randomIdOut ,data.Data.Message)
                             }
                             else {
                                 spanElement.style.color = "red"
                                 strongElement.style.color = "red"
+                            }
+                            if (data.Data.Thuong > 0) {
+                                if (element_more_message) {
+                                    element_more_message.style.display = "block";
+                                }
+                                showLotteryMessageContent(randomIdOut, data.Data.Message)
+                            }
+                            else {
                                 if (element_more_message) {
                                     element_more_message.style.display = "none";
                                 }
@@ -678,7 +757,7 @@
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
-            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).value;
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.index;
 
             var idSelect_numberElement = document.getElementById(idSelect_number);
             if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
@@ -692,8 +771,9 @@
 
             var elementArr = [];
 
-            if (document.getElementById(idCombo_loDeXien).value === "") {
-                var element = document.getElementById(idCombo_loDeXien);
+            if (document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value === ""
+                || document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value == null) {
+                var element = document.getElementById(div_comboLoDeXien + randomIdfull);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }
@@ -709,7 +789,7 @@
                     var element = idSelect_numberValue[i];
 
                     // Kiểm tra xem phần tử có đúng định dạng không (ví dụ: hai ký tự số)
-                    if (!/^\d{2}$/.test(element.trim())) {
+                    if (!/^\d{2}$/.test(element.trim()) && valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
                         isValid = true;
                         break;
                     }
