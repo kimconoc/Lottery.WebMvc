@@ -435,14 +435,15 @@
                 { Id: '7', Game: 'Ba con đuôi' },
                 { Id: '8', Game: 'Xỉu chủ' }
             ];
-            var initialValue = "Bao lô";
+            var initialValue = { Id: '0', Game: 'Bao lô' };
             // initialize ComboBox component
             var listObj = new ej.dropdowns.ComboBox({
                 //set the data to dataSource property
                 dataSource: sportsData,
                 // maps the appropriate column to fields property
                 fields: { text: 'Game', value: 'Id' },
-                value: initialValue,
+                value: initialValue.Id,
+                text: initialValue.Game,
                 placeholder: "Chọn loại"
             });
             listObj.change = function (e) {

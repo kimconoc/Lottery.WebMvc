@@ -1,67 +1,14 @@
 ﻿
 @media only screen and (max-width: 600px) {
-	input::placeholder,
-	textarea::placeholder {
-		font-size: 8px !important;
-	}
-
-	.container {
-		font-size: 12px !important;
-	}
-	.btn-core-accept {
-		font-size: 12px !important;
-	}
-	.name-input {
-		width: 120px !important;
-	}
-
-	.bordered-div .div-row {
-		gap: 5px !important;
-	}
-
-	.bordered-div .div-row .div-comboLoDeXien {
-		width: 60px !important;
-	}
-	.e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
-		font-size: 8px !important;
-	}
-	.e-ddl.e-input-group.e-control-wrapper .e-ddl-icon::before {
-		font-size: 8px;
-	}
-
-	.bordered-div .div-row .div-nhap-so-diem .nhap-so-diem input {
-		height: 35px !important;
-		width: 70px !important;
-		margin-left: -15px !important;
-		padding-left: 3px;
-	}
-	.bordered-div .div-row .div-nhap-so-diem .nhap-so-diem i {
-		font-size: 12px;
-	}
-	.bordered-div .div-btn-add-row button {
-		margin-right: 0px !important;
-		font-size: 11px !important;
-	}
-	.div-calculate-result .div-calculate {
-		gap: 15px !important;
-	}
-	.div-calculate-result .div-result {
-		gap: 20px !important;
-		font-size: 12px !important;
-	}
-	.div-calculate-result .div-calculate div button {
-		height: 48px !important;
-	}
-	.div-calculate-result .div-calculate div input {
-		height: 25px !important;
-	}
+	
 }
 
 .container {
 	display: flex;
 	flex-flow: column;
 	margin-top: 12px;
-	max-width:900px;
+	max-width: 900px;
+	overflow: auto;
 }
 
 .btn-custom {
@@ -138,6 +85,7 @@
 	position: relative;
 	display: none;
 	margin-top: 50px;
+	min-width: 700px;
 }
 
 	.bordered-div .div-row {
