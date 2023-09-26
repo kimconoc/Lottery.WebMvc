@@ -1,0 +1,887 @@
+﻿@using Lottery.DoMain.Enum;
+@using Lottery.DoMain.Extentions;
+@using Lottery.Service.ServiceProvider;
+@using Lottery.Service.ServiceProvider.Interface;
+@using Lottery.DoMain.Models;
+@using Lottery.DoMain.Constant;
+@using Lottery.DoMain.Models;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IProvider provider = new Provider();
+
+    List<ChanelGroup> dataChanel = new List<ChanelGroup>();
+    var dataBase = provider.GetAsync<List<ChanelGroup>>(ApiUri.Get_CommonChanels);
+    if (dataBase != null && dataBase.Result != null && dataBase.Result.Data != null)
+    {
+        dataChanel = dataBase.Result.Data;
+    }
+}
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Typescript UI Controls">
+<meta name="author" content="Syncfusion">
+<link href="~/assets/css/calculationMb.css" rel="stylesheet" />
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-base/styles/material.css" rel="stylesheet">
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-inputs/styles/material.css" rel="stylesheet">
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-dropdowns/styles/material.css" rel="stylesheet">
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-buttons/styles/material.css" rel="stylesheet">
+<script src="https://cdn.syncfusion.com/ej2/22.2.5/dist/ej2.min.js" type="text/javascript"></script>
+<script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+<html>
+<head>
+    <style>
+        .temporary-border {
+            border: 1px solid red;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input {
+            background-color: white;
+            padding: 10px;
+            border: none;
+        }
+
+            input::placeholder,
+            textarea::placeholder {
+                font-size: 10px !important;
+            }
+    </style>
+</head>
+<body>
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div>
+
+            <button id="btn_add_calculate" class="btn-add-calculate">
+                Thêm
+                <i style="margin-left:5px;" class="fa fa-user-plus"></i>
+            </button>
+
+            <div id="div_calculate_virtual" class="bordered-div">
+                <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
+                <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
+                <div id="div_row" class="div-row">
+                    <div class="div-row01" style="display:flex;gap:15px;">
+                        <div class="div-comboLoDeXien">
+                            <div id="div_comboLoDeXien">
+                                <input type="text" tabindex="1" id="combo_loDeXien">
+                            </div>
+                        </div>
+                        <div class="div-select-number" style="flex: 1;">
+                            <div id="div_select_number">
+                                <!--element which is going to render the MultiSelect-->
+                                <input type="text" tabindex="1" id="select_number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="div-row02" style="display: flex; gap: 15px;">
+                        <div class="div-select-nhaDai">
+                            <div id="div_select_nhaDai">
+                                <select id="select_nhaDai">
+                                    @{
+                                        if (dataChanel != null && dataChanel.Count > 0)
+                                        {
+                                            foreach (var chanels in dataChanel)
+                                            {
+                                                <optgroup label="@chanels.Key">
+                                                    @foreach (var chanel in chanels.Value)
+                                                    {
+                                                        <option value="@chanel.Key">@chanel.Value</option>
+                                                    }
+                                                </optgroup>
+                                            }
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="div-nhap-so-diem">
+                            <div class="nhap-so-diem">
+                                <input id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem(this)" required maxlength="4" placeholder="Điểm">
+                                <i onclick="deleteRow(this)" id="delete_row" class="fa fa-trash" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height: 1px; border-bottom: 1.5px dashed #6c757d; margin-top: 7px; ">
+
+                    </div>
+                </div>
+                <div class="div-btn-add-row">
+                    <button id="btn_add_row" onclick="addRowClick(this)" class="btn-custom">
+                        Thêm
+                        <i class="fa fa-plus-circle"></i>
+                    </button>
+                </div>
+                <div class="div-calculate-result">
+                    <div class="div-calculate">
+                        <div>
+                            <button id="btn_send_result" class="btn-custom" onclick="executeCalculate(this)">Tính tiền</button>
+                        </div>
+                        <div>
+                            <span>Xác</span>
+                            <input style="padding-left: 8px " id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap(this)" value="0.75">
+                        </div>
+                        <div>
+                            <span>Thưởng</span>
+                            <input style="padding-left: 12px " id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" value="75">
+                        </div>
+                    </div>
+                    <div class="div-result">
+                        <div>
+                            <span>Tiền xác</span>
+                            <strong id="lbl_xac">0</strong>
+                        </div>
+                        <div>
+                            <span>Tiền thưởng</span>
+                            <strong id="lbl_thuong">0</strong>
+                        </div>
+                        <div id="div_lbl_result" class="div-lbl-result">
+                            <span>Lời</span>
+                            <strong id="lbl_result">0</strong>
+                        </div>
+                    </div>
+                </div>
+                <div id="div_box_more_message">
+                    <div id="box_more_message" class="box-more-message">
+                        <div class="box-more-message-title">
+                            <span id="target_onclick" onclick="targetOnclick(this)" data-toggle="collapse" data-target="#showLotterymessage_content">Mở rộng</span>
+                            <i id="showLotterymessage_icon" class="fa fa-angle-double-down"></i>
+                        </div>
+                        <div id="showLotterymessage_content" class="collapse">
+                            <div class="box-more-message-content">
+                                <div class="box-more-message-content-✓">
+                                    ✓
+                                </div>
+                                <div class="box-more-message-content-detailt">
+                                    Không có thông tin nào
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+        var div_calculate = "div_calculate";
+        var delete_div_calculate = "delete_div_calculate";
+        var nameInput = "nameInput";
+        var div_row = "div_row";
+        var delete_row = "delete_row";
+        var btn_add_row = "btn_add_row";
+        var btn_send_result = "btn_send_result";
+        var div_comboLoDeXien = "div_comboLoDeXien";
+        var combo_loDeXien = "combo_loDeXien";
+        var div_select_nhaDai = "div_select_nhaDai";
+        var select_nhaDai = "select_nhaDai";
+        var div_select_number = "div_select_number";
+        var select_number = "select_number";
+        var nhap_so_diem = "nhap_so_diem";
+        var div_result = "div_result";
+        var input_ty_le_thuong = "input_ty_le_thuong";
+        var input_ty_le_sap = "input_ty_le_sap";
+        var lbl_viewTong = "lbl_viewTong";
+        var lbl_xac = "lbl_xac";
+        var lbl_thuong = "lbl_thuong";
+        var div_lbl_result = "div_lbl_result";
+        var lbl_result = "lbl_result";
+        var div_box_more_message = "div_box_more_message";
+        var box_more_message = "box_more_message";
+        var target_onclick = "target_onclick";
+        var showLotterymessage_icon = "showLotterymessage_icon";
+        var showLotterymessage_content = "showLotterymessage_content";
+
+        $(document).ready(function () {
+            getDesignDivCalculate();
+        });
+
+        $('#btn_add_calculate').click(function (e) {
+            getDesignDivCalculate();
+            setPropertyWhenAddCalculate();
+        });
+
+        function getDesignDivCalculate() {
+            var originalElement = document.getElementById("div_calculate_virtual");
+            var clonedElement = originalElement.cloneNode(true);
+            var randomIdOut = generateRandomCode(5);
+            var randomIdIn = generateRandomCode(5);
+            // Đặt ID mới cho phần tử sao chép
+            clonedElement.id = div_calculate + randomIdOut;
+
+            //Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
+            function changeIds(element) {
+                if (element.id && element.id == nameInput) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == delete_div_calculate) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == btn_add_row) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == div_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == div_comboLoDeXien) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == combo_loDeXien) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == div_select_nhaDai) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == div_select_number) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == nhap_so_diem) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == delete_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == btn_send_result) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_sap) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_thuong) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == lbl_xac) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == lbl_thuong) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == div_lbl_result) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == lbl_result) {
+                    element.id = element.id + randomIdOut ;
+                }
+                if (element.id && element.id == div_box_more_message) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == box_more_message) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == target_onclick) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == showLotterymessage_icon) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == showLotterymessage_content) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.children && element.children.length > 0) {
+                    for (var i = 0; i < element.children.length; i++) {
+                        changeIds(element.children[i]); // Đệ quy cho các phần tử con
+                    }
+                }
+            }
+
+            changeIds(clonedElement);
+
+            // Thêm phần tử sao chép vào DOM sau phần tử gốc
+            originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+
+            // Lấy tham chiếu đến phần tử bằng ID
+            var element = document.getElementById(div_calculate + randomIdOut);
+
+            if (element) {
+                element.style.display = "block";
+            }
+
+            createComboboxLoDeXien(randomIdOut, randomIdIn);
+            createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
+            createMultiSelectNumberClone(randomIdOut, randomIdIn);
+            createDataTargetClone(randomIdOut);
+        }
+
+        function deleteDivCalculate(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var elementToRemove = document.getElementById(div_calculate + randomIdOut);
+            elementToRemove.remove();
+            setPropertyWhenAddCalculate();
+        }
+
+        function setPropertyWhenAddCalculate() {
+
+            var ListidDelete_div_calculate = getListIdAsRequired(delete_div_calculate);
+            if (ListidDelete_div_calculate.length > 2) {
+                for (var itemId of ListidDelete_div_calculate) {
+                    var delete_div_calculateElement = document.getElementById(itemId);
+                    delete_div_calculateElement.style.display = "block";
+                }
+            }
+            else {
+                for (var itemId of ListidDelete_div_calculate) {
+                    var delete_div_calculateElement = document.getElementById(itemId);
+                    delete_div_calculateElement.style.display = "none";
+                }
+            }
+
+        }
+
+        function addRowClick(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var idDiv_rowList = getListIdAsRequired(div_row + randomIdOut);
+            var div_rowClone = idDiv_rowList[idDiv_rowList.length - 1];
+
+            var originalElement = document.getElementById(div_rowClone);
+            var clonedElement = originalElement.cloneNode(true);
+
+            var randomIdIn = generateRandomCode(5);
+            // Đặt ID mới cho phần tử sao chép
+            clonedElement.id = div_row + randomIdOut + randomIdIn;
+
+            // Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
+            function changeIds(element) {
+                if (element.id && element.id.indexOf(div_comboLoDeXien) !== -1) {
+                    element.id = div_comboLoDeXien + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(combo_loDeXien) !== -1) {
+                    element.id = combo_loDeXien + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(div_select_nhaDai) !== -1) {
+                    element.id = div_select_nhaDai + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(div_select_number) !== -1) {
+                    element.id = div_select_number + randomIdOut + randomIdIn;;
+                }
+                if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
+                    element.id = nhap_so_diem + randomIdOut + randomIdIn;;
+                }
+                if (element.id && element.id.indexOf(delete_row) !== -1) {
+                    element.id = delete_row + randomIdOut + randomIdIn;;
+                }
+                if (element.children && element.children.length > 0) {
+                    for (var i = 0; i < element.children.length; i++) {
+                        changeIds(element.children[i]); // Đệ quy cho các phần tử con
+                    }
+                }
+            }
+            changeIds(clonedElement);
+            // Thêm phần tử sao chép vào DOM sau phần tử gốc
+            originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+
+            createComboboxLoDeXien(randomIdOut, randomIdIn);
+            createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
+            createMultiSelectNumberClone(randomIdOut, randomIdIn);
+            setPropertyWhenAddRow(randomIdOut);
+
+        }
+
+        function deleteRow(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdfull = IdBtnAddRow.substring(IdBtnAddRow.length - 10);
+            var randomIdOut = randomIdfull.substring(0,5);
+            var elementToRemove = document.getElementById(div_row + randomIdfull);
+            elementToRemove.remove();
+            setPropertyWhenAddRow(randomIdOut);
+        }
+
+        function setPropertyWhenAddRow(randomIdOut) {
+            var Listiddelete_row = getListIdAsRequired(delete_row + randomIdOut);
+            if (Listiddelete_row.length > 1) {
+                for (var itemId of Listiddelete_row) {
+                    var delete_rowElement = document.getElementById(itemId);
+                    delete_rowElement.style.display = "inline";
+                }
+            }
+            else {
+                for (var itemId of Listiddelete_row) {
+                    var delete_rowElement = document.getElementById(itemId);
+                    delete_rowElement.style.display = "none";
+                }
+            }
+        }
+
+        function createComboboxLoDeXien(randomIdOut, randomIdIn) {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(div_comboLoDeXien + randomIdOut + randomIdIn);
+            var elementDiv_comboLoDeXien = document.getElementById(div_comboLoDeXien + randomIdOut + randomIdIn);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<input type="text" tabindex="1" id="combo_loDeXien">';
+            var newCombo_loDeXien = "combo_loDeXien" + randomIdOut + randomIdIn;
+            selectHtml = selectHtml.replace("combo_loDeXien", newCombo_loDeXien);
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            elementDiv_comboLoDeXien.style.marginTop = '5px';
+            let sportsData = [
+                { Id: '0', Game: 'Bao lô' },
+                { Id: '1', Game: 'Đá xiên' },
+                { Id: '2', Game: 'Đầu' },
+                { Id: '3', Game: 'Đuôi' },
+                { Id: '4', Game: 'Đầu đuôi' },
+                { Id: '5', Game: 'Bao ba con' },
+                { Id: '6', Game: 'Ba con đầu' },
+                { Id: '7', Game: 'Ba con đuôi' },
+                { Id: '8', Game: 'Xỉu chủ' }
+            ];
+            var initialValue = { Id: '0', Game: 'Bao lô' };
+            // initialize ComboBox component
+            var listObj = new ej.dropdowns.ComboBox({
+                //set the data to dataSource property
+                dataSource: sportsData,
+                // maps the appropriate column to fields property
+                fields: { text: 'Game', value: 'Id' },
+                value: initialValue.Id,
+                text: initialValue.Game,
+                placeholder: "Chọn loại"
+            });
+            listObj.change = function (e) {
+                var IdCbbChange = newCombo_loDeXien;
+                var randomIdfull = IdCbbChange.substring(IdCbbChange.length - 10);
+                var randomIdOut = randomIdfull.substring(0, 5);
+                var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+                createMultiSelectNumberClone(randomIdOut, randomIdIn);
+            };
+            listObj.appendTo('#' + newCombo_loDeXien);
+
+        }
+
+        function createMultiSelectNhaDaiClone(randomIdOut, randomIdIn) {
+            var newDiv_select_nhaDaiId = div_select_nhaDai + randomIdOut + randomIdIn;
+            var elementDiv_select_nhaDai = document.getElementById(newDiv_select_nhaDaiId);
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(newDiv_select_nhaDaiId);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+
+            var element = document.getElementById("select_nhaDai");
+            var htmlContent = element.outerHTML;
+            var newSelect_nhaDai = "select_nhaDai" + randomIdOut + randomIdIn;
+            htmlContent = htmlContent.replace("select_nhaDai", newSelect_nhaDai);
+            var selectHtml = htmlContent;
+
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            elementDiv_select_nhaDai.style.marginTop = '0';
+
+            var listObj = new ej.dropdowns.MultiSelect({
+                placeholder: "Chọn nhà đài"
+            });
+            listObj.addEventListener('change', function (e) {
+
+                if (e.value.length > 0) {
+                    elementDiv_select_nhaDai.style.marginTop = '5px';
+                }
+                else
+                {
+                    elementDiv_select_nhaDai.style.marginTop = '0';
+                }
+            });
+            listObj.appendTo('#' + newSelect_nhaDai);
+        }
+
+        function createMultiSelectNumberClone(randomIdOut, randomIdIn) {
+            var newDiv_select_numberId = div_select_number + randomIdOut + randomIdIn;
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(newDiv_select_numberId);
+            var elementDiv_select_number = document.getElementById(div_select_number + randomIdOut + randomIdIn);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<input type="text" tabindex="1" id="select_number">';
+            var newSelect_number = "select_number" + randomIdOut + randomIdIn;
+            selectHtml = selectHtml.replace("select_number", newSelect_number);
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+
+            var idCombo_loDeXien = combo_loDeXien + randomIdOut + randomIdIn;
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
+            elementDiv_select_number.style.marginTop = '0px';
+
+            if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
+                var inputobj = new ej.inputs.TextBox({
+                    placeholder: 'Nhập số: 00, 01 ...',
+                    floatLabelType: 'Auto'
+                });
+                inputobj.appendTo('#' + newSelect_number);
+                elementDiv_select_number.style.marginTop = '-10px';
+            }
+            else {
+                var sportsData = [];
+                if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
+                    for (var i = 0; i <= 999; i++) {
+                        // Chuyển số i thành chuỗi, và thêm '0' ở trước nếu cần
+                        var numberStr = i.toString().padStart(3, '0');
+
+                        // Thêm chuỗi numberStr vào mảng sportsData
+                        sportsData.push(numberStr);
+                    }
+                }
+                else {
+                    for (var i = 0; i < 100; i++) {
+                        // Chuyển số i thành chuỗi, và nếu chiều dài của chuỗi < 2, thêm '0' ở trước
+                        var numberStr = i < 10 ? '0' + i : i.toString();
+
+                        // Thêm chuỗi numberStr vào mảng sportsData
+                        sportsData.push(numberStr);
+                    }
+                }
+                var listObj = new ej.dropdowns.MultiSelect({
+                    dataSource: sportsData,
+                    placeholder: "Chọn số"
+                });
+                listObj.addEventListener('change', function (e) {
+                    var elementDiv_select_number = document.getElementById(newDiv_select_numberId);
+                    if (e.value.length > 0) {
+                        elementDiv_select_number.style.marginTop = '5px';
+                    }
+                    else {
+                        elementDiv_select_number.style.marginTop = '0';
+                    }
+                });
+                listObj.appendTo('#' + newSelect_number);
+            }
+        }
+
+        function createDataTargetClone(randomIdOut) {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(div_box_more_message + randomIdOut);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+
+            var element = document.getElementById("box_more_message" + randomIdOut);
+            var htmlContent = element.outerHTML;
+            var newTargetId = "#showLotterymessage_content" + randomIdOut;
+            htmlContent = htmlContent.replace("#showLotterymessage_content", newTargetId);
+
+            var selectHtml = htmlContent;
+
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+
+        }
+
+        function validaeInPutTyLeSap(dom) {
+            var val = document.getElementById(dom.id);
+            const value = parseFloat(val.value);
+            if (isNaN(value) || value < 0 || value >= 1) {
+                val.value = "0.75";
+            }
+        }
+
+        function validaeInPutNhapSoDiem(dom) {
+            var val = document.getElementById(dom.id);
+            const value = parseFloat(val.value);
+            if (value < 0) {
+                val.value = "0";
+            }
+        }
+
+        function executeCalculate(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var ListidCombo_loDeXien = getListIdAsRequired(combo_loDeXien + randomIdOut);
+
+            var isValidate = false;
+            for (var itemId of ListidCombo_loDeXien) {
+
+                if (itemId && itemId.indexOf("_hidden") !== -1) {
+                    continue;
+                }
+
+                var randomIdfull = itemId.substring(itemId.length - 10);
+                var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+
+                if (validateData(randomIdOut, randomIdIn)) {
+                    isValidate = true;
+                }
+            }
+            if (isValidate) {
+                return;
+            }
+
+            var calculationModel = [];
+            for (var itemId of ListidCombo_loDeXien) {
+
+                if (itemId && itemId.indexOf("_hidden") !== -1) {
+                    continue;
+                }
+
+                var randomIdfull = itemId.substring(itemId.length - 10);
+                var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+
+                var idCombo_loDeXien = combo_loDeXien + randomIdfull;
+                var idSelect_nhaDai = select_nhaDai + randomIdfull;
+                var idSelect_number = select_number + randomIdfull;
+                var idNhap_so_diem = nhap_so_diem + randomIdfull;
+                var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
+                var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
+
+                var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
+
+                var idSelect_numberElement = document.getElementById(idSelect_number);
+                if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
+                    var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value.split(',');;
+                }
+                else {
+                    var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+                }
+                var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
+                var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
+
+                var rowData = {
+                    lotteryType: document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value,
+                    numbers: idSelect_numberValue,
+                    chanels: idSelect_nhaDaiValue,
+                    sl: document.getElementById(idNhap_so_diem).value,
+                    tileXac: document.getElementById(idInput_ty_le_sap).value,
+                    tileThuong: document.getElementById(idInput_ty_le_thuong).value,
+                }
+
+                calculationModel.push(rowData);
+
+            }
+
+            calculationJsons = JSON.stringify(calculationModel);
+            $.ajax({
+                    type: "POST",
+                    traditional: true,
+                    async: false,
+                    data:
+                    {
+                        "calculationJson": calculationJsons,
+                    },
+                    url: "@Url.Action("ExecuteCalculation", "Calculation")",
+                    success: function (data)
+                    {
+                        if (data.Success && data.Data) {
+                            var idLbl_xac = lbl_xac + randomIdOut;
+                            var idLbl_thuong = lbl_thuong + randomIdOut;
+                            var idLbl_result = lbl_result + randomIdOut;
+
+                            document.getElementById(idLbl_xac).textContent = data.Data.Xac;
+                            document.getElementById(idLbl_thuong).textContent = data.Data.Thuong;
+                            document.getElementById(idLbl_result).textContent = data.Data.Loi;
+                            var idDiv_lbl_result = div_lbl_result + randomIdOut;
+                            var divElement = document.getElementById(idDiv_lbl_result);
+                            var spanElement = divElement.querySelector("span");
+                            var strongElement = divElement.querySelector("strong");
+                            var idBox_more_message = box_more_message + randomIdOut;
+                            var element_more_message = document.getElementById(idBox_more_message);
+                            if (data.Data.Loi > 0) {
+                                spanElement.style.color = "blue"
+                                strongElement.style.color = "blue"
+                            }
+                            else {
+                                spanElement.style.color = "red"
+                                strongElement.style.color = "red"
+                            }
+                            if (data.Data.Thuong > 0) {
+                                if (element_more_message) {
+                                    element_more_message.style.display = "block";
+                                }
+                                showLotteryMessageContent(randomIdOut, data.Data.Message)
+                            }
+                            else {
+                                if (element_more_message) {
+                                    element_more_message.style.display = "none";
+                                }
+                            }
+                        }
+                        else {
+                            alert("Có lỗi xảy ra!");
+                        }
+                    },
+                })
+
+        }
+
+        function showLotteryMessageContent(randomIdOut, listMessage) {
+            // Lấy đối tượng div theo ID
+            if (listMessage == null || listMessage.length == 0) {
+                return;
+            }
+
+            var divToReplace = document.getElementById(showLotterymessage_content + randomIdOut);
+            var htmlContents = '';
+
+            for (var i = 0; i < listMessage.length; i++) {
+                var msg = listMessage[i];
+                var htmlContent = `
+                                    <div class="box-more-message-content">
+                                        <div class="box-more-message-content-✓">
+                                            ✓
+                                        </div>
+                                        <div class="box-more-message-content-detailt">
+                                            ${msg}
+                                        </div>
+                                    </div>
+                                `;
+
+                htmlContents = htmlContents + htmlContent;
+            }
+
+            divToReplace.innerHTML = htmlContents;
+        }
+
+        function targetOnclick(dom) {
+            var IdTarget = dom.id;
+            var randomIdOut = IdTarget.substring(IdTarget.length - 5);
+            if (dom.innerHTML.indexOf('Mở rộng') >= 0) {
+                dom.innerText = "Thu lại";
+                const element = document.getElementById(showLotterymessage_icon + randomIdOut);
+                element.className = "fa fa-angle-double-up";
+            }
+            else {
+                dom.innerText = "Mở rộng";
+                const element = document.getElementById(showLotterymessage_icon + randomIdOut);
+                element.className = "fa fa-angle-double-down";
+            }
+        }
+
+        function validateData(randomIdOut, randomIdIn) {
+
+            var randomIdfull = randomIdOut + randomIdIn
+            var idCombo_loDeXien = combo_loDeXien + randomIdfull;
+            var idSelect_nhaDai = select_nhaDai + randomIdfull;
+            var idSelect_number = select_number + randomIdfull;
+            var idNhap_so_diem = nhap_so_diem + randomIdfull;
+            var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
+            var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
+
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
+
+            var idSelect_numberElement = document.getElementById(idSelect_number);
+            if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
+                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value?.split(',');;
+            }
+            else {
+                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
+            }
+            var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
+            var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
+
+            var elementArr = [];
+
+            if (document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value === ""
+                || document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value == null) {
+                var element = document.getElementById(div_comboLoDeXien + randomIdfull);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (idSelect_numberValue == null || idSelect_numberValue.length == 0) {
+                var idDiv_select_number = div_select_number + randomIdfull;
+                var element = document.getElementById(idDiv_select_number);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            else {
+                var isValid = false;
+                for (var i = 0; i < idSelect_numberValue.length; i++) {
+                    var element = idSelect_numberValue[i];
+
+                    // Kiểm tra xem phần tử có đúng định dạng không (ví dụ: hai ký tự số)
+                    if (!/^\d{2}$/.test(element.trim()) && valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (isValid) {
+                    var idDiv_select_number = div_select_number + randomIdfull;
+                    var element = document.getElementById(idDiv_select_number);
+                    element.classList.add("temporary-border");
+                    elementArr.push(element);
+                }
+            }
+            if (idSelect_nhaDaiValue == null || idSelect_nhaDaiValue.length == 0) {
+                var idDiv_select_nhaDai = div_select_nhaDai + randomIdfull;
+                var element = document.getElementById(idDiv_select_nhaDai);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idNhap_so_diem).value === "" || !isNumber(document.getElementById(idNhap_so_diem).value)) {
+                var element = document.getElementById(idNhap_so_diem);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idInput_ty_le_sap).value === "" || !isNumber(document.getElementById(idInput_ty_le_sap).value)) {
+                var element = document.getElementById(idInput_ty_le_sap);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idInput_ty_le_thuong).value === "" || !isNumber(document.getElementById(idInput_ty_le_thuong).value)) {
+                var element = document.getElementById(idInput_ty_le_thuong);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+
+            setTimeout(function () {
+
+                for (var i = 0; i < elementArr.length; i++) {
+                    var element = elementArr[i];
+                    element.classList.remove("temporary-border");
+                }
+            }, 4000);
+
+            if (elementArr.length > 0) {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        function isNumber(value) {
+            return !isNaN(value);
+        }
+
+        function generateRandomCode(length) {
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var code = '';
+
+            for (var i = 0; i < length; i++) {
+                var randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters.charAt(randomIndex);
+            }
+
+            return code;
+        }
+
+        function getListIdAsRequired(idInput) {
+            var idList = [];
+            var allElements = document.getElementsByTagName("*"); // Lấy tất cả các phần tử DOM
+
+            for (var i = 0; i < allElements.length; i++) {
+                var element = allElements[i];
+                var elementId = element.id; // Lấy id của phần tử
+
+                if (elementId && elementId.indexOf(idInput) !== -1) {
+                    idList.push(elementId);
+                }
+            }
+
+            return idList;
+
+        }
+
+    </script>
+</body>
+</html>
+
+
+

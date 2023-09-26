@@ -1,0 +1,265 @@
+﻿
+@media only screen and (max-width: 600px) {
+}
+
+body {
+    font-size: 11px !important;
+}
+
+/* kích cỡ chữ cho combobox */
+.e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input, .e-input-group textarea.e-input, .e-input-group.e-control-wrapper textarea.e-input {
+    font-size: 11px;
+}
+.e-ddl.e-input-group.e-control-wrapper .e-ddl-icon::before {
+    font-size: 11px;
+}
+/* kích cỡ chữ cho multi-select */
+.e-multi-select-wrapper .e-delim-values {
+    font-size: 11px !important;
+}
+
+.container {
+    display: flex;
+    flex-flow: column;
+    margin-top: 12px;
+}
+
+.btn-custom {
+    height: 28px;
+    border-radius: 4px;
+    font-weight: 400;
+    line-height: 1.4;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid rgb(7, 171, 226);
+    color: rgb(7, 171, 226);
+    background: white;
+}
+
+.span {
+    margin-left: 5px;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.btn-add-calculate {
+    padding: 12px 8px;
+    min-width: 80px;
+    height: 36px;
+    border-radius: 4px;
+    font-weight: 400;
+    line-height: 1.4;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+    color: white;
+    background: forestgreen;
+    margin-bottom: -10px;
+}
+
+.div-calculate-result {
+    gap:15px;
+    margin-top: 30px;
+    margin-bottom: -3px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 50px;
+}
+
+    .div-calculate-result .div-calculate {
+        display: flex;
+        flex-flow: row;
+        gap: 10px;
+    }
+
+        .div-calculate-result .div-calculate div {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            text-align: center;
+        }
+
+            .div-calculate-result .div-calculate div button {
+                height: 45px;
+            }
+
+            .div-calculate-result .div-calculate div input {
+                height: 25px;
+                width: 40px;
+            }
+
+    .div-calculate-result .div-result {
+        display: flex;
+        flex-flow: row;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+        .div-calculate-result .div-result div {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            text-align: center;
+        }
+
+.bordered-div {
+    border: 1.5px dashed rgb(0, 153, 0);
+    padding: 10px;
+    padding-bottom: 15px;
+    position: relative;
+    display: none;
+    margin-top: 40px;
+}
+
+    .bordered-div .div-row {
+        margin-top: 20px;
+        gap: 30px;
+    }
+
+        .bordered-div .div-row .div-comboLoDeXien {
+            flex: 1;
+        }
+
+        .bordered-div .div-row .div-select-nhaDai {
+            flex: 1;
+        }
+
+        .bordered-div .div-row .div-select-number {
+            flex: 1;
+        }
+
+        .bordered-div .div-row .div-nhap-so-diem {
+            width: 60px;
+        }
+
+            .bordered-div .div-row .div-nhap-so-diem .nhap-so-diem {
+                display: flex;
+            }
+
+                .bordered-div .div-row .div-nhap-so-diem .nhap-so-diem input {
+                    margin-top: 8px;
+                    height: 30px;
+                    width: 45px;
+                }
+
+                .bordered-div .div-row .div-nhap-so-diem .nhap-so-diem i {
+                    flex: 1;
+                    margin-top: 16px;
+                    font-size:13px;
+                    cursor: pointer;
+                    margin-left: 5px;
+                    color: #d9534f;
+                    display: none;
+                }
+
+    .bordered-div .div-btn-add-row {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        margin-top: 8px;
+        width: 100%;
+    }
+
+        .bordered-div .div-btn-add-row button {
+
+        }
+
+            .bordered-div .div-btn-add-row button i {
+                margin-left: 5px;
+            }
+
+.name-input {
+    width:80px;
+    position: absolute;
+    top: -15px;
+    left: 10px;
+    background-color: white;
+    padding: 2px;
+    border: none;
+}
+
+.btn-danger {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    position: absolute;
+    top: -15px;
+    right: 10px;
+    padding: 2px;
+    border: none;
+    display: none;
+}
+
+.box-more-message {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: -8px;
+    display: none;
+}
+
+    .box-more-message .box-more-message-title {
+        width: 100%;
+        background-color: #e9eaef;
+        color: rgb(7, 171, 226);
+    }
+
+        .box-more-message .box-more-message-title span {
+            margin-right: 2px;
+            cursor: pointer;
+        }
+
+            .box-more-message .box-more-message-title span:hover {
+                text-decoration: underline;
+            }
+
+    .box-more-message .box-more-message-content {
+        text-align: start;
+        min-height: fit-content;
+        transition: min-height 1s ease;
+        padding: 10px 10px 5px 10px;
+        display: flex !important;
+        flex-flow: row !important;
+        gap: 5px;
+    }
+
+        .box-more-message .box-more-message-content .box-more-message-content-✓ {
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: 600;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .box-more-message .box-more-message-content .box-more-message-content-detailt {
+            width: calc(100% - 25px);
+        }
