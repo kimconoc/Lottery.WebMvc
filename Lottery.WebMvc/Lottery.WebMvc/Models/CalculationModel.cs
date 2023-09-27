@@ -13,5 +13,6 @@ namespace Lottery.WebMvc.Models
         public int Sl { get; set; }
         public double TileXac { get; set; }
         public double TileThuong { get; set; }
+        public double TileBaso { get; set; }
     }
 }
