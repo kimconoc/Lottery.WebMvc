@@ -411,6 +411,9 @@
             // Thêm phần tử sao chép vào DOM sau phần tử gốc
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
 
+            var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
+            elementDivInput_tyle_baso.style.display = "none";
+
             createComboboxLoDeXien(randomIdOut, randomIdIn);
             createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
             createMultiSelectNumberClone(randomIdOut, randomIdIn);
@@ -466,8 +469,8 @@
                 { Id: '8', Game: 'Xỉu chủ' }
             ];
             var initialValue = { Id: '0', Game: 'Bao lô' };
-            // initialize ComboBox component
-            var listObj = new ej.dropdowns.ComboBox({
+            // initialize DropDownList component
+            var listObj = new ej.dropdowns.DropDownList({
                 //set the data to dataSource property
                 dataSource: sportsData,
                 // maps the appropriate column to fields property
