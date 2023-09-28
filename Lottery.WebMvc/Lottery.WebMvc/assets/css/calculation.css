@@ -127,6 +127,12 @@
 					color: #d9534f;
 					display: none;
 				}
+		.bordered-div .div-row .div-input-ty-le-ba-so {
+		}
+
+			.bordered-div .div-row .div-input-ty-le-ba-so input {
+				width: 52.5px;
+			}
 
 	.bordered-div .div-btn-add-row {
 		display: flex;

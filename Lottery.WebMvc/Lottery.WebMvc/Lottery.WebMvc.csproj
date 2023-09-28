@@ -292,6 +292,7 @@
     <Content Include="assets\images\logos\logo_login.jpg" />
     <Content Include="assets\images\sidebar\sidebar-bg.jpg" />
     <Content Include="assets\images\switch.png" />
+    <Content Include="assets\js\calculation.js" />
     <Content Include="assets\js\constant.js" />
     <Content Include="assets\js\dashboard.js" />
     <Content Include="assets\js\material.js" />

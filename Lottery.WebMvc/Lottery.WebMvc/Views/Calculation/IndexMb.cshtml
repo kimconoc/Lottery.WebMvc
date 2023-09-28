@@ -5,8 +5,14 @@
 @using Lottery.DoMain.Models;
 @using Lottery.DoMain.Constant;
 @using Lottery.DoMain.Models;
+@using Newtonsoft.Json;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    FormsIdentity id = (FormsIdentity)HttpContext.Current.User.Identity;
+    FormsAuthenticationTicket ticket = id.Ticket;
+    var userData = JsonConvert.DeserializeObject<User>(ticket.UserData);
+
     IProvider provider = new Provider();
 
     List<ChanelGroup> dataChanel = new List<ChanelGroup>();
@@ -109,7 +115,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="div_input_ty_le_ba_so" style=" display:none;" class="div-input-ty-le-ba-so">
+                        <div id="divInput_tyle_baso" style=" display:none;" class="div-input-ty-le-ba-so">
                             <!--element which is going to render the MultiSelect-->
                             <input type="text" tabindex="1" id="input_ty_le_ba_so">
                         </div>
@@ -120,7 +126,7 @@
                             </div>
                         </div>
                     </div>
-                    <div style="height: 1px; border-bottom: 1.5px dashed rgb(0, 153, 0); margin-top: 7px; ">
+                    <div style="height: 1px; border-bottom: 1.5px solid rgb(7, 171, 226); margin-top: 7px; ">
 
                     </div>
                 </div>
@@ -183,6 +189,7 @@
     </div>
     <script>
 
+        var userData = @Html.Raw(Json.Encode(userData));
         var div_calculate = "div_calculate";
         var delete_div_calculate = "delete_div_calculate";
         var nameInput = "nameInput";
@@ -198,7 +205,7 @@
         var select_number = "select_number";
         var nhap_so_diem = "nhap_so_diem";
         var div_result = "div_result";
-        var div_input_ty_le_ba_so = "div_input_ty_le_ba_so";
+        var divInput_tyle_baso = "divInput_tyle_baso";
         var input_ty_le_ba_so = "input_ty_le_ba_so";
         var input_ty_le_thuong = "input_ty_le_thuong";
         var input_ty_le_sap = "input_ty_le_sap";
@@ -256,7 +263,7 @@
                 if (element.id && element.id == div_select_number) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
-                if (element.id && element.id == div_input_ty_le_ba_so) {
+                if (element.id && element.id == divInput_tyle_baso) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == input_ty_le_ba_so) {
@@ -380,12 +387,12 @@
                     element.id = div_select_nhaDai + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id.indexOf(div_select_number) !== -1) {
-                    element.id = div_select_number + randomIdOut + randomIdIn;;
+                    element.id = div_select_number + randomIdOut + randomIdIn;
                 }
-                if (element.id && element.id == div_input_ty_le_ba_so) {
-                    element.id = div_input_ty_le_ba_so + randomIdOut + randomIdIn;
+                if (element.id && element.id.indexOf(divInput_tyle_baso) !== -1) {
+                    element.id = divInput_tyle_baso + randomIdOut + randomIdIn;
                 }
-                if (element.id && element.id == input_ty_le_ba_so) {
+                if (element.id && element.id.indexOf(input_ty_le_ba_so) !== -1) {
                     element.id = input_ty_le_ba_so + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
@@ -534,11 +541,9 @@
                 });
                 listObj.addEventListener('change', function (e) {
                     var elementDiv_select_number = document.getElementById(newDiv_select_numberId);
-                    if (e.value.length > 0) {
-                        elementDiv_select_number.style.marginTop = '0px';
-                    }
-                    else {
-                        elementDiv_select_number.style.marginTop = '0';
+                    elementDiv_select_number.style.marginTop = '0';
+                    if (e.value.length > 0 && userData.UserAgent == @((int)UserAgentEnum.Computer)) {
+                        elementDiv_select_number.style.marginTop = '5px';
                     }
                 });
                 listObj.appendTo('#' + newSelect_number);
@@ -566,13 +571,9 @@
                 placeholder: "Chọn nhà đài"
             });
             listObj.addEventListener('change', function (e) {
-
-                if (e.value.length > 0) {
-                    elementDiv_select_nhaDai.style.marginTop = '0px';
-                }
-                else
-                {
-                    elementDiv_select_nhaDai.style.marginTop = '0';
+                elementDiv_select_nhaDai.style.marginTop = '0';
+                if (e.value.length > 0 && userData.UserAgent == @((int)UserAgentEnum.Computer)) {
+                    elementDiv_select_nhaDai.style.marginTop = '5px';
                 }
             });
             listObj.appendTo('#' + newSelect_nhaDai);
@@ -580,8 +581,8 @@
 
         function createMultiInputTyLeBaSo(randomIdOut, randomIdIn) {
 
-            var elementDiv_input_ty_le_ba_so = document.getElementById(div_input_ty_le_ba_so + randomIdOut + randomIdIn);
-            elementDiv_input_ty_le_ba_so.style.display = "none";
+            var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
+            elementDivInput_tyle_baso.style.display = "none";
 
             var idCombo_loDeXien = combo_loDeXien + randomIdOut + randomIdIn;
             var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
@@ -589,9 +590,9 @@
                 || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
                 || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
                 || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
-                var newDiv_input_ty_le_ba_so = div_input_ty_le_ba_so + randomIdOut + randomIdIn;
+                var newDivInput_tyle_baso = divInput_tyle_baso + randomIdOut + randomIdIn;
                 // Lấy đối tượng div theo ID
-                var divToReplace = document.getElementById(newDiv_input_ty_le_ba_so);
+                var divToReplace = document.getElementById(newDivInput_tyle_baso);
                 // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
                 var selectHtml = '<input type="text" tabindex="1" id="input_ty_le_ba_so">';
                 var newInput_ty_le_ba_soId = "input_ty_le_ba_so" + randomIdOut + randomIdIn;
@@ -605,8 +606,8 @@
                     value: '650',
                 });
                 inputobj.appendTo('#' + newInput_ty_le_ba_soId);
-                elementDiv_input_ty_le_ba_so.style.marginTop = '-10px';
-                elementDiv_input_ty_le_ba_so.style.display = "block";
+                elementDivInput_tyle_baso.style.marginTop = '-10px';
+                elementDivInput_tyle_baso.style.display = "block";
             }
         }
 
@@ -827,7 +828,7 @@
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
             var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
-            
+
             var idSelect_numberElement = document.getElementById(idSelect_number);
             if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
                 var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value?.split(',');
@@ -882,8 +883,8 @@
                 || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
                 var valInput_ty_le_ba_so = document.getElementById(idInput_ty_le_ba_so).ej2_instances[0].properties.value;
                 if (valInput_ty_le_ba_so === "" || !isNumber(valInput_ty_le_ba_so)) {
-                    var idDiv_input_ty_le_ba_so = div_input_ty_le_ba_so + randomIdfull;
-                    var element = document.getElementById(idDiv_input_ty_le_ba_so);
+                    var idDivInput_tyle_baso = divInput_tyle_baso + randomIdfull;
+                    var element = document.getElementById(idDivInput_tyle_baso);
                     element.classList.add("temporary-border");
                     elementArr.push(element);
                 }

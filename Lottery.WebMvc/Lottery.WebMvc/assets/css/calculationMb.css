@@ -1,8 +1,6 @@
 ﻿
 @media only screen and (max-width: 600px) {
-    .body-wrapper .main-wrapper .page-wrapper .content-wrapper {
-        padding: 20px;
-    }
+   
 }
 
 body {
@@ -125,7 +123,7 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
 .bordered-div {
     border: 1.5px dashed rgb(0, 153, 0);
     padding: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     position: relative;
     display: none;
     margin-top: 40px;
@@ -197,7 +195,7 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
 .name-input {
     width:80px;
     position: absolute;
-    top: -15px;
+    top: -13px;
     left: 10px;
     background-color: white;
     padding: 2px;
@@ -226,7 +224,7 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
     background-color: #d9534f;
     border-color: #d43f3a;
     position: absolute;
-    top: -15px;
+    top: -13px;
     right: 10px;
     padding: 2px;
     border: none;

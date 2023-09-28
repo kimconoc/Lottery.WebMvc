@@ -1,4 +1,5 @@
-﻿using Lottery.DoMain.FileLog;
+﻿using Lottery.DoMain.Enum;
+using Lottery.DoMain.FileLog;
 using Lottery.DoMain.Models;
 using Lottery.Service.ServiceProvider;
 using Lottery.Service.ServiceProvider.Interface;
@@ -49,6 +50,23 @@ namespace Lottery.WebMvc.Controllers
         private static string GetSigninToken()
         {
             return FormsAuthentication.FormsCookieName;
+        }
+
+        protected int IdentifyUserAgent()
+        {
+            string userAgent = Request.UserAgent.ToLower();
+            if (userAgent.Contains("iphone"))
+            {
+                return (int)UserAgentEnum.Iphone;
+            }
+            else if(userAgent.Contains("android"))
+            {
+                return (int)UserAgentEnum.Android;
+            }    
+            else
+            {
+                return (int)UserAgentEnum.Computer;
+            }
         }
         protected override void OnException(ExceptionContext filterContext)
         {

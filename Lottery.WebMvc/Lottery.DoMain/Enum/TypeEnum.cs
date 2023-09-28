@@ -28,4 +28,14 @@ namespace Lottery.DoMain.Enum
         [Description("Xỉu chủ")]
         BaCangDauDuoi = 8
     }
+
+    public enum UserAgentEnum
+    {
+        [Description("Iphone")]
+        Iphone = 0,
+        [Description("Android")]
+        Android = 1,
+        [Description("Computer")]
+        Computer = 2
+    }
 }

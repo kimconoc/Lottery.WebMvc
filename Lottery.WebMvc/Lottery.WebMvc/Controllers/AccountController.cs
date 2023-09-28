@@ -10,6 +10,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Lottery.DoMain.Enum;
 
 namespace Lottery.WebMvc.Controllers
 {
@@ -33,7 +34,7 @@ namespace Lottery.WebMvc.Controllers
                     return View(model);
                 }
                 var userData = userBase.Result.Data;
-
+                userData.UserAgent = IdentifyUserAgent();
                 if (userData == null)
                 {
                     ViewBag.Message = "User is not registered to application";
@@ -44,9 +45,8 @@ namespace Lottery.WebMvc.Controllers
                     string hash = FormsAuthentication.Encrypt(ticket);
                     HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
                     Response.Cookies.Add(cookie);
-                    string userAgent = Request.UserAgent.ToLower();
 
-                    if (userAgent.Contains("iphone") || userAgent.Contains("android"))
+                    if (IdentifyUserAgent() == (int)UserAgentEnum.Iphone || IdentifyUserAgent() == (int)UserAgentEnum.Android)
                     {
                         return RedirectToAction("IndexMb", "Calculation");
                     }

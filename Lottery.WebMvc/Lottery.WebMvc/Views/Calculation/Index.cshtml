@@ -5,8 +5,14 @@
 @using Lottery.DoMain.Models;
 @using Lottery.DoMain.Constant;
 @using Lottery.DoMain.Models;
+@using Newtonsoft.Json;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    FormsIdentity id = (FormsIdentity)HttpContext.Current.User.Identity;
+    FormsAuthenticationTicket ticket = id.Ticket;
+    var userData = JsonConvert.DeserializeObject<User>(ticket.UserData);
+
     IProvider provider = new Provider();
 
     List<ChanelGroup> dataChanel = new List<ChanelGroup>();
@@ -35,7 +41,7 @@
     <style>
 
         .temporary-border {
-            border: 1px solid red; 
+            border: 1px solid red;
         }
 
         input[type="number"]::-webkit-inner-spin-button,
@@ -48,15 +54,17 @@
         input[type="number"] {
             -moz-appearance: textfield;
         }
+
         input {
             background-color: white;
-            padding:10px;
+            padding: 10px;
             border: none;
         }
 
         .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input, .e-input-group textarea.e-input, .e-input-group.e-control-wrapper textarea.e-input {
             font-size: 14px;
         }
+
         .e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
             font-size: 14px;
         }
@@ -71,7 +79,7 @@
                 Thêm
                 <i style="margin-left:5px;" class="fa fa-user-plus"></i>
             </button>
-            
+
             <div id="div_calculate_virtual" class="bordered-div">
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
@@ -79,6 +87,12 @@
                     <div class="div-comboLoDeXien">
                         <div id="div_comboLoDeXien">
                             <input type="text" tabindex="1" id="combo_loDeXien">
+                        </div>
+                    </div>
+                    <div class="div-select-number" style="flex: 1;">
+                        <div id="div_select_number">
+                            <!--element which is going to render the MultiSelect-->
+                            <input type="text" tabindex="1" id="select_number">
                         </div>
                     </div>
                     <div class="div-select-nhaDai">
@@ -102,11 +116,9 @@
                             </select>
                         </div>
                     </div>
-                    <div class="div-select-number" style="flex: 1;">
-                        <div id="div_select_number">
-                            <!--element which is going to render the MultiSelect-->
-                            <input type="text" tabindex="1" id="select_number">
-                        </div>
+                    <div id="divInput_tyle_baso" style=" display:none;" class="div-input-ty-le-ba-so">
+                        <!--element which is going to render the MultiSelect-->
+                        <input type="text" tabindex="1" id="input_ty_le_ba_so">
                     </div>
                     <div class="div-nhap-so-diem">
                         <div class="nhap-so-diem">
@@ -174,6 +186,7 @@
     </div>
     <script>
 
+        var userData = @Html.Raw(Json.Encode(userData));
         var div_calculate = "div_calculate";
         var delete_div_calculate = "delete_div_calculate";
         var nameInput = "nameInput";
@@ -189,6 +202,8 @@
         var select_number = "select_number";
         var nhap_so_diem = "nhap_so_diem";
         var div_result = "div_result";
+        var divInput_tyle_baso = "divInput_tyle_baso";
+        var input_ty_le_ba_so = "input_ty_le_ba_so";
         var input_ty_le_thuong = "input_ty_le_thuong";
         var input_ty_le_sap = "input_ty_le_sap";
         var lbl_viewTong = "lbl_viewTong";
@@ -243,6 +258,12 @@
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == div_select_number) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == divInput_tyle_baso) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == input_ty_le_ba_so) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == nhap_so_diem) {
@@ -363,7 +384,13 @@
                     element.id = div_select_nhaDai + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id.indexOf(div_select_number) !== -1) {
-                    element.id = div_select_number + randomIdOut + randomIdIn;;
+                    element.id = div_select_number + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(divInput_tyle_baso) !== -1) {
+                    element.id = divInput_tyle_baso + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(input_ty_le_ba_so) !== -1) {
+                    element.id = input_ty_le_ba_so + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
                     element.id = nhap_so_diem + randomIdOut + randomIdIn;;
@@ -452,42 +479,10 @@
                 var randomIdOut = randomIdfull.substring(0, 5);
                 var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
                 createMultiSelectNumberClone(randomIdOut, randomIdIn);
+                createMultiInputTyLeBaSo(randomIdOut, randomIdIn);
             };
             listObj.appendTo('#' + newCombo_loDeXien);
 
-        }
-
-        function createMultiSelectNhaDaiClone(randomIdOut, randomIdIn) {
-            var newDiv_select_nhaDaiId = div_select_nhaDai + randomIdOut + randomIdIn;
-            var elementDiv_select_nhaDai = document.getElementById(newDiv_select_nhaDaiId);
-            // Lấy đối tượng div theo ID
-            var divToReplace = document.getElementById(newDiv_select_nhaDaiId);
-            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
-
-            var element = document.getElementById("select_nhaDai");
-            var htmlContent = element.outerHTML;
-            var newSelect_nhaDai = "select_nhaDai" + randomIdOut + randomIdIn;
-            htmlContent = htmlContent.replace("select_nhaDai", newSelect_nhaDai);
-            var selectHtml = htmlContent;
-
-            // Thay thế nội dung của div bằng nội dung mới
-            divToReplace.innerHTML = selectHtml;
-            elementDiv_select_nhaDai.style.marginTop = '0';
-
-            var listObj = new ej.dropdowns.MultiSelect({
-                placeholder: "Chọn nhà đài"
-            });
-            listObj.addEventListener('change', function (e) {
-
-                if (e.value.length > 0) {
-                    elementDiv_select_nhaDai.style.marginTop = '5px';
-                }
-                else
-                {
-                    elementDiv_select_nhaDai.style.marginTop = '0';
-                }
-            });
-            listObj.appendTo('#' + newSelect_nhaDai);
         }
 
         function createMultiSelectNumberClone(randomIdOut, randomIdIn) {
@@ -543,14 +538,73 @@
                 });
                 listObj.addEventListener('change', function (e) {
                     var elementDiv_select_number = document.getElementById(newDiv_select_numberId);
-                    if (e.value.length > 0) {
+                    elementDiv_select_number.style.marginTop = '0';
+                    if (e.value.length > 0 && userData.UserAgent == @((int)UserAgentEnum.Computer)) {
                         elementDiv_select_number.style.marginTop = '5px';
-                    }
-                    else {
-                        elementDiv_select_number.style.marginTop = '0';
                     }
                 });
                 listObj.appendTo('#' + newSelect_number);
+            }
+        }
+
+        function createMultiSelectNhaDaiClone(randomIdOut, randomIdIn) {
+            var newDiv_select_nhaDaiId = div_select_nhaDai + randomIdOut + randomIdIn;
+            var elementDiv_select_nhaDai = document.getElementById(newDiv_select_nhaDaiId);
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(newDiv_select_nhaDaiId);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+
+            var element = document.getElementById("select_nhaDai");
+            var htmlContent = element.outerHTML;
+            var newSelect_nhaDai = "select_nhaDai" + randomIdOut + randomIdIn;
+            htmlContent = htmlContent.replace("select_nhaDai", newSelect_nhaDai);
+            var selectHtml = htmlContent;
+
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+            elementDiv_select_nhaDai.style.marginTop = '0';
+
+            var listObj = new ej.dropdowns.MultiSelect({
+                placeholder: "Chọn nhà đài"
+            });
+            listObj.addEventListener('change', function (e) {
+                elementDiv_select_nhaDai.style.marginTop = '0';
+                if (e.value.length > 0 && userData.UserAgent == @((int)UserAgentEnum.Computer)) {
+                    elementDiv_select_nhaDai.style.marginTop = '5px';
+                }
+            });
+            listObj.appendTo('#' + newSelect_nhaDai);
+        }
+
+        function createMultiInputTyLeBaSo(randomIdOut, randomIdIn) {
+
+            var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
+            elementDivInput_tyle_baso.style.display = "none";
+
+            var idCombo_loDeXien = combo_loDeXien + randomIdOut + randomIdIn;
+            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
+            if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
+                var newDivInput_tyle_baso = divInput_tyle_baso + randomIdOut + randomIdIn;
+                // Lấy đối tượng div theo ID
+                var divToReplace = document.getElementById(newDivInput_tyle_baso);
+                // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+                var selectHtml = '<input type="text" tabindex="1" id="input_ty_le_ba_so">';
+                var newInput_ty_le_ba_soId = "input_ty_le_ba_so" + randomIdOut + randomIdIn;
+                selectHtml = selectHtml.replace("input_ty_le_ba_so", newInput_ty_le_ba_soId);
+                // Thay thế nội dung của div bằng nội dung mới
+                divToReplace.innerHTML = selectHtml;
+
+                var inputobj = new ej.inputs.TextBox({
+                    placeholder: 'Thưởng',
+                    floatLabelType: 'Auto',
+                    value: '650',
+                });
+                inputobj.appendTo('#' + newInput_ty_le_ba_soId);
+                elementDivInput_tyle_baso.style.marginTop = '-10px';
+                elementDivInput_tyle_baso.style.display = "block";
             }
         }
 
@@ -624,6 +678,7 @@
                 var idSelect_nhaDai = select_nhaDai + randomIdfull;
                 var idSelect_number = select_number + randomIdfull;
                 var idNhap_so_diem = nhap_so_diem + randomIdfull;
+                var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdfull;
                 var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
                 var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
@@ -639,6 +694,14 @@
                 var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
                 var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
 
+                var valInput_ty_le_ba_so = 0;
+                if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
+                    valInput_ty_le_ba_so = document.getElementById(idInput_ty_le_ba_so).ej2_instances[0].properties.value;
+                }
+
                 var rowData = {
                     lotteryType: document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value,
                     numbers: idSelect_numberValue,
@@ -646,6 +709,7 @@
                     sl: document.getElementById(idNhap_so_diem).value,
                     tileXac: document.getElementById(idInput_ty_le_sap).value,
                     tileThuong: document.getElementById(idInput_ty_le_thuong).value,
+                    tileBaso: valInput_ty_le_ba_so,
                 }
 
                 calculationModel.push(rowData);
@@ -756,6 +820,7 @@
             var idSelect_nhaDai = select_nhaDai + randomIdfull;
             var idSelect_number = select_number + randomIdfull;
             var idNhap_so_diem = nhap_so_diem + randomIdfull;
+            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdfull;
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
@@ -763,7 +828,7 @@
 
             var idSelect_numberElement = document.getElementById(idSelect_number);
             if (valueCombo_loDeXien == @((int)LotteryEnum.Xien)) {
-                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value?.split(',');;
+                var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value?.split(',');
             }
             else {
                 var idSelect_numberValue = idSelect_numberElement.ej2_instances[0].properties.value;
@@ -808,6 +873,18 @@
                 var element = document.getElementById(idDiv_select_nhaDai);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
+            }
+            if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
+                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
+                var valInput_ty_le_ba_so = document.getElementById(idInput_ty_le_ba_so).ej2_instances[0].properties.value;
+                if (valInput_ty_le_ba_so === "" || !isNumber(valInput_ty_le_ba_so)) {
+                    var idDivInput_tyle_baso = divInput_tyle_baso + randomIdfull;
+                    var element = document.getElementById(idDivInput_tyle_baso);
+                    element.classList.add("temporary-border");
+                    elementArr.push(element);
+                }
             }
             if (document.getElementById(idNhap_so_diem).value === "" || !isNumber(document.getElementById(idNhap_so_diem).value)) {
                 var element = document.getElementById(idNhap_so_diem);
