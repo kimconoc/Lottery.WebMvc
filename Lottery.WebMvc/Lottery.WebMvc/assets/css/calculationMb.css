@@ -71,7 +71,7 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
     cursor: pointer;
     border: 1px solid transparent;
     color: white;
-    background: forestgreen;
+    background: #e3165b;
     margin-bottom: -10px;
 }
 
@@ -121,7 +121,7 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
         }
 
 .bordered-div {
-    border: 1.5px dashed rgb(0, 153, 0);
+    border: 1.5px dashed #e3165b;
     padding: 10px;
     padding-bottom: 15px;
     position: relative;

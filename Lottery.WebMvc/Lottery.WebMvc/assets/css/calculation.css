@@ -79,7 +79,7 @@
 		}
 
 .bordered-div {
-	border: 1.5px dashed rgb(0, 153, 0);
+	border: 1.5px dashed #e3165b;
 	padding: 10px;
 	padding-bottom: 15px;
 	position: relative;
