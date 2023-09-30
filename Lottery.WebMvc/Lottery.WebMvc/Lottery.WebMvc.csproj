@@ -166,6 +166,7 @@
     <Content Include="assets\css\calculationMb.css" />
     <Content Include="assets\css\createPlayer.css" />
     <Content Include="assets\css\demo\style.css" />
+    <Content Include="assets\css\listPlayer.css" />
     <Content Include="assets\css\login.css" />
     <Content Include="assets\helpers\awesome-alert-main\awesomeAlert.js" />
     <Content Include="assets\helpers\datetimepicker-master\jquery.datetimepicker.css" />
@@ -565,6 +566,7 @@
     <Content Include="Views\Calculation\Index.cshtml" />
     <Content Include="Views\Calculation\IndexMb.cshtml" />
     <Content Include="Views\Phonebook\CreatePlayer.cshtml" />
+    <Content Include="Views\Phonebook\ListPlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

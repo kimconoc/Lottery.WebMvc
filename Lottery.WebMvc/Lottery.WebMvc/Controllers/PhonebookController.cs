@@ -8,6 +8,10 @@ namespace Lottery.WebMvc.Controllers
 {
     public class PhonebookController : BaseController
     {
+        public ActionResult ListPlayer()
+        {
+            return View();
+        }
         public ActionResult CreatePlayer()
         {
             return View();
