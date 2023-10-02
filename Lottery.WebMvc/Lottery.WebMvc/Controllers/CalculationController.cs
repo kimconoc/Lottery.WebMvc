@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
+using Lottery.DoMain.Enum;
 
 namespace Lottery.WebMvc.Controllers
 {
@@ -16,10 +17,18 @@ namespace Lottery.WebMvc.Controllers
     {
         public ActionResult Index()
         {
+            var userData = GetCurrentUser();
+            if(userData == null || userData.UserAgent != (int)UserAgentEnum.Computer)
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
         public ActionResult IndexMb()
         {
+            var userData = GetCurrentUser();
+            if (userData == null || userData.UserAgent == (int)UserAgentEnum.Computer)
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 
@@ -31,7 +40,6 @@ namespace Lottery.WebMvc.Controllers
             var calculationBase = provider.PostAsync<Calculation>(ApiUri.POST_CalculationCal1, calculations);
             if (calculationBase == null || calculationBase.Result == null || calculationBase.Result.Data == null)
             {
-                ViewBag.Message = "Tài khoản đăng nhập không đúng";
                 return View(Server_Error());
             }
 

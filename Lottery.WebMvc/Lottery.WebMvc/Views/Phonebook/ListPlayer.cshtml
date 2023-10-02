@@ -1,5 +1,4 @@
 ﻿@using Lottery.DoMain.Enum;
-@using Lottery.DoMain.Models;
 @using Lottery.DoMain.Constant;
 @using Lottery.DoMain.Models;
 @using Newtonsoft.Json;
@@ -20,102 +19,62 @@
 <html>
 <head>
     <style>
-        .container {
-            display: flex;
-            flex-flow: column;
-            margin-top: 12px;
-            max-width: 900px;
-            overflow: auto;
-            height: 80vh;
-        }
-        .div-list-player {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-        }
-            .div-list-player .row-player {
-                margin-bottom:10px;
-            }
-                .div-list-player .row-player .head-row-player {
-                    display: flex;
-                    border-bottom: 1px solid #eee;
-                    justify-content: space-between !important;
-                }
-                .div-list-player .row-player .head-row-player i {
-                    flex: 1;
-                    margin-top: 2px;
-                    margin-right:8px;
-                    cursor: pointer;
-                    margin-left: 5px;
-                    font-size: 16px;
-                    color: #d9534f;
-                }
-
-                .div-list-player .row-player .div-info {
-                    display: flex;
-                    flex-flow: row;
-                    gap: 30px;
-                    margin-top: 8px;
-                }
-
-                    .div-list-player .row-player .div-info div {
-                        display: flex;
-                        flex-flow: column;
-                        align-items: center;
-                        text-align: center;
-                    }
-
-        .margin-bottom-row {
-            margin-top:5px;
-            border-bottom: 1px solid #e3165b;
-        }
+        
     </style>
 </head>
 <body>
     @Html.AntiForgeryToken()
     <div class="container">
-        <div class="">
-
+        <div class="heading">
+            <h3>Danh bạ người chơi</h3>
         </div>
-        <div class="div-list-player">
-            @if (userData.Phonebooks !=null && userData.Phonebooks.Count>0)
-            {
-                foreach (var item in userData.Phonebooks)
+        <div class="box-add-new-player">
+            <i class="fa fa-plus"></i>
+            <span>Thêm người chơi</span>
+        </div>
+        <div style="overflow: auto;">
+            <div class="div-list-player">
+                @if (userData.Phonebooks != null && userData.Phonebooks.Count > 0)
                 {
-                    <div class="row-player">
-                        <div>
-                            <div class="head-row-player">
-                                <h4 class="page-header margin-top-none">@item.Name</h4>
-                                <div>
-                                    <i onclick="deletePlayer(this)" id="delete-player" class="fa fa-trash" aria-hidden="true"></i>
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    foreach (var item in userData.Phonebooks)
+                    {
+                        <div class="row-player">
+                            <div>
+                                <div class="head-row-player">
+                                    <h4 class="page-header margin-top-none">@item.Name</h4>
+                                    <div>
+                                        <i onclick="deletePlayer(this)" id="delete-player" class="fa fa-trash" aria-hidden="true"></i>
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="margin-bottom-sm"></div>
+                                <div class="div-info">
+                                    <div>
+                                        <span>Tiền xác</span>
+                                        <strong id="lbl_xac">@item.TileXac</strong>
+                                    </div>
+                                    <div>
+                                        <span>Tiền thưởng</span>
+                                        <strong id="lbl_thuong">@item.TileThuong</strong>
+                                    </div>
+                                    <div id="div_lbl_result" class="div-lbl-result">
+                                        <span>Ba số</span>
+                                        <strong id="lbl_result">@item.TileBaSo</strong>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="margin-bottom-sm"></div>
-                            <div class="div-info">
-                                <div>
-                                    <span>Tiền xác</span>
-                                    <strong id="lbl_xac">@item.TileXac</strong>
-                                </div>
-                                <div>
-                                    <span>Tiền thưởng</span>
-                                    <strong id="lbl_thuong">@item.TileThuong</strong>
-                                </div>
-                                <div id="div_lbl_result" class="div-lbl-result">
-                                    <span>Ba số</span>
-                                    <strong id="lbl_result">@item.TileBaSo</strong>
-                                </div>
-                            </div>
+                            <div class="margin-bottom-row"></div>
                         </div>
-                        <div class="margin-bottom-row"></div>
-                    </div>
 
+                    }
                 }
-            }
+            </div>
         </div>
     </div>
     <script>
-
+        $('.box-add-new-player').click(function (e) {
+            window.location = "/Phonebook/CreatePlayer";
+        });
     </script>
 </body>
 </html>

@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using Lottery.DoMain.Constant;
+@using Lottery.DoMain.Models;
+@using Newtonsoft.Json;
+@using Lottery.DoMain.Enum;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    FormsIdentity id = (FormsIdentity)HttpContext.Current.User.Identity;
+    FormsAuthenticationTicket ticket = id.Ticket;
+    var userData = JsonConvert.DeserializeObject<User>(ticket.UserData);
+
+}
+
+<!DOCTYPE html>
 <!-- Created By CodingLab - www.codinglabweb.com -->
 <html lang="en" dir="ltr">
 <head>
@@ -6,41 +19,82 @@
     <link href="~/assets/css/createPlayer.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form | CodingLab</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
 </head>
 <body>
     <div class="container">
         <div class="wrapper">
             <div class="title"><span>Thêm mới</span></div>
-            <form action="#">
+            <form id="createPlayerForm" action="#">
                 <div class="row">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Tên người chơi" required>
+                    <input name="name" type="text" placeholder="Tên người chơi" required>
                 </div>
+                @*<div class="row">
+            <i class="fas fa-phone"></i>
+            <input type="text" placeholder="Số điện thoại" required>
+        </div>*@
                 <div class="row">
-                    <i class="fas fa-phone"></i>
-                    <input type="text" placeholder="Số điện thoại" required>
+                    <i class="fas fa-calculator"></i>
+                    <input name="tileXac" type="number" step="any" placeholder="Tỷ lệ xác" required>
                 </div>
                 <div class="row">
                     <i class="fas fa-calculator"></i>
-                    <input type="number" placeholder="Tỷ lệ sáp" required>
+                    <input name="tileThuong" type="number" placeholder="Tỷ lệ thưởng" required>
                 </div>
                 <div class="row">
                     <i class="fas fa-calculator"></i>
-                    <input type="number" placeholder="Tỷ lệ thưởng" required>
-                </div>
-                <div class="row">
-                    <i class="fas fa-calculator"></i>
-                    <input type="number" placeholder="Tỷ lệ ba càng" required>
+                    <input name="tileBaSo" type="number" placeholder="Tỷ lệ ba càng" required>
                 </div>
                 <div class="row button">
                     <input type="submit" value="Đăng ký">
                 </div>
-                <div class="signup-link">Người chơi đã có trong danh bạ? <a href="#"> Trang tính!</a></div>
+                @{
+                    if (userData.UserAgent == (int)UserAgentEnum.Computer)
+                    {
+                        <div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/Index"> Trang tính!</a></div>
+                    }
+                    else
+                    {
+                        <div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexMb"> Trang tính!</a></div>
+                    }
+                }
+
             </form>
         </div>
     </div>
+    <script>
+        // Bắt sự kiện submit của biểu mẫu
+        document.getElementById("createPlayerForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
 
+            var playerModel = {
+                name: document.getElementsByName("name")[0].value,
+                tileXac: document.getElementsByName("tileXac")[0].value,
+                tileThuong: document.getElementsByName("tileThuong")[0].value,
+                tileBaSo: document.getElementsByName("tileBaSo")[0].value,
+            }
+            ShowOverlay(true);
+            playerJson = JSON.stringify(playerModel);
+            $.ajax({
+                    type: "POST",
+                    data:
+                    {
+                        "playerJson": playerJson,
+                    },
+                    url: "@Url.Action("ExecuteCreatePlayer", "Phonebook")",
+                    success: function (data)
+                    {
+                        if (data.Success && data.Data) {
+                            alert("Đăng ký thành công!");
+                        }
+                        else {
+                            alert("Có lỗi xảy ra!");
+                        }
+                        hideOverlay();
+                    },
+                })
+        });
+    </script>
 </body>
 </html>

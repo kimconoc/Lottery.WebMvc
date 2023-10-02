@@ -1,18 +1,19 @@
-﻿using Lottery.DoMain.Models.BaseModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace Lottery.DoMain.Models
+namespace Lottery.WebMvc.Models
 {
-    public class Phonebook : VBaseModel<int>
+    public class PhonebookModel
     {
+        public int? Id { get; set; }
+        public int UserID { get; set; }
         public string Name { get; set; }
         public string TileXac { get; set; }
         public string TileThuong { get; set; }
         public string TileBaSo { get; set; }
         public string PhoneNumber { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

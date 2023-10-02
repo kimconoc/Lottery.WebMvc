@@ -67,6 +67,21 @@
     @Scripts.Render("~/bundles/js")
     <script src="~/assets/js/misc.js"></script>
     <script>
+        // Đảm bảo clear khi load trang
+        // Lấy ra phần tử có class .loader-wrapper
+        var loaderWrapper = document.querySelector('.loader-wrapper');
+        // Kiểm tra khi trang đã được tải lại hoặc bạn quay lại trang
+        window.addEventListener('load', function () {
+            // Ẩn class .loader-wrapper sau khi trang đã tải xong
+            loaderWrapper.style.display = 'none';
+        });
+        // Đảm bảo ẩn class .loader-wrapper khi bạn quay lại trang trước đó
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                loaderWrapper.style.display = 'none';
+            }
+        });
+
         $(window).on('beforeunload', function () {
             document.body.className = "";
         });
