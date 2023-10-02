@@ -1,13 +1,25 @@
 ﻿@using Lottery.DoMain.Enum;
 @using Lottery.DoMain.Constant;
 @using Lottery.DoMain.Models;
-@using Newtonsoft.Json;
+@using Newtonsoft.Json;;
+@using Lottery.DoMain.Extentions;
+@using Lottery.Service.ServiceProvider;
+@using Lottery.Service.ServiceProvider.Interface;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     FormsIdentity id = (FormsIdentity)HttpContext.Current.User.Identity;
     FormsAuthenticationTicket ticket = id.Ticket;
     var userData = JsonConvert.DeserializeObject<User>(ticket.UserData);
+
+    IProvider provider = new Provider();
+
+    List<Phonebook> phonebooks = new List<Phonebook>();
+    var dataBase = provider.GetAsync<List<Phonebook>>(string.Format(ApiUri.Get_Phonebook + "/{0}", userData.Id));
+    if (dataBase != null && dataBase.Result != null && dataBase.Result.Data != null)
+    {
+        phonebooks = dataBase.Result.Data;
+    }
 }
 
 <!DOCTYPE html>
@@ -19,7 +31,6 @@
 <html>
 <head>
     <style>
-        
     </style>
 </head>
 <body>
@@ -34,9 +45,9 @@
         </div>
         <div style="overflow: auto;">
             <div class="div-list-player">
-                @if (userData.Phonebooks != null && userData.Phonebooks.Count > 0)
+                @if (phonebooks != null && phonebooks.Count > 0)
                 {
-                    foreach (var item in userData.Phonebooks)
+                    foreach (var item in phonebooks)
                     {
                         <div class="row-player">
                             <div>

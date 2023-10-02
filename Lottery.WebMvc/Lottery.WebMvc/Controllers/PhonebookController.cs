@@ -31,7 +31,7 @@ namespace Lottery.WebMvc.Controllers
             player.PhoneNumber = "";
             if (player.Id == null)
             {
-                var calculationBase = provider.PostAsync<string>(ApiUri.POST_UserUpdatePhonebook, player);
+                var calculationBase = provider.PostAsync<object>(ApiUri.POST_UserUpdatePhonebook, player);
                 if (calculationBase == null || calculationBase.Result == null || calculationBase.Result.Data == null)
                 {
                     return View(Server_Error());
