@@ -83,8 +83,12 @@
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" class="div-row">
+                    <div id="div_textImportMultiline">
+                        <div id="text_import_multiline" class="multiline">
+                            <textarea id="default" name="text"></textarea>
+                        </div>
+                    </div>
                     <div id="divInput_tyle_baso" style=" display:none;" class="div-input-ty-le-ba-so">
-                        element which is going to render the MultiSelect
                         <input type="text" tabindex="1" id="input_ty_le_ba_so">
                     </div>
                     <div class="div-nhap-so-diem">
@@ -156,6 +160,8 @@
         var div_calculate = "div_calculate";
         var delete_div_calculate = "delete_div_calculate";
         var nameInput = "nameInput";
+        var div_textImportMultiline = "div_textImportMultiline";
+        var text_import_multiline = "text_import_multiline";
         var div_row = "div_row";
         var delete_row = "delete_row";
         var btn_add_row = "btn_add_row";
@@ -198,6 +204,12 @@
             //Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
             function changeIds(element) {
                 if (element.id && element.id == nameInput) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == div_textImportMultiline) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == text_import_multiline) {
                     element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == delete_div_calculate) {
@@ -276,6 +288,7 @@
                 element.style.display = "block";
             }
             createDataTargetClone(randomIdOut);
+            createMultiInputTyLeBaSo(randomIdOut, randomIdIn);
         }
 
         function deleteDivCalculate(dom) {
@@ -319,6 +332,12 @@
 
             // Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
             function changeIds(element) {
+                if (element.id && element.id.indexOf(div_textImportMultiline) !== -1) {
+                    element.id = div_textImportMultiline + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(text_import_multiline) !== -1) {
+                    element.id = text_import_multiline + randomIdOut + randomIdIn;
+                }
                 if (element.id && element.id.indexOf(divInput_tyle_baso) !== -1) {
                     element.id = divInput_tyle_baso + randomIdOut + randomIdIn;
                 }
@@ -345,7 +364,33 @@
             elementDivInput_tyle_baso.style.display = "none";
 
             setPropertyWhenAddRow(randomIdOut);
+            createMultiInputTyLeBaSo(randomIdOut, randomIdIn);
 
+        }
+
+        function createMultiInputTyLeBaSo(randomIdOut, randomIdIn) {
+
+            var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
+            elementDivInput_tyle_baso.style.display = "none";
+            var newDivInput_tyle_baso = divInput_tyle_baso + randomIdOut + randomIdIn;
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(newDivInput_tyle_baso);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<input type="text" tabindex="1" id="input_ty_le_ba_so">';
+            var newInput_ty_le_ba_soId = "input_ty_le_ba_so" + randomIdOut + randomIdIn;
+            selectHtml = selectHtml.replace("input_ty_le_ba_so", newInput_ty_le_ba_soId);
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Thưởng',
+                floatLabelType: 'Auto',
+                value: '650',
+            });
+            inputobj.appendTo('#' + newInput_ty_le_ba_soId);
+            elementDivInput_tyle_baso.style.marginTop = '-10px';
+            elementDivInput_tyle_baso.style.display = "block";
+           
         }
 
         function deleteRow(dom) {
