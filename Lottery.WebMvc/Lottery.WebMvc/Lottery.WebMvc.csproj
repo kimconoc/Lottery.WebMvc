@@ -568,6 +568,7 @@
     <Content Include="Views\Calculation\IndexMb.cshtml" />
     <Content Include="Views\Phonebook\CreatePlayer.cshtml" />
     <Content Include="Views\Phonebook\ListPlayer.cshtml" />
+    <Content Include="Views\Phonebook\UpdatePlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

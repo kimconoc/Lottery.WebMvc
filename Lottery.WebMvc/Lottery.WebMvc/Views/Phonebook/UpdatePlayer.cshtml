@@ -1,7 +1,7 @@
 ﻿@using Lottery.DoMain.Constant;
-@using Lottery.DoMain.Models;
 @using Newtonsoft.Json;
 @using Lottery.DoMain.Enum;
+@using Lottery.DoMain.Models;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -10,7 +10,7 @@
     var userData = JsonConvert.DeserializeObject<User>(ticket.UserData);
 
 }
-
+@model Phonebook
 <!DOCTYPE html>
 <!-- Created By CodingLab - www.codinglabweb.com -->
 <html lang="en" dir="ltr">
@@ -24,43 +24,46 @@
 <body>
     <div class="container">
         <div class="wrapper">
-            <div class="title"><span>Thêm mới</span></div>
-            <form id="createPlayerForm" action="#">
-                <div class="row">
-                    <i class="fas fa-user"></i>
-                    <input name="name" type="text" placeholder="Tên người chơi" required>
-                </div>
-                @*<div class="row">
-            <i class="fas fa-phone"></i>
-            <input type="text" placeholder="Số điện thoại" required>
-        </div>*@
-                <div class="row">
-                    <i class="fas fa-calculator"></i>
-                    <input name="tileXac" type="number" step="any" placeholder="Tỷ lệ xác" required>
-                </div>
-                <div class="row">
-                    <i class="fas fa-calculator"></i>
-                    <input name="tileThuong" type="number" placeholder="Tỷ lệ thưởng" required>
-                </div>
-                <div class="row">
-                    <i class="fas fa-calculator"></i>
-                    <input name="tileBaSo" type="number" placeholder="Tỷ lệ ba càng" required>
-                </div>
-                <div class="row button">
-                    <input type="submit" value="Đăng ký">
-                </div>
-                @{
-                    if (userData.UserAgent == (int)UserAgentEnum.Computer)
-                    {
-                        <div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/Index"> Trang tính!</a></div>
+            <div class="title"><span>Cập nhật</span></div>
+            @if (Model != null)
+            {
+                <form id="createPlayerForm" action="#">
+                    <div class="row">
+                        <i class="fas fa-user"></i>
+                        <input name="name" type="text" placeholder="Tên người chơi" value="@Model.Name" required>
+                    </div>
+                    @*<div class="row">
+                    <i class="fas fa-phone"></i>
+                    <input type="text" placeholder="Số điện thoại" required>
+                </div>*@
+                    <div class="row">
+                        <i class="fas fa-calculator"></i>
+                        <input name="tileXac" type="number" step="any" placeholder="Tỷ lệ xác" value="@Model.TileXac" required>
+                    </div>
+                    <div class="row">
+                        <i class="fas fa-calculator"></i>
+                        <input name="tileThuong" type="number" placeholder="Tỷ lệ thưởng" value="@Model.TileThuong" required>
+                    </div>
+                    <div class="row">
+                        <i class="fas fa-calculator"></i>
+                        <input name="tileBaSo" type="number" placeholder="Tỷ lệ ba càng" value="@Model.TileBaSo" required>
+                    </div>
+                    <div class="row button">
+                        <input type="submit" value="Cập nhật">
+                    </div>
+                    @{
+                        if (userData.UserAgent == (int)UserAgentEnum.Computer)
+                        {
+                            <div class="signup-link">Bạn muốn cập nhật danh bạ? <a href="/Calculation/Index"> Trang tính!</a></div>
+                        }
+                        else
+                        {
+                            <div class="signup-link">Bạn muốn cập nhật danh bạ? <a href="/Calculation/IndexMb"> Trang tính!</a></div>
+                        }
                     }
-                    else
-                    {
-                        <div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexMb"> Trang tính!</a></div>
-                    }
-                }
 
-            </form>
+                </form>
+            }
         </div>
     </div>
     <script>
@@ -69,6 +72,7 @@
             event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
 
             var playerModel = {
+                id: @Model.Id,
                 name: document.getElementsByName("name")[0].value,
                 tileXac: document.getElementsByName("tileXac")[0].value,
                 tileThuong: document.getElementsByName("tileThuong")[0].value,
@@ -92,7 +96,7 @@
                                 header: true,
                                 type: 'success',
                                 title: 'Thành công!',
-                                message: 'Tạo mới người chơi thành công.',
+                                message: 'Cập nhật người chơi thành công.',
                                 //bgColor: '#2dd284',
                                 img: '/assets/images/icon/success.svg',
                                 buttonOK: 'Xong!',
