@@ -98,6 +98,7 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
         }
 
             .div-calculate-result .div-calculate div button {
+                padding:6px 10px;
                 height: 45px;
             }
 
@@ -185,11 +186,12 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
     }
 
         .bordered-div .div-btn-add-row button {
-
+            padding: 4px 6px;
         }
 
             .bordered-div .div-btn-add-row button i {
                 margin-left: 5px;
+                margin-top: -1px;
             }
 
 .name-input {
