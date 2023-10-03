@@ -1,0 +1,587 @@
+﻿@using Lottery.DoMain.Enum;
+@using Lottery.DoMain.Extentions;
+@using Lottery.Service.ServiceProvider;
+@using Lottery.Service.ServiceProvider.Interface;
+@using Lottery.DoMain.Constant;
+@using Lottery.DoMain.Models;
+@using Newtonsoft.Json;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    FormsIdentity id = (FormsIdentity)HttpContext.Current.User.Identity;
+    FormsAuthenticationTicket ticket = id.Ticket;
+    var userData = JsonConvert.DeserializeObject<User>(ticket.UserData);
+
+    IProvider provider = new Provider();
+
+    List<ChanelGroup> dataChanel = new List<ChanelGroup>();
+    var dataBase = provider.GetAsync<List<ChanelGroup>>(ApiUri.Get_CommonChanels);
+    if (dataBase != null && dataBase.Result != null && dataBase.Result.Data != null)
+    {
+        dataChanel = dataBase.Result.Data;
+    }
+}
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Typescript UI Controls">
+<meta name="author" content="Syncfusion">
+<link href="~/assets/css/calculation.css" rel="stylesheet" />
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-base/styles/material.css" rel="stylesheet">
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-inputs/styles/material.css" rel="stylesheet">
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-dropdowns/styles/material.css" rel="stylesheet">
+<link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-buttons/styles/material.css" rel="stylesheet">
+<script src="https://cdn.syncfusion.com/ej2/22.2.5/dist/ej2.min.js" type="text/javascript"></script>
+<script src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+<html>
+<head>
+    <style>
+
+        .temporary-border {
+            border: 1px solid red;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input {
+            background-color: white;
+            padding: 10px;
+            border: none;
+        }
+
+        .e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input, .e-input-group textarea.e-input, .e-input-group.e-control-wrapper textarea.e-input {
+            font-size: 14px;
+        }
+
+        .e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div>
+
+            <button id="btn_add_calculate" style="background: #e3165b !important; margin-bottom: -10px;" class="btn-core-accept">
+                Thêm
+                <i style="margin-left:5px;" class="fa fa-user-plus"></i>
+            </button>
+
+            <div id="div_calculate_virtual" class="bordered-div">
+                <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
+                <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
+                <div id="div_row" class="div-row">
+                    <div id="divInput_tyle_baso" style=" display:none;" class="div-input-ty-le-ba-so">
+                        element which is going to render the MultiSelect
+                        <input type="text" tabindex="1" id="input_ty_le_ba_so">
+                    </div>
+                    <div class="div-nhap-so-diem">
+                        <div class="nhap-so-diem">
+                            <i onclick="deleteRow(this)" id="delete_row" class="fa fa-trash" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="div-btn-add-row">
+                    <button id="btn_add_row" onclick="addRowClick(this)" class="btn-custom btn-core-accept">
+                        Thêm dòng
+                        <i class="fa fa-plus-circle"></i>
+                    </button>
+                </div>
+                <div class="div-calculate-result">
+                    <div class="div-calculate">
+                        <div>
+                            <button id="btn_send_result" class="btn-custom btn-core-accept" onclick="executeCalculate(this)">Tính tiền</button>
+                        </div>
+                        <div>
+                            <span>Xác</span>
+                            <input style="padding-left: 15px " id="input_ty_le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap(this)" value="0.75">
+                        </div>
+                        <div>
+                            <span>Thưởng</span>
+                            <input style="padding-left: 20px " id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" value="75">
+                        </div>
+                    </div>
+                    <div class="div-result">
+                        <div>
+                            <span>Tiền xác</span>
+                            <strong id="lbl_xac">0</strong>
+                        </div>
+                        <div>
+                            <span>Tiền thưởng</span>
+                            <strong id="lbl_thuong">0</strong>
+                        </div>
+                        <div id="div_lbl_result" class="div-lbl-result">
+                            <span>Lời</span>
+                            <strong id="lbl_result">0</strong>
+                        </div>
+                    </div>
+                </div>
+                <div id="div_box_more_message">
+                    <div id="box_more_message" class="box-more-message">
+                        <div class="box-more-message-title">
+                            <span id="target_onclick" onclick="targetOnclick(this)" data-toggle="collapse" data-target="#showLotterymessage_content">Mở rộng</span>
+                            <i id="showLotterymessage_icon" class="fa fa-angle-double-down"></i>
+                        </div>
+                        <div id="showLotterymessage_content" class="collapse">
+                            <div class="box-more-message-content">
+                                <div class="box-more-message-content-✓">
+                                    ✓
+                                </div>
+                                <div class="box-more-message-content-detailt">
+                                    Không có thông tin nào
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+        var userData = @Html.Raw(Json.Encode(userData));
+        var div_calculate = "div_calculate";
+        var delete_div_calculate = "delete_div_calculate";
+        var nameInput = "nameInput";
+        var div_row = "div_row";
+        var delete_row = "delete_row";
+        var btn_add_row = "btn_add_row";
+        var btn_send_result = "btn_send_result";
+        var select_number = "select_number";
+        var nhap_so_diem = "nhap_so_diem";
+        var div_result = "div_result";
+        var divInput_tyle_baso = "divInput_tyle_baso";
+        var input_ty_le_ba_so = "input_ty_le_ba_so";
+        var input_ty_le_thuong = "input_ty_le_thuong";
+        var input_ty_le_sap = "input_ty_le_sap";
+        var lbl_viewTong = "lbl_viewTong";
+        var lbl_xac = "lbl_xac";
+        var lbl_thuong = "lbl_thuong";
+        var div_lbl_result = "div_lbl_result";
+        var lbl_result = "lbl_result";
+        var div_box_more_message = "div_box_more_message";
+        var box_more_message = "box_more_message";
+        var target_onclick = "target_onclick";
+        var showLotterymessage_icon = "showLotterymessage_icon";
+        var showLotterymessage_content = "showLotterymessage_content";
+
+        $(document).ready(function () {
+            getDesignDivCalculate();
+        });
+
+        $('#btn_add_calculate').click(function (e) {
+            getDesignDivCalculate();
+            setPropertyWhenAddCalculate();
+        });
+
+        function getDesignDivCalculate() {
+            var originalElement = document.getElementById("div_calculate_virtual");
+            var clonedElement = originalElement.cloneNode(true);
+            var randomIdOut = generateRandomCode(5);
+            var randomIdIn = generateRandomCode(5);
+            // Đặt ID mới cho phần tử sao chép
+            clonedElement.id = div_calculate + randomIdOut;
+
+            //Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
+            function changeIds(element) {
+                if (element.id && element.id == nameInput) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == delete_div_calculate) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == btn_add_row) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == div_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == divInput_tyle_baso) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == input_ty_le_ba_so) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == nhap_so_diem) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == delete_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == btn_send_result) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_sap) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_thuong) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == lbl_xac) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == lbl_thuong) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == div_lbl_result) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == lbl_result) {
+                    element.id = element.id + randomIdOut ;
+                }
+                if (element.id && element.id == div_box_more_message) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == box_more_message) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == target_onclick) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == showLotterymessage_icon) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == showLotterymessage_content) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.children && element.children.length > 0) {
+                    for (var i = 0; i < element.children.length; i++) {
+                        changeIds(element.children[i]); // Đệ quy cho các phần tử con
+                    }
+                }
+            }
+
+            changeIds(clonedElement);
+
+            // Thêm phần tử sao chép vào DOM sau phần tử gốc
+            originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+
+            // Lấy tham chiếu đến phần tử bằng ID
+            var element = document.getElementById(div_calculate + randomIdOut);
+
+            if (element) {
+                element.style.display = "block";
+            }
+            createDataTargetClone(randomIdOut);
+        }
+
+        function deleteDivCalculate(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var elementToRemove = document.getElementById(div_calculate + randomIdOut);
+            elementToRemove.remove();
+            setPropertyWhenAddCalculate();
+        }
+
+        function setPropertyWhenAddCalculate() {
+
+            var ListidDelete_div_calculate = getListIdAsRequired(delete_div_calculate);
+            if (ListidDelete_div_calculate.length > 2) {
+                for (var itemId of ListidDelete_div_calculate) {
+                    var delete_div_calculateElement = document.getElementById(itemId);
+                    delete_div_calculateElement.style.display = "block";
+                }
+            }
+            else {
+                for (var itemId of ListidDelete_div_calculate) {
+                    var delete_div_calculateElement = document.getElementById(itemId);
+                    delete_div_calculateElement.style.display = "none";
+                }
+            }
+
+        }
+
+        function addRowClick(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            var idDiv_rowList = getListIdAsRequired(div_row + randomIdOut);
+            var div_rowClone = idDiv_rowList[idDiv_rowList.length - 1];
+
+            var originalElement = document.getElementById(div_rowClone);
+            var clonedElement = originalElement.cloneNode(true);
+
+            var randomIdIn = generateRandomCode(5);
+            // Đặt ID mới cho phần tử sao chép
+            clonedElement.id = div_row + randomIdOut + randomIdIn;
+
+            // Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
+            function changeIds(element) {
+                if (element.id && element.id.indexOf(divInput_tyle_baso) !== -1) {
+                    element.id = divInput_tyle_baso + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(input_ty_le_ba_so) !== -1) {
+                    element.id = input_ty_le_ba_so + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
+                    element.id = nhap_so_diem + randomIdOut + randomIdIn;;
+                }
+                if (element.id && element.id.indexOf(delete_row) !== -1) {
+                    element.id = delete_row + randomIdOut + randomIdIn;;
+                }
+                if (element.children && element.children.length > 0) {
+                    for (var i = 0; i < element.children.length; i++) {
+                        changeIds(element.children[i]); // Đệ quy cho các phần tử con
+                    }
+                }
+            }
+            changeIds(clonedElement);
+            // Thêm phần tử sao chép vào DOM sau phần tử gốc
+            originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+
+            var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
+            elementDivInput_tyle_baso.style.display = "none";
+
+            setPropertyWhenAddRow(randomIdOut);
+
+        }
+
+        function deleteRow(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdfull = IdBtnAddRow.substring(IdBtnAddRow.length - 10);
+            var randomIdOut = randomIdfull.substring(0,5);
+            var elementToRemove = document.getElementById(div_row + randomIdfull);
+            elementToRemove.remove();
+            setPropertyWhenAddRow(randomIdOut);
+        }
+
+        function setPropertyWhenAddRow(randomIdOut) {
+            var Listiddelete_row = getListIdAsRequired(delete_row + randomIdOut);
+            if (Listiddelete_row.length > 1) {
+                for (var itemId of Listiddelete_row) {
+                    var delete_rowElement = document.getElementById(itemId);
+                    delete_rowElement.style.display = "inline";
+                }
+            }
+            else {
+                for (var itemId of Listiddelete_row) {
+                    var delete_rowElement = document.getElementById(itemId);
+                    delete_rowElement.style.display = "none";
+                }
+            }
+        }
+
+        function createDataTargetClone(randomIdOut) {
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(div_box_more_message + randomIdOut);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+
+            var element = document.getElementById("box_more_message" + randomIdOut);
+            var htmlContent = element.outerHTML;
+            var newTargetId = "#showLotterymessage_content" + randomIdOut;
+            htmlContent = htmlContent.replace("#showLotterymessage_content", newTargetId);
+
+            var selectHtml = htmlContent;
+
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+
+        }
+
+        function validaeInPutTyLeSap(dom) {
+            var val = document.getElementById(dom.id);
+            const value = parseFloat(val.value);
+            if (isNaN(value) || value < 0 || value >= 1) {
+                val.value = "0.75";
+            }
+        }
+
+        function validaeInPutNhapSoDiem(dom) {
+            var val = document.getElementById(dom.id);
+            const value = parseFloat(val.value);
+            if (value < 0) {
+                val.value = "0";
+            }
+        }
+
+        function executeCalculate(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+
+            var isValidate = false;
+
+            var calculationModel = [];
+
+            calculationJsons = JSON.stringify(calculationModel);
+            $.ajax({
+                    type: "POST",
+                    traditional: true,
+                    async: false,
+                    data:
+                    {
+                        "calculationJson": calculationJsons,
+                    },
+                    url: "@Url.Action("ExecuteCalculation", "Calculation")",
+                    success: function (data)
+                    {
+                        if (data.Success && data.Data) {
+                            var idLbl_xac = lbl_xac + randomIdOut;
+                            var idLbl_thuong = lbl_thuong + randomIdOut;
+                            var idLbl_result = lbl_result + randomIdOut;
+
+                            document.getElementById(idLbl_xac).textContent = data.Data.Xac;
+                            document.getElementById(idLbl_thuong).textContent = data.Data.Thuong;
+                            document.getElementById(idLbl_result).textContent = data.Data.Loi;
+                            var idDiv_lbl_result = div_lbl_result + randomIdOut;
+                            var divElement = document.getElementById(idDiv_lbl_result);
+                            var spanElement = divElement.querySelector("span");
+                            var strongElement = divElement.querySelector("strong");
+                            var idBox_more_message = box_more_message + randomIdOut;
+                            var element_more_message = document.getElementById(idBox_more_message);
+                            if (data.Data.Loi > 0) {
+                                spanElement.style.color = "blue"
+                                strongElement.style.color = "blue"
+                            }
+                            else {
+                                spanElement.style.color = "red"
+                                strongElement.style.color = "red"
+                            }
+                            if (data.Data.Thuong > 0) {
+                                if (element_more_message) {
+                                    element_more_message.style.display = "block";
+                                }
+                                showLotteryMessageContent(randomIdOut, data.Data.Message)
+                            }
+                            else {
+                                if (element_more_message) {
+                                    element_more_message.style.display = "none";
+                                }
+                            }
+                        }
+                        else {
+                            alert("Có lỗi xảy ra!");
+                        }
+                    },
+                })
+
+        }
+
+        function showLotteryMessageContent(randomIdOut, listMessage) {
+            // Lấy đối tượng div theo ID
+            if (listMessage == null || listMessage.length == 0) {
+                return;
+            }
+
+            var divToReplace = document.getElementById(showLotterymessage_content + randomIdOut);
+            var htmlContents = '';
+
+            for (var i = 0; i < listMessage.length; i++) {
+                var msg = listMessage[i];
+                var htmlContent = `
+                                    <div class="box-more-message-content">
+                                        <div class="box-more-message-content-✓">
+                                            ✓
+                                        </div>
+                                        <div class="box-more-message-content-detailt">
+                                            ${msg}
+                                        </div>
+                                    </div>
+                                `;
+
+                htmlContents = htmlContents + htmlContent;
+            }
+
+            divToReplace.innerHTML = htmlContents;
+        }
+
+        function targetOnclick(dom) {
+            var IdTarget = dom.id;
+            var randomIdOut = IdTarget.substring(IdTarget.length - 5);
+            if (dom.innerHTML.indexOf('Mở rộng') >= 0) {
+                dom.innerText = "Thu lại";
+                const element = document.getElementById(showLotterymessage_icon + randomIdOut);
+                element.className = "fa fa-angle-double-up";
+            }
+            else {
+                dom.innerText = "Mở rộng";
+                const element = document.getElementById(showLotterymessage_icon + randomIdOut);
+                element.className = "fa fa-angle-double-down";
+            }
+        }
+
+        function validateData(randomIdOut, randomIdIn) {
+
+            var randomIdfull = randomIdOut + randomIdIn
+            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdfull;
+            var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
+            var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
+
+            var elementArr = [];
+            if (document.getElementById(idInput_ty_le_sap).value === "" || !isNumber(document.getElementById(idInput_ty_le_sap).value)) {
+                var element = document.getElementById(idInput_ty_le_sap);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idInput_ty_le_thuong).value === "" || !isNumber(document.getElementById(idInput_ty_le_thuong).value)) {
+                var element = document.getElementById(idInput_ty_le_thuong);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+
+            setTimeout(function () {
+
+                for (var i = 0; i < elementArr.length; i++) {
+                    var element = elementArr[i];
+                    element.classList.remove("temporary-border");
+                }
+            }, 4000);
+
+            if (elementArr.length > 0) {
+                return true;
+            }
+
+            return false;
+
+        }
+
+        function isNumber(value) {
+            return !isNaN(value);
+        }
+
+        function generateRandomCode(length) {
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var code = '';
+
+            for (var i = 0; i < length; i++) {
+                var randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters.charAt(randomIndex);
+            }
+
+            return code;
+        }
+
+        function getListIdAsRequired(idInput) {
+            var idList = [];
+            var allElements = document.getElementsByTagName("*"); // Lấy tất cả các phần tử DOM
+
+            for (var i = 0; i < allElements.length; i++) {
+                var element = allElements[i];
+                var elementId = element.id; // Lấy id của phần tử
+
+                if (elementId && elementId.indexOf(idInput) !== -1) {
+                    idList.push(elementId);
+                }
+            }
+
+            return idList;
+
+        }
+
+    </script>
+</body>
+</html>
+
+
+

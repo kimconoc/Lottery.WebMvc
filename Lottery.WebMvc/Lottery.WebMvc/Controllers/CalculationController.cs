@@ -32,6 +32,11 @@ namespace Lottery.WebMvc.Controllers
             return View();
         }
 
+        public ActionResult IndexImport()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult ExecuteCalculation(string calculationJson)
         {

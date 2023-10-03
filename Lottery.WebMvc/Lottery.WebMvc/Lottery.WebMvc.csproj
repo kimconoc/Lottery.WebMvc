@@ -166,6 +166,7 @@
     <Content Include="assets\css\calculationMb.css" />
     <Content Include="assets\css\createPlayer.css" />
     <Content Include="assets\css\demo\style.css" />
+    <Content Include="assets\css\calculationImport.css" />
     <Content Include="assets\css\listPlayer.css" />
     <Content Include="assets\css\login.css" />
     <Content Include="assets\helpers\awesome-alert-main\awesomeAlert.js" />
@@ -569,6 +570,7 @@
     <Content Include="Views\Phonebook\CreatePlayer.cshtml" />
     <Content Include="Views\Phonebook\ListPlayer.cshtml" />
     <Content Include="Views\Phonebook\UpdatePlayer.cshtml" />
+    <Content Include="Views\Calculation\IndexImport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
