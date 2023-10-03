@@ -74,13 +74,15 @@
                 tileThuong: document.getElementsByName("tileThuong")[0].value,
                 tileBaSo: document.getElementsByName("tileBaSo")[0].value,
             }
+            var playerModels = [playerModel];
+            playerModels.push();
             ShowOverlay(true);
-            playerJson = JSON.stringify(playerModel);
+            playerJsons = JSON.stringify(playerModels);
             $.ajax({
                     type: "POST",
                     data:
                     {
-                        "playerJson": playerJson,
+                        "playerJsons": playerJsons,
                     },
                     url: "@Url.Action("ExecuteCreatePlayer", "Phonebook")",
                     success: function (data)

@@ -22,23 +22,42 @@ namespace Lottery.WebMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ExecuteCreatePlayer(string playerJson)
+        public ActionResult ExecuteCreatePlayer(string playerJsons)
         {
             var userData = GetCurrentUser();
-            var player = JsonConvert.DeserializeObject<PhonebookModel>(playerJson);
-            player.UserID = userData.Id;
-            player.IsDeleted = false;
-            player.PhoneNumber = "";
-            if (player.Id == null)
+            var players = JsonConvert.DeserializeObject<List<PhonebookModel>>(playerJsons);
+            players[0].UserID = userData.Id;
+            players[0].IsDeleted = false;
+            players[0].PhoneNumber = "";
+            // Tạo mới
+            if (players[0].Id == null)
             {
-                var playerBase = provider.PostAsync<object>(ApiUri.POST_UserUpdatePhonebook, player);
-                if (playerBase == null || playerBase.Result == null || !playerBase.Result.IsSuccessful)
+                var playerBase = provider.PutAsync<object>(ApiUri.POST_UserUpdatePhonebook, players);
+                if (playerBase != null || playerBase.Result != null || playerBase.Result.IsSuccessful)
                 {
-                    return View(Server_Error());
+                    return Json(Success_Request(playerBase.Result.IsSuccessful));
                 }
             }
-           
-            return Json(Success_Request(true));
+            // Update
+            else if (players[0].Id != null && !players[0].IsDeleted)
+            {
+                var playerBase = provider.PutAsync<object>(ApiUri.POST_UserUpdatePhonebook, players);
+                if (playerBase != null || playerBase.Result != null || playerBase.Result.IsSuccessful)
+                {
+                    return Json(Success_Request(playerBase.Result.IsSuccessful));
+                }
+            }
+            // Xóa
+            else if (players[0].Id != null && players[0].IsDeleted)
+            {
+                var playerBase = provider.PutAsync<object>(ApiUri.POST_UserUpdatePhonebook, players);
+                if (playerBase != null || playerBase.Result != null || playerBase.Result.IsSuccessful)
+                {
+                    return Json(Success_Request(playerBase.Result.IsSuccessful));
+                }
+            }    
+
+            return View(Server_Error());
 
         }
     }

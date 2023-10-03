@@ -97,6 +97,28 @@ namespace Lottery.Service.ServiceProvider
             return default;
         }
 
+        public Task<ResponseBase<TResult>> PutAsync<TResult>(string uri, dynamic fromBody, string token = "")
+        {
+            uri = ApiEndPoint + uri;
+            try
+            {
+                Uri urlapi = new Uri(uri);
+                using (var wc = new HttpClient())
+                {
+                    wc.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+                    var modelString = JsonConvert.SerializeObject(fromBody);
+                    var content = new StringContent(modelString, Encoding.UTF8, "application/json");
+                    var jsonResult = wc.PutAsync($@"{urlapi}", content).Result.Content.ReadAsStringAsync().Result;
+                    return Task.Run(() => JsonConvert.DeserializeObject<ResponseBase<TResult>>(jsonResult, _serializerSettings));
+                }
+            }
+            catch (Exception ex)
+            {
+                FileHelper.GeneratorFileByDay(ex.ToString(), MethodBase.GetCurrentMethod().Name);
+            }
+            return default;
+        }
+
         public Task<ResponseBase<bool>> DeleteAsync(string uri, string token = "")
         {
             uri = ApiEndPoint + uri;
