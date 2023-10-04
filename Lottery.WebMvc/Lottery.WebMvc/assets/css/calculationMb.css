@@ -285,9 +285,9 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
 
 .phonebook-import {
     color: #e3165b;
-    font-size: 20px;
+    font-size: 18px;
     position: absolute;
-    top: -13px;
+    top: -13.5px;
     left: 100px;
     background-color: white;
     padding: 2px;
