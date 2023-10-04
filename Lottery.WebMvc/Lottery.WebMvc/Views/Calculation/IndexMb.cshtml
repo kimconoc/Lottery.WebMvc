@@ -63,6 +63,19 @@
             textarea::placeholder {
                 font-size: 10px !important;
             }
+
+
+        .phonebook-import {
+            color: #e3165b;
+            font-size:20px;
+            position: absolute;
+            top: -13px;
+            left: 100px;
+            background-color: white;
+            padding: 2px;
+            border: none;
+            cursor:pointer;
+        }
     </style>
 </head>
 <body>
@@ -77,6 +90,7 @@
 
             <div id="div_calculate_virtual" class="bordered-div">
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
+                <i class="phonebook-import fa fa-address-book" id="phonebook_import" aria-hidden="true"></i>
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" class="div-row">
                     <div class="div-row01" style="display:flex;gap:15px;">

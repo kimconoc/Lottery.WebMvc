@@ -54,10 +54,10 @@
             <div class="mdc-drawer__content">
                 <div class="mdc-list-group">
                     <nav class="mdc-list mdc-drawer-menu">
-                        <div class="mdc-list-item mdc-drawer-item">
-                            <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel" data-target="masterdata-sub-menu">
+                        <!--<div class="mdc-list-item mdc-drawer-item">
+                            <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel" data-target="masterdata-sub-menu">-->
                                 @*<i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">calculate</i>*@
-                                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+                                <!--<i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
                                 Trang tính
                                 <i class="mdc-drawer-arrow material-icons">chevron_right</i>
                             </a>
@@ -86,7 +86,34 @@
                                     </div>
                                 </nav>
                             </div>
+                        </div>-->
+
+                        <div class="mdc-list-item mdc-drawer-item">
+                            @{
+                                if (userData.UserAgent == (int)UserAgentEnum.Computer)
+                                {
+                                   <a class="mdc-drawer-link" href="@Url.Action("Index", "Calculation")">
+                                       <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+                                       Cú pháp
+                                   </a>
+                                }
+                                else
+                                {
+                                    <a class="mdc-drawer-link" href="@Url.Action("IndexMb", "Calculation")">
+                                       <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+                                       Cú pháp
+                                   </a>
+                                }
+                            }
                         </div>
+
+                        <div class="mdc-list-item mdc-drawer-item">
+                            <a class="mdc-drawer-link" href="@Url.Action("IndexImport", "Calculation")">
+                                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+                                Nhập liệu
+                            </a>
+                        </div>
+
                         <div class="mdc-list-item mdc-drawer-item">
                             <a class="mdc-drawer-link" href="@Url.Action("ListPlayer", "Phonebook")">
                                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">contact_phone</i>
