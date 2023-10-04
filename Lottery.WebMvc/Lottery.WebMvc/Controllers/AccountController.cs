@@ -45,15 +45,7 @@ namespace Lottery.WebMvc.Controllers
                     string hash = FormsAuthentication.Encrypt(ticket);
                     HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
                     Response.Cookies.Add(cookie);
-
-                    if (IdentifyUserAgent() == (int)UserAgentEnum.Iphone || IdentifyUserAgent() == (int)UserAgentEnum.Android)
-                    {
-                        return RedirectToAction("IndexMb", "Calculation");
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Calculation");
-                    }
+                    return RedirectToAction("IndexImport", "Calculation");
                 }
             }
             catch (Exception ex)

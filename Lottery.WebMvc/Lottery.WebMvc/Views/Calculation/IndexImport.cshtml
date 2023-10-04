@@ -27,7 +27,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Typescript UI Controls">
 <meta name="author" content="Syncfusion">
-<link href="~/assets/css/calculation.css" rel="stylesheet" />
+<link href="~/assets/css/calculationImport.css" rel="stylesheet" />
 <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-base/styles/material.css" rel="stylesheet">
 <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-inputs/styles/material.css" rel="stylesheet">
 <link href="https://cdn.syncfusion.com/ej2/22.2.5/ej2-dropdowns/styles/material.css" rel="stylesheet">
@@ -83,12 +83,10 @@
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" class="div-row">
-                    <div id="div_textImportMultiline">
-                        <div id="text_import_multiline" class="multiline">
-                            <textarea id="default" name="text"></textarea>
-                        </div>
+                    <div style="flex: 1;" id="div_textImportMultiline">
+                        <textarea id="text_import_multiline" name="text"></textarea>
                     </div>
-                    <div id="divInput_tyle_baso" style=" display:none;" class="div-input-ty-le-ba-so">
+                    <div id="divInput_tyle_baso" class="div-input-ty-le-ba-so">
                         <input type="text" tabindex="1" id="input_ty_le_ba_so">
                     </div>
                     <div class="div-nhap-so-diem">
@@ -207,7 +205,7 @@
                     element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == div_textImportMultiline) {
-                    element.id = element.id + randomIdOut;
+                    element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == text_import_multiline) {
                     element.id = element.id + randomIdOut;
@@ -289,6 +287,7 @@
             }
             createDataTargetClone(randomIdOut);
             createMultiInputTyLeBaSo(randomIdOut, randomIdIn);
+            createMultiImportMultiline(randomIdOut, randomIdIn);
         }
 
         function deleteDivCalculate(dom) {
@@ -365,13 +364,41 @@
 
             setPropertyWhenAddRow(randomIdOut);
             createMultiInputTyLeBaSo(randomIdOut, randomIdIn);
+            createMultiImportMultiline(randomIdOut, randomIdIn);
+        }
 
+        function createMultiImportMultiline(randomIdOut, randomIdIn) {
+            var newDiv_textImportMultiline = div_textImportMultiline + randomIdOut + randomIdIn;
+            // Lấy đối tượng div theo ID
+            var divToReplace = document.getElementById(newDiv_textImportMultiline);
+            // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
+            var selectHtml = '<textarea id="text_import_multiline" name="text"></textarea>';
+            var newText_import_multiline = "text_import_multiline" + randomIdOut + randomIdIn;
+            selectHtml = selectHtml.replace("text_import_multiline", newText_import_multiline);
+            // Thay thế nội dung của div bằng nội dung mới
+            divToReplace.innerHTML = selectHtml;
+
+            // Initialize TextBox component
+            var textareaObject = new ej.inputs.TextBox({
+                placeholder: 'Nhập nội dung',
+                floatLabelType: 'Auto',
+                created: function () {
+                    this.addAttributes({ rows: "2" });
+                    this.element.style.height = "auto";
+                    this.element.style.height = (this.element.scrollHeight - 7) + "px";
+                },
+                input: function () {
+                    this.element.style.height = "auto";
+                    this.element.style.height = (this.element.scrollHeight) + "px";
+                }
+            });
+            // Render initialized TextBox
+            textareaObject.appendTo('#' + newText_import_multiline);
         }
 
         function createMultiInputTyLeBaSo(randomIdOut, randomIdIn) {
 
             var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
-            elementDivInput_tyle_baso.style.display = "none";
             var newDivInput_tyle_baso = divInput_tyle_baso + randomIdOut + randomIdIn;
             // Lấy đối tượng div theo ID
             var divToReplace = document.getElementById(newDivInput_tyle_baso);
@@ -383,14 +410,14 @@
             divToReplace.innerHTML = selectHtml;
 
             var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Thưởng',
+                placeholder: 'Ba số',
                 floatLabelType: 'Auto',
                 value: '650',
             });
             inputobj.appendTo('#' + newInput_ty_le_ba_soId);
             elementDivInput_tyle_baso.style.marginTop = '-10px';
             elementDivInput_tyle_baso.style.display = "block";
-           
+
         }
 
         function deleteRow(dom) {

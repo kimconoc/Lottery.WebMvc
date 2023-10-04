@@ -93,9 +93,18 @@
         gap: 30px;
     }
 
-        .bordered-div .div-row .div-input-ty-le-ba-so {
+        .bordered-div .div-row .div-nhap-so-diem .nhap-so-diem i {
+            flex: 1;
+            margin-top: 10px;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 16px;
+            color: #d9534f;
+            display: none;
         }
 
+        .bordered-div .div-row .div-input-ty-le-ba-so {
+        }
             .bordered-div .div-row .div-input-ty-le-ba-so input {
                 width: 52.5px;
             }

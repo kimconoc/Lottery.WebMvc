@@ -170,7 +170,38 @@
         function UpdatePlayer(dom) {
             window.location = "/Phonebook/UpdatePlayer?playerId=" + dom.id;
         }
+
         function deletePlayer(dom) {
+            if (confirm("Bạn muốn xóa địa chỉ này?")) {
+                executeConfirm(dom.id);
+            }
+        }
+        function executeConfirm(playerId)
+        {
+            ShowOverlay(true);
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                data:
+                {
+                    "playerId": playerId,
+                },
+                url: "@Url.Action("ExecuteDeletePlayer", "Phonebook")",
+                success: function (data)
+                {
+                    hideOverlay();
+                    if (data.Success && data.Data) {
+                        alert("Xóa người chơi thành công.");
+                        window.location = "/Phonebook/ListPlayer";
+                    }
+                    else {
+                        alert("Đã có lỗi xảy ra.");
+                    }
+                },
+            })
+        }
+
+        @*function deletePlayer(dom) {
             var prompt = new PromptBoxes();
             prompt.confirm((isConfirm) => executeConfirm(isConfirm, dom.id), 'Bạn muốn xóa địa chỉ này?', 'Đồng ý', 'Hủy bỏ');
         }
@@ -221,7 +252,7 @@
                     },
                 })
             }
-        }
+        }*@
     </script>
 </body>
 </html>

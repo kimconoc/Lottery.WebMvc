@@ -282,7 +282,6 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
             width: calc(100% - 25px);
         }
 
-
 .phonebook-import {
     color: #e3165b;
     font-size: 18px;
