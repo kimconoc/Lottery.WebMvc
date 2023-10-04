@@ -20,6 +20,13 @@
     {
         dataChanel = dataBase.Result.Data;
     }
+
+    List<Phonebook> phonebooks = new List<Phonebook>();
+    var dataBasePhonebook = provider.GetAsync<List<Phonebook>>(string.Format(ApiUri.Get_Phonebook + "/{0}", userData.Id));
+    if (dataBasePhonebook != null && dataBasePhonebook.Result != null && dataBasePhonebook.Result.Data != null)
+    {
+        phonebooks = dataBasePhonebook.Result.Data;
+    }
 }
 
 <!DOCTYPE html>
@@ -67,6 +74,7 @@
         .e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
             font-size: 14px;
         }
+
     </style>
 </head>
 <body>
@@ -81,6 +89,7 @@
 
             <div id="div_calculate_virtual" class="bordered-div">
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
+                <i onclick="openPopupPhonebook(this)" class="phonebook-import fa fa-address-book" id="phonebook_import" aria-hidden="true"></i>
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
                 <div id="div_row" class="div-row">
                     <div class="div-comboLoDeXien">
@@ -183,12 +192,64 @@
 
         </div>
     </div>
+    <div class="modal" tabindex="-1" role="dialog" id="modal_phonebook">
+        <div class="modal-popup modal-dialog" role="document">
+            <div class="modal-content">
+                <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalVoucher()">
+                    <span style="float:right;margin-right: -5px;margin-top: 5px;" aria-hidden="true">&times;</span>
+                </button>
+
+                <div style="overflow: auto;">
+                    <div class="div-list-player">
+                        @if (phonebooks != null && phonebooks.Count > 0)
+                        {
+                            foreach (var item in phonebooks)
+                            {
+                                <div class="row-player">
+                                    <div>
+                                        <div class="head-row-player">
+                                            <h4 class="page-header margin-top-none">@item.Name</h4>
+                                            <div>
+                                                <i onclick="ChoosePlayer(this)" class="fa fa-eyedropper" id="@item.Id" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                        <div class="margin-bottom-sm"></div>
+                                        <div class="div-info">
+                                            <div>
+                                                <span>Tiền xác</span>
+                                                <strong id="lbl_xac">@item.TileXac</strong>
+                                            </div>
+                                            <div>
+                                                <span>Tiền thưởng</span>
+                                                <strong id="lbl_thuong">@item.TileThuong</strong>
+                                            </div>
+                                            <div id="div_lbl_result" class="div-lbl-result">
+                                                <span>Ba số</span>
+                                                <strong id="lbl_result">@item.TileBaSo</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="margin-bottom-row"></div>
+                                </div>
+
+                            }
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <script>
 
+        var modal = document.getElementById("modal_phonebook");
         var userData = @Html.Raw(Json.Encode(userData));
+        var choosePhonebookId;
+
         var div_calculate = "div_calculate";
         var delete_div_calculate = "delete_div_calculate";
         var nameInput = "nameInput";
+        var phonebook_import = "phonebook_import";
         var div_row = "div_row";
         var delete_row = "delete_row";
         var btn_add_row = "btn_add_row";
@@ -216,6 +277,35 @@
         var showLotterymessage_icon = "showLotterymessage_icon";
         var showLotterymessage_content = "showLotterymessage_content";
 
+        function openPopupPhonebook(dom) {
+            choosePhonebookId = dom.id;
+            modal.style.display = "flex";
+        }
+        function CloseModalVoucher() {
+            modal.style.display = "none";
+        }
+        function ChoosePlayer(dom) {
+            var phonebooks = @Html.Raw(Json.Encode(phonebooks));
+            var phonebook = null;
+            for (var i = 0; i < phonebooks.length; i++) {
+                if (phonebooks[i].Id == dom.id) {
+                    phonebook = phonebooks[i];
+                    break;
+                }
+            }
+            var randomIdOut = choosePhonebookId.substring(choosePhonebookId.length - 5);
+            document.getElementById(nameInput + randomIdOut).value = phonebook.Name;
+            document.getElementById(input_ty_le_sap + randomIdOut).value = phonebook.TileXac;
+            document.getElementById(input_ty_le_thuong + randomIdOut).value = phonebook.TileThuong;
+            var ListidInput_ty_le_ba_so = getListIdAsRequired(input_ty_le_ba_so + randomIdOut);
+            if (ListidInput_ty_le_ba_so.length > 1) {
+                for (var itemId of ListidInput_ty_le_ba_so) {
+                    document.getElementById(itemId).value = phonebook.TileBaSo;
+                }
+            }
+            modal.style.display = "none";
+        }
+
         $(document).ready(function () {
             getDesignDivCalculate();
         });
@@ -236,6 +326,9 @@
             //Duyệt qua tất cả các phần tử con và thay đổi ID của chúng
             function changeIds(element) {
                 if (element.id && element.id == nameInput) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == phonebook_import) {
                     element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == delete_div_calculate) {
