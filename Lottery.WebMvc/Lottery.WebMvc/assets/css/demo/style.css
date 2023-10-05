@@ -23133,9 +23133,10 @@ footer .vertical-divider {
     }
 
 @media (max-width: 767px) {
-  .body-wrapper .main-wrapper .page-wrapper .content-wrapper {
-    padding: 16px;
-  }
+    .body-wrapper .main-wrapper .page-wrapper .content-wrapper {
+        /*S?a cho m?n h?nh mobile*/
+        padding: 0px;
+    }
 }
 
 .body-wrapper .main-wrapper .page-wrapper.full-page-wrapper {
