@@ -15,4 +15,11 @@ namespace Lottery.WebMvc.Models
         public double TileThuong { get; set; }
         public double TileBaso { get; set; }
     }
+    public class CalculationImportModel
+    {
+        public List<string> SynTaxes { get; set; }
+        public double TileXac { get; set; }
+        public double TileThuong { get; set; }
+        public double TileBaso { get; set; }
+    }
 }

@@ -503,19 +503,59 @@
             var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
 
             var isValidate = false;
+            var ListidText_import_multiline = getListIdAsRequired(text_import_multiline + randomIdOut);
+            for (var itemId of ListidText_import_multiline) {
 
-            var calculationModel = [];
+                if (itemId && itemId.indexOf("label_") !== -1) {
+                    continue;
+                }
 
-            calculationJsons = JSON.stringify(calculationModel);
+                var randomIdfull = itemId.substring(itemId.length - 10);
+                var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
+
+                if (validateData(randomIdOut, randomIdIn)) {
+                    isValidate = true;
+                }
+            }
+            if (isValidate) {
+                return;
+            }
+
+            var synTaxes = [];
+            for (var itemId of ListidText_import_multiline) {
+
+                if (itemId && itemId.indexOf("label_") !== -1) {
+                    continue;
+                }
+
+                var randomIdfull = itemId.substring(itemId.length - 10);
+                var idText_import_multiline = text_import_multiline + randomIdfull;
+                var synTaxe = document.getElementById(idText_import_multiline).ej2_instances[0].properties.value
+                synTaxes.push(synTaxe)
+                
+            }
+
+            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdOut;
+            var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
+            var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
+
+            var calculationImport = {
+                synTaxes: synTaxes,
+                tileXac: document.getElementById(idInput_ty_le_sap).value,
+                tileThuong: document.getElementById(idInput_ty_le_thuong).value,
+                tileBaso: document.getElementById(idInput_ty_le_ba_so).value,
+            };
+
+            calculationImportJson = JSON.stringify(calculationImport);
             $.ajax({
                     type: "POST",
                     traditional: true,
                     async: false,
                     data:
                     {
-                        "calculationJson": calculationJsons,
+                        "calculationImportJson": calculationImportJson,
                     },
-                    url: "@Url.Action("ExecuteCalculation", "Calculation")",
+                    url: "@Url.Action("ExecuteCalculationImport", "Calculation")",
                     success: function (data)
                     {
                         if (data.Success && data.Data) {
@@ -606,11 +646,21 @@
         function validateData(randomIdOut, randomIdIn) {
 
             var randomIdfull = randomIdOut + randomIdIn
-            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdfull;
+
+            var idText_import_multiline = text_import_multiline + randomIdfull;
+            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdOut;
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
             var elementArr = [];
+
+            if (document.getElementById(idText_import_multiline).ej2_instances[0].properties.value === "" 
+                || document.getElementById(idText_import_multiline).ej2_instances[0].properties.value == null) {
+                var idDiv_textImportMultiline = div_textImportMultiline + randomIdfull;
+                var element = document.getElementById(idDiv_textImportMultiline);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
             if (document.getElementById(idInput_ty_le_sap).value === "" || !isNumber(document.getElementById(idInput_ty_le_sap).value)) {
                 var element = document.getElementById(idInput_ty_le_sap);
                 element.classList.add("temporary-border");
@@ -618,6 +668,11 @@
             }
             if (document.getElementById(idInput_ty_le_thuong).value === "" || !isNumber(document.getElementById(idInput_ty_le_thuong).value)) {
                 var element = document.getElementById(idInput_ty_le_thuong);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idInput_ty_le_ba_so).value === "" || !isNumber(document.getElementById(idInput_ty_le_ba_so).value)) {
+                var element = document.getElementById(idInput_ty_le_ba_so);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }

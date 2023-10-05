@@ -1,4 +1,4 @@
-/* === Import template variables === */
+﻿/* === Import template variables === */
 .mdc-label{
     margin-top: 6px;
 }
@@ -23134,7 +23134,7 @@ footer .vertical-divider {
 
 @media (max-width: 767px) {
     .body-wrapper .main-wrapper .page-wrapper .content-wrapper {
-        /*S?a cho m?n h?nh mobile*/
+        /*Sửa cho màn hình mobile*/
         padding: 0px;
     }
 }

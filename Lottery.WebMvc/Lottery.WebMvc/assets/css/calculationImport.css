@@ -102,14 +102,6 @@ input {
     border: none;
 }
 
-.e-input-group input.e-input, .e-input-group.e-control-wrapper input.e-input, .e-input-group textarea.e-input, .e-input-group.e-control-wrapper textarea.e-input {
-    font-size: 14px;
-}
-
-.e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
-    font-size: 14px;
-}
-
 .container {
     display: flex;
     flex-flow: column;

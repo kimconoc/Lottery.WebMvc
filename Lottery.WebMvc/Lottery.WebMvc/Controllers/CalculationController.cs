@@ -52,5 +52,20 @@ namespace Lottery.WebMvc.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult ExecuteCalculationImport(string calculationImportJson)
+        {
+            var calculationImport = JsonConvert.DeserializeObject<CalculationImportModel>(calculationImportJson);
+
+            var calculationBase = provider.PostAsync<Calculation>(ApiUri.POST_CalculationCal2, calculationImport);
+            if (calculationBase == null || calculationBase.Result == null || calculationBase.Result.Data == null)
+            {
+                return View(Server_Error());
+            }
+
+            return Json(Success_Request(calculationBase.Result.Data));
+
+        }
+
     }
 }
