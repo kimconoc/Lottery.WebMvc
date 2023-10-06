@@ -171,12 +171,6 @@ label.e-float-text, .e-float-input:not(.e-error):not(.e-input-focus) input:not(:
                     color: #d9534f;
                     display: none;
                 }
-        .bordered-div .div-row .div-input-ty-le-ba-so {
-            
-        }
-            .bordered-div .div-row .div-input-ty-le-ba-so input {
-                width: 40px;
-            }
 
     .bordered-div .div-btn-add-row {
         display: flex;

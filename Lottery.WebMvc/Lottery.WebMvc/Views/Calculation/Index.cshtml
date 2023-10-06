@@ -124,10 +124,6 @@
                             </select>
                         </div>
                     </div>
-                    <div id="divInput_tyle_baso" style=" display:none;" class="div-input-ty-le-ba-so">
-                        <!--element which is going to render the MultiSelect-->
-                        <input type="text" tabindex="1" id="input_ty_le_ba_so">
-                    </div>
                     <div class="div-nhap-so-diem">
                         <div class="nhap-so-diem">
                             <input id="nhap_so_diem" type="number" onKeyUp="validaeInPutNhapSoDiem(this)" required maxlength="4" placeholder="Điểm">
@@ -153,6 +149,10 @@
                         <div>
                             <span>Thưởng</span>
                             <input style="padding-left: 20px " id="input_ty_le_thuong" required maxlength="4" placeholder="" type="number" value="75">
+                        </div>
+                        <div>
+                            <span>Ba số</span>
+                            <input style="padding-left: 15px " id="input_ty_le_ba_so" class="input-ty-le-ba-so" required maxlength="4" placeholder="" type="number" value="650">
                         </div>
                     </div>
                     <div class="div-result">
@@ -196,7 +196,7 @@
         <div class="modal-popup modal-dialog" role="document">
             <div class="modal-content">
                 <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalVoucher()">
-                    <span style="float:right;margin-right: -5px;margin-top: 5px;" aria-hidden="true">&times;</span>
+                    <span style="float:right;margin-right: -5px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
                 </button>
 
                 <div style="overflow: auto;">
@@ -262,7 +262,6 @@
         var select_number = "select_number";
         var nhap_so_diem = "nhap_so_diem";
         var div_result = "div_result";
-        var divInput_tyle_baso = "divInput_tyle_baso";
         var input_ty_le_ba_so = "input_ty_le_ba_so";
         var input_ty_le_thuong = "input_ty_le_thuong";
         var input_ty_le_sap = "input_ty_le_sap";
@@ -297,12 +296,8 @@
             document.getElementById(nameInput + randomIdOut).value = phonebook.Name;
             document.getElementById(input_ty_le_sap + randomIdOut).value = phonebook.TileXac;
             document.getElementById(input_ty_le_thuong + randomIdOut).value = phonebook.TileThuong;
-            var ListidInput_ty_le_ba_so = getListIdAsRequired(input_ty_le_ba_so + randomIdOut);
-            if (ListidInput_ty_le_ba_so.length > 1) {
-                for (var itemId of ListidInput_ty_le_ba_so) {
-                    document.getElementById(itemId).value = phonebook.TileBaSo;
-                }
-            }
+            document.getElementById(input_ty_le_ba_so + randomIdOut).value = phonebook.TileBaSo;
+
             modal.style.display = "none";
         }
 
@@ -352,11 +347,8 @@
                 if (element.id && element.id == div_select_number) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
-                if (element.id && element.id == divInput_tyle_baso) {
-                    element.id = element.id + randomIdOut + randomIdIn;
-                }
                 if (element.id && element.id == input_ty_le_ba_so) {
-                    element.id = element.id + randomIdOut + randomIdIn;
+                    element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == nhap_so_diem) {
                     element.id = element.id + randomIdOut + randomIdIn;
@@ -478,12 +470,6 @@
                 if (element.id && element.id.indexOf(div_select_number) !== -1) {
                     element.id = div_select_number + randomIdOut + randomIdIn;
                 }
-                if (element.id && element.id.indexOf(divInput_tyle_baso) !== -1) {
-                    element.id = divInput_tyle_baso + randomIdOut + randomIdIn;
-                }
-                if (element.id && element.id.indexOf(input_ty_le_ba_so) !== -1) {
-                    element.id = input_ty_le_ba_so + randomIdOut + randomIdIn;
-                }
                 if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
                     element.id = nhap_so_diem + randomIdOut + randomIdIn;;
                 }
@@ -499,9 +485,6 @@
             changeIds(clonedElement);
             // Thêm phần tử sao chép vào DOM sau phần tử gốc
             originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
-
-            var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
-            elementDivInput_tyle_baso.style.display = "none";
 
             createComboboxLoDeXien(randomIdOut, randomIdIn);
             createMultiSelectNhaDaiClone(randomIdOut, randomIdIn);
@@ -574,7 +557,6 @@
                 var randomIdOut = randomIdfull.substring(0, 5);
                 var randomIdIn = randomIdfull.substring(randomIdfull.length - 5);
                 createMultiSelectNumberClone(randomIdOut, randomIdIn);
-                createMultiInputTyLeBaSo(randomIdOut, randomIdIn);
             };
             listObj.appendTo('#' + newCombo_loDeXien);
 
@@ -671,38 +653,6 @@
             listObj.appendTo('#' + newSelect_nhaDai);
         }
 
-        function createMultiInputTyLeBaSo(randomIdOut, randomIdIn) {
-
-            var elementDivInput_tyle_baso = document.getElementById(divInput_tyle_baso + randomIdOut + randomIdIn);
-            elementDivInput_tyle_baso.style.display = "none";
-
-            var idCombo_loDeXien = combo_loDeXien + randomIdOut + randomIdIn;
-            var valueCombo_loDeXien = document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value;
-            if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
-                var newDivInput_tyle_baso = divInput_tyle_baso + randomIdOut + randomIdIn;
-                // Lấy đối tượng div theo ID
-                var divToReplace = document.getElementById(newDivInput_tyle_baso);
-                // Tạo một nội dung HTML mới (ví dụ: một đoạn HTML mới)
-                var selectHtml = '<input type="text" tabindex="1" id="input_ty_le_ba_so">';
-                var newInput_ty_le_ba_soId = "input_ty_le_ba_so" + randomIdOut + randomIdIn;
-                selectHtml = selectHtml.replace("input_ty_le_ba_so", newInput_ty_le_ba_soId);
-                // Thay thế nội dung của div bằng nội dung mới
-                divToReplace.innerHTML = selectHtml;
-
-                var inputobj = new ej.inputs.TextBox({
-                    placeholder: 'Thưởng',
-                    floatLabelType: 'Auto',
-                    value: '650',
-                });
-                inputobj.appendTo('#' + newInput_ty_le_ba_soId);
-                elementDivInput_tyle_baso.style.marginTop = '-10px';
-                elementDivInput_tyle_baso.style.display = "block";
-            }
-        }
-
         function createDataTargetClone(randomIdOut) {
             // Lấy đối tượng div theo ID
             var divToReplace = document.getElementById(div_box_more_message + randomIdOut);
@@ -773,7 +723,7 @@
                 var idSelect_nhaDai = select_nhaDai + randomIdfull;
                 var idSelect_number = select_number + randomIdfull;
                 var idNhap_so_diem = nhap_so_diem + randomIdfull;
-                var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdfull;
+                var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdOut;
                 var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
                 var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
@@ -789,14 +739,6 @@
                 var idSelect_nhaDaiElement = document.getElementById(idSelect_nhaDai);
                 var idSelect_nhaDaiValue = idSelect_nhaDaiElement.ej2_instances[0].properties.value;
 
-                var valInput_ty_le_ba_so = 0;
-                if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
-                    valInput_ty_le_ba_so = document.getElementById(idInput_ty_le_ba_so).ej2_instances[0].properties.value;
-                }
-
                 var rowData = {
                     lotteryType: document.getElementById(idCombo_loDeXien).ej2_instances[0].properties.value,
                     numbers: idSelect_numberValue,
@@ -804,7 +746,7 @@
                     sl: document.getElementById(idNhap_so_diem).value,
                     tileXac: document.getElementById(idInput_ty_le_sap).value,
                     tileThuong: document.getElementById(idInput_ty_le_thuong).value,
-                    tileBaso: valInput_ty_le_ba_so,
+                    tileBaso: document.getElementById(idInput_ty_le_ba_so).value,
                 }
 
                 calculationModel.push(rowData);
@@ -915,7 +857,7 @@
             var idSelect_nhaDai = select_nhaDai + randomIdfull;
             var idSelect_number = select_number + randomIdfull;
             var idNhap_so_diem = nhap_so_diem + randomIdfull;
-            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdfull;
+            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdOut;
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
@@ -969,18 +911,7 @@
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }
-            if (valueCombo_loDeXien == @((int)LotteryEnum.BaoBaCang)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDau)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDuoi)
-                || valueCombo_loDeXien == @((int)LotteryEnum.BaCangDauDuoi)) {
-                var valInput_ty_le_ba_so = document.getElementById(idInput_ty_le_ba_so).ej2_instances[0].properties.value;
-                if (valInput_ty_le_ba_so === "" || !isNumber(valInput_ty_le_ba_so)) {
-                    var idDivInput_tyle_baso = divInput_tyle_baso + randomIdfull;
-                    var element = document.getElementById(idDivInput_tyle_baso);
-                    element.classList.add("temporary-border");
-                    elementArr.push(element);
-                }
-            }
+            
             if (document.getElementById(idNhap_so_diem).value === "" || !isNumber(document.getElementById(idNhap_so_diem).value)) {
                 var element = document.getElementById(idNhap_so_diem);
                 element.classList.add("temporary-border");
@@ -993,6 +924,11 @@
             }
             if (document.getElementById(idInput_ty_le_thuong).value === "" || !isNumber(document.getElementById(idInput_ty_le_thuong).value)) {
                 var element = document.getElementById(idInput_ty_le_thuong);
+                element.classList.add("temporary-border");
+                elementArr.push(element);
+            }
+            if (document.getElementById(idInput_ty_le_ba_so).value === "" || !isNumber(document.getElementById(idInput_ty_le_ba_so).value)) {
+                var element = document.getElementById(idInput_ty_le_ba_so);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }
