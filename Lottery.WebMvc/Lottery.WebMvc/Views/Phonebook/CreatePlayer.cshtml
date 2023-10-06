@@ -49,16 +49,8 @@
                 <div class="row button">
                     <input type="submit" value="Đăng ký">
                 </div>
-                @{
-                    if (userData.UserAgent == (int)UserAgentEnum.Computer)
-                    {
-                        <div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/Index"> Trang tính!</a></div>
-                    }
-                    else
-                    {
-                        <div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexMb"> Trang tính!</a></div>
-                    }
-                }
+
+                <div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexImport"> Trang tính!</a></div>
 
             </form>
         </div>
