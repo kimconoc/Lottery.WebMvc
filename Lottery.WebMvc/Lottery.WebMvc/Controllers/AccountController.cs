@@ -30,10 +30,15 @@ namespace Lottery.WebMvc.Controllers
                 var userBase = provider.PostAsync<User>(ApiUri.POST_UserLogin, model);
                 if (userBase == null || userBase.Result == null || userBase.Result.Data == null)
                 {
-                    ViewBag.Message = "Tài khoản đăng nhập không đúng";
+                    ViewBag.Message = "Đã có lỗi xảy ra!";
                     return View(model);
                 }
                 var userData = userBase.Result.Data;
+                if(!userData.isLoginSuccess)
+                {
+                    ViewBag.Message = "Tài khoản đăng nhập không đúng";
+                    return View(model);
+                }    
                 userData.UserAgent = IdentifyUserAgent();
                 if (userData == null)
                 {
