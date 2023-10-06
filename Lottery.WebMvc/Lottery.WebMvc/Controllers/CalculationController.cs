@@ -57,7 +57,7 @@ namespace Lottery.WebMvc.Controllers
         {
             var calculationImport = JsonConvert.DeserializeObject<CalculationImportModel>(calculationImportJson);
 
-            var calculationBase = provider.PostAsync<Calculation>(ApiUri.POST_CalculationCal2, calculationImport);
+            var calculationBase = provider.PostAsync<CalculationImport>(ApiUri.POST_CalculationCal2, calculationImport);
             if (calculationBase == null || calculationBase.Result == null || calculationBase.Result.Data == null)
             {
                 return View(Server_Error());

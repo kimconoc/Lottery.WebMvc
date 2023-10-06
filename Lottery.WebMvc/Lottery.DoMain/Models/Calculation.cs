@@ -13,4 +13,13 @@ namespace Lottery.DoMain.Models
         public double Loi { get; set; }
         public List<string> Message { get; set; }
     }
+    public class CalculationImport
+    {
+        public double Xac { get; set; }
+        public double Thuong { get; set; }
+        public double Loi { get; set; }
+        public List<string> messageThuong { get; set; }
+        public List<string> messageXac { get; set; }
+        public List<string> messageLoi { get; set; }
+    }
 }

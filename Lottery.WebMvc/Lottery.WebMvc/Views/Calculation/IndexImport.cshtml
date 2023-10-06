@@ -520,7 +520,7 @@
             if (isValidate) {
                 return;
             }
-
+            var randomIdfullArr = [];
             var synTaxes = [];
             for (var itemId of ListidText_import_multiline) {
 
@@ -529,8 +529,10 @@
                 }
 
                 var randomIdfull = itemId.substring(itemId.length - 10);
+                randomIdfullArr.push(randomIdfull);
                 var idText_import_multiline = text_import_multiline + randomIdfull;
                 var synTaxe = document.getElementById(idText_import_multiline).ej2_instances[0].properties.value
+                synTaxe = synTaxe.replace(/[\n\r]+/g, " ");
                 synTaxes.push(synTaxe)
                 
             }
@@ -547,10 +549,9 @@
             };
 
             calculationImportJson = JSON.stringify(calculationImport);
+            ShowOverlay(true);
             $.ajax({
                     type: "POST",
-                    traditional: true,
-                    async: false,
                     data:
                     {
                         "calculationImportJson": calculationImportJson,
@@ -558,7 +559,9 @@
                     url: "@Url.Action("ExecuteCalculationImport", "Calculation")",
                     success: function (data)
                     {
+                        hideOverlay();
                         if (data.Success && data.Data) {
+
                             var idLbl_xac = lbl_xac + randomIdOut;
                             var idLbl_thuong = lbl_thuong + randomIdOut;
                             var idLbl_result = lbl_result + randomIdOut;
@@ -580,40 +583,80 @@
                                 spanElement.style.color = "red"
                                 strongElement.style.color = "red"
                             }
-                            if (data.Data.Thuong > 0) {
+
+                            if (data.Data.messageThuong.length > 0 || data.Data.messageXac.length > 0) {
                                 if (element_more_message) {
                                     element_more_message.style.display = "block";
                                 }
-                                showLotteryMessageContent(randomIdOut, data.Data.Message)
+                                showLotteryMessageContent(randomIdOut, data.Data.messageThuong, data.Data.messageXac)
                             }
                             else {
                                 if (element_more_message) {
                                     element_more_message.style.display = "none";
                                 }
                             }
+
+                            var elementArr = [];
+                            if (data.Data.messageLoi.length > 0) {
+                                for (var i = 0; i < data.Data.messageLoi.length; i++) {
+                                    if (data.Data.messageLoi[i] != null) {
+                                        var idDiv_textImportMultiline = div_textImportMultiline + randomIdfullArr[i];
+                                        var element = document.getElementById(idDiv_textImportMultiline);
+                                        element.classList.add("temporary-border");
+                                        elementArr.push(element);
+                                    }
+                                }
+                                invalidBackground(10000, elementArr);
+                            }
                         }
                         else {
-                            alert("Có lỗi xảy ra!");
+                            var message = "Đã có lỗi xảy ra."
+                            if (!isNullOrEmpty(data.Message)) {
+                                message = data.Message;
+                            }
+                            awesomeAlert({
+                                header: true,
+                                type: 'error',
+                                title: 'Có lỗi!',
+                                message: message,
+                                //bgColor: '#2dd284',
+                                img: '/assets/images/icon/error.svg',
+                                buttonOK: 'Oke!',
+                                closeStyle: 'circle'
+                            }).then(res => false)
                         }
                     },
                 })
 
         }
 
-        function showLotteryMessageContent(randomIdOut, listMessage) {
+        function showLotteryMessageContent(randomIdOut, messageThuong, messageXac) {
             // Lấy đối tượng div theo ID
-            if (listMessage == null || listMessage.length == 0) {
-                return;
-            }
 
             var divToReplace = document.getElementById(showLotterymessage_content + randomIdOut);
             var htmlContents = '';
 
-            for (var i = 0; i < listMessage.length; i++) {
-                var msg = listMessage[i];
+            for (var i = 0; i < messageThuong.length; i++) {
+                var msg = messageThuong[i];
                 var htmlContent = `
                                     <div class="box-more-message-content">
                                         <div class="box-more-message-content-✓">
+                                            ✓
+                                        </div>
+                                        <div class="box-more-message-content-detailt">
+                                            ${msg}
+                                        </div>
+                                    </div>
+                                `;
+
+                htmlContents = htmlContents + htmlContent;
+            }
+
+            for (var i = 0; i < messageXac.length; i++) {
+                var msg = messageXac[i];
+                var htmlContent = `
+                                    <div class="box-more-message-content">
+                                        <div style="background-color: #e3165b;" class="box-more-message-content-✓">
                                             ✓
                                         </div>
                                         <div class="box-more-message-content-detailt">
@@ -677,13 +720,7 @@
                 elementArr.push(element);
             }
 
-            setTimeout(function () {
-
-                for (var i = 0; i < elementArr.length; i++) {
-                    var element = elementArr[i];
-                    element.classList.remove("temporary-border");
-                }
-            }, 4000);
+            invalidBackground(4000,elementArr);
 
             if (elementArr.length > 0) {
                 return true;
@@ -691,6 +728,15 @@
 
             return false;
 
+        }
+
+        function invalidBackground(time,elementArr) {
+            setTimeout(function () {
+                for (var i = 0; i < elementArr.length; i++) {
+                    var element = elementArr[i];
+                    element.classList.remove("temporary-border");
+                }
+            }, time);
         }
 
         function isNumber(value) {

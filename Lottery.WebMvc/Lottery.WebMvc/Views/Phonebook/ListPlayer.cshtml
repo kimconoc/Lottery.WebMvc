@@ -191,11 +191,32 @@
                 {
                     hideOverlay();
                     if (data.Success && data.Data) {
-                        alert("Xóa người chơi thành công.");
-                        window.location = "/Phonebook/ListPlayer";
+                        awesomeAlert({
+                            header: true,
+                            type: 'success',
+                            title: 'Thành công!',
+                            message: 'Xóa người chơi thành công.',
+                            //bgColor: '#2dd284',
+                            img: '/assets/images/icon/success.svg',
+                            buttonOK: 'Xong!',
+                            closeStyle: 'circle'
+                        }).then(res => window.location = "/Phonebook/ListPlayer")
                     }
                     else {
-                        alert("Đã có lỗi xảy ra.");
+                        var message = "Đã có lỗi xảy ra."
+                        if (!isNullOrEmpty(data.Message)) {
+                            message = data.Message;
+                        }
+                        awesomeAlert({
+                            header: true,
+                            type: 'error',
+                            title: 'Có lỗi!',
+                            message: message,
+                            //bgColor: '#2dd284',
+                            img: '/assets/images/icon/error.svg',
+                            buttonOK: 'Oke!',
+                            closeStyle: 'circle'
+                        }).then(res => false)
                     }
                 },
             })
