@@ -34,18 +34,14 @@ namespace Lottery.WebMvc.Controllers
                     return View(model);
                 }
                 var userData = userBase.Result.Data;
-                if(!userData.isLoginSuccess)
+                if (!userData.isLoginSuccess)
                 {
-                    ViewBag.Message = "Tài khoản đăng nhập không đúng";
+                    ViewBag.Message = "Tài khoản đăng nhập không đúng!";
                     return View(model);
-                }    
-                userData.UserAgent = IdentifyUserAgent();
-                if (userData == null)
-                {
-                    ViewBag.Message = "User is not registered to application";
                 }
                 else
                 {
+                    userData.UserAgent = IdentifyUserAgent();
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.LoginName, DateTime.Now, DateTime.Now.AddMinutes(720), false, JsonConvert.SerializeObject(userData), FormsAuthentication.FormsCookiePath);
                     string hash = FormsAuthentication.Encrypt(ticket);
                     HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
@@ -55,7 +51,7 @@ namespace Lottery.WebMvc.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Have error when login. Please check with our Administrator";
+                ViewBag.Message = "Have error when login. Please check with our Administrator!";
             }
 
             return View(model);
