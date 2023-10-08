@@ -754,6 +754,7 @@
             }
 
             calculationJsons = JSON.stringify(calculationModel);
+            ShowOverlay(true);
             $.ajax({
                     type: "POST",
                     traditional: true,
@@ -765,6 +766,7 @@
                     url: "@Url.Action("ExecuteCalculation", "Calculation")",
                     success: function (data)
                     {
+                        hideOverlay();
                         if (data.Success && data.Data) {
                             var idLbl_xac = lbl_xac + randomIdOut;
                             var idLbl_thuong = lbl_thuong + randomIdOut;

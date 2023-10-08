@@ -62,14 +62,27 @@
                 <input type="text" class="name-input" id="nameInput" placeholder="Nhập tên">
                 <i onclick="openPopupPhonebook(this)" class="phonebook-import fa fa-address-book" id="phonebook_import" aria-hidden="true"></i>
                 <button onclick="deleteDivCalculate(this)" id="delete_div_calculate" class="btn-danger">Xóa</button>
-                <div id="div_row" class="div-row">
-                    <div style="flex: 1;" id="div_textImportMultiline">
-                        <textarea id="text_import_multiline" name="text"></textarea>
+                <div id="div_row">
+                    <div class="div-row">
+                        <div style="flex: 1;" id="div_textImportMultiline">
+                            <textarea id="text_import_multiline" name="text"></textarea>
+                        </div>
+                        <div class="nhap-so-diem">
+                            <i onclick="deleteRow(this)" id="delete_row" class="fa fa-trash" aria-hidden="true"></i>
+                        </div>
                     </div>
-                    <div class="nhap-so-diem">
-                        <i onclick="deleteRow(this)" id="delete_row" class="fa fa-trash" aria-hidden="true"></i>
+                    <div class="row">
+                        <div>
+                            <button style="text-transform:none;" class="btn-remove-textarea e-btn" id='remove_textarea' onclick="removeTextareaClick(this)">Xóa</button>
+                            <span style="color:red;" id="view_msg_loi">
+
+                            </span>
+                        </div>
                     </div>
                 </div>
+                <span>
+
+                </span>
                 <div class="div-btn-add-row">
                     <button id="btn_add_row" onclick="addRowClick(this)" class="btn-custom btn-core-accept">
                         Thêm
@@ -194,6 +207,8 @@
         var div_row = "div_row";
         var delete_row = "delete_row";
         var btn_add_row = "btn_add_row";
+        var remove_textarea = "remove_textarea"
+        var view_msg_loi = "view_msg_loi"
         var btn_send_result = "btn_send_result";
         var select_number = "select_number";
         var nhap_so_diem = "nhap_so_diem";
@@ -275,6 +290,12 @@
                     element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == div_row) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == remove_textarea) {
+                    element.id = element.id + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id == view_msg_loi) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
                 if (element.id && element.id == input_ty_le_ba_so) {
@@ -391,6 +412,12 @@
                 if (element.id && element.id.indexOf(text_import_multiline) !== -1) {
                     element.id = text_import_multiline + randomIdOut + randomIdIn;
                 }
+                if (element.id && element.id.indexOf(remove_textarea) !== -1) {
+                    element.id = remove_textarea + randomIdOut + randomIdIn;
+                }
+                if (element.id && element.id.indexOf(view_msg_loi) !== -1) {
+                    element.id = view_msg_loi + randomIdOut + randomIdIn;
+                }
                 if (element.id && element.id.indexOf(nhap_so_diem) !== -1) {
                     element.id = nhap_so_diem + randomIdOut + randomIdIn;;
                 }
@@ -409,6 +436,20 @@
 
             setPropertyWhenAddRow(randomIdOut);
             createMultiImportMultiline(randomIdOut, randomIdIn);
+        }
+
+        function removeTextareaClick(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdfull = IdBtnAddRow.substring(IdBtnAddRow.length - 10);
+            var text_import_multilineId = text_import_multiline + randomIdfull;
+            var view_msg_loiId = view_msg_loi + randomIdfull;
+            // Lấy tham chiếu đến TextBox dựa trên id
+            var textBoxElement = document.getElementById(text_import_multilineId);
+            // Xóa giá trị của TextBox bằng phương thức clear
+            if (textBoxElement && textBoxElement.ej2_instances[0]) {
+                textBoxElement.ej2_instances[0].value = "";
+            }
+            document.getElementById(view_msg_loiId).textContent = "";
         }
 
         function createMultiImportMultiline(randomIdOut, randomIdIn) {
@@ -599,14 +640,19 @@
                             var elementArr = [];
                             if (data.Data.messageLoi.length > 0) {
                                 for (var i = 0; i < data.Data.messageLoi.length; i++) {
+                                    var view_msg_loiId = view_msg_loi + randomIdfullArr[i];
                                     if (data.Data.messageLoi[i] != null) {
                                         var idDiv_textImportMultiline = div_textImportMultiline + randomIdfullArr[i];
                                         var element = document.getElementById(idDiv_textImportMultiline);
                                         element.classList.add("temporary-border");
                                         elementArr.push(element);
+                                        document.getElementById(view_msg_loiId).textContent = data.Data.messageLoi[i];
+                                    }
+                                    else {
+                                        document.getElementById(view_msg_loiId).textContent = "";
                                     }
                                 }
-                                invalidBackground(10000, elementArr);
+                                invalidBackground(5000, elementArr);
                             }
                         }
                         else {

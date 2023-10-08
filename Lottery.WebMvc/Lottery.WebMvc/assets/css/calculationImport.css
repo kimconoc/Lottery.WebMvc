@@ -1,5 +1,11 @@
 ﻿
 @media only screen and (max-width: 600px) {
+
+    .btn-remove-textarea {
+        font-size: 11px !important;
+        padding: 3px 6px 1px !important;
+    }
+
     body {
         font-size: 11px !important;
     }

@@ -1,6 +1,5 @@
 ﻿using Lottery.WebMvc.Models;
 using Amin.CustomAuthen;
-using Lottery.WebMvc.Models;
 using Lottery.DoMain.Constant;
 using Lottery.DoMain.Models;
 using Newtonsoft.Json;
