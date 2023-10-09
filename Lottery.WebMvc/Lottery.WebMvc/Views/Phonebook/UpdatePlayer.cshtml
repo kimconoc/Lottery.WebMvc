@@ -27,7 +27,7 @@
             <div class="title"><span>Cập nhật</span></div>
             @if (Model != null)
             {
-                <form id="createPlayerForm" action="#">
+                <form id="updatePlayerForm" action="#">
                     <div class="row">
                         <i class="fas fa-user"></i>
                         <input name="name" type="text" placeholder="Tên người chơi" value="@Model.Name" required>
@@ -60,7 +60,7 @@
     </div>
     <script>
         // Bắt sự kiện submit của biểu mẫu
-        document.getElementById("createPlayerForm").addEventListener("submit", function (event) {
+        document.getElementById("updatePlayerForm").addEventListener("submit", function (event) {
             event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
 
             var playerModel = {

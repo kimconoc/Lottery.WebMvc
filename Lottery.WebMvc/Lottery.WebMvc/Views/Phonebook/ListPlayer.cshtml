@@ -31,87 +31,7 @@
 <html>
 <head>
     <style>
-        .container {
-            display: flex;
-            flex-flow: column;
-            margin-top: 12px;
-            max-width: 900px;
-            height: 85vh;
-        }
 
-        .heading {
-            margin: 20px 0px 15px;
-            /*color: #e3165b;*/
-        }
-
-        .box-add-new-player {
-            cursor: pointer;
-            background-color: rgb(255, 255, 255);
-            font-size: 15px;
-            min-height: 60px;
-            border: 1px dashed rgb(216, 216, 216);
-            margin: 0px 0px 10px;
-            display: flex;
-            -webkit-box-align: center;
-            align-items: center;
-            -webkit-box-pack: center;
-            justify-content: center;
-        }
-
-            .box-add-new-player i {
-                color: #e3165b;
-                font-size: 25px;
-                margin: 0px 20px;
-            }
-
-            .box-add-new-player span {
-                color: #e3165b;
-            }
-
-        .div-list-player {
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-            .div-list-player .row-player {
-                margin-bottom: 10px;
-            }
-
-                .div-list-player .row-player .head-row-player {
-                    display: flex;
-                    border-bottom: 1px solid #eee;
-                    justify-content: space-between !important;
-                }
-
-                    .div-list-player .row-player .head-row-player i {
-                        flex: 1;
-                        margin-top: 2px;
-                        margin-right: 8px;
-                        cursor: pointer;
-                        margin-left: 5px;
-                        font-size: 16px;
-                        color: #d85261;
-                    }
-
-                .div-list-player .row-player .div-info {
-                    display: flex;
-                    flex-flow: row;
-                    gap: 30px;
-                    margin-top: 8px;
-                }
-
-                    .div-list-player .row-player .div-info div {
-                        display: flex;
-                        flex-flow: column;
-                        align-items: center;
-                        text-align: center;
-                    }
-
-        .margin-bottom-row {
-            margin-top: 5px;
-            border-bottom: 1px solid #e3165b;
-        }
     </style>
 </head>
 <body>
@@ -120,7 +40,7 @@
         <div class="heading">
             <h3>Danh bạ người chơi</h3>
         </div>
-        <div class="box-add-new-player">
+        <div onclick="openPopupCreatePhonebook(this)" class="box-add-new-player">
             <i class="fa fa-plus"></i>
             <span>Thêm người chơi</span>
         </div>
@@ -135,8 +55,8 @@
                                 <div class="head-row-player">
                                     <h4 class="page-header margin-top-none">@item.Name</h4>
                                     <div>
-                                        <i onclick="deletePlayer(this)" id="@item.Id" class="fa fa-trash" aria-hidden="true"></i>
-                                        <i onclick="UpdatePlayer(this)" class="fa fa-pencil-square-o" id="@item.Id" aria-hidden="true"></i>
+                                        <i onclick="deletePlayer(this)" style="color: red;" id="@item.Id" class="fa fa-trash" aria-hidden="true"></i>
+                                        <i onclick="openPopupUpdatepPhonebook(this)" style="color: inherit;" class="fa fa-pencil-square-o" id="@item.Id" aria-hidden="true"></i>
                                     </div>
                                 </div>
                                 <div class="margin-bottom-sm"></div>
@@ -163,19 +83,90 @@
             </div>
         </div>
     </div>
+    <div class="modal" tabindex="-1" role="dialog" id="modal_Createphonebook">
+        <div class="modal-popup modal-dialog" role="document">
+            <div class="modal-content">
+                <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalCreatePhonebook()">
+                    <span style="float:right;margin-right: 4px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
+                </button>
+                <div class="wrapper">
+                    <div class="title"><span>Thêm mới</span></div>
+                    <form id="createPlayerForm" action="#">
+                        <div class="row">
+                            <i class="fa fa-user-plus"></i>
+                            <input name="name" type="text" placeholder="Tên người chơi" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileXac" type="number" step="any" placeholder="Tỷ lệ xác" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileThuong" type="number" placeholder="Tỷ lệ thưởng" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileBaSo" type="number" placeholder="Tỷ lệ ba càng" required>
+                        </div>
+                        <div class="row button">
+                            <input type="submit" value="Đăng ký">
+                        </div>
+
+                        @*<div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexImport"> Trang tính!</a></div>*@
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="modal_Updatephonebook">
+        <div class="modal-popup modal-dialog" role="document">
+            <div class="modal-content">
+                <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalUpdatePhonebook()">
+                    <span style="float:right;margin-right: 4px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
+                </button>
+                <div class="wrapper">
+                    <div class="title"><span>Cập nhật</span></div>
+                    <form id="updatePlayerForm" action="#">
+                        <div style="display:none;" class="row">
+                            <i class="fa fa-id-card"></i>
+                            <input name="id_update" type="text" placeholder="Tên người chơi" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-user-plus"></i>
+                            <input name="name_update" type="text" placeholder="Tên người chơi" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileXac_update" type="number" step="any" placeholder="Tỷ lệ xác" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileThuong_update" type="number" placeholder="Tỷ lệ thưởng" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileBaSo_update" type="number" placeholder="Tỷ lệ ba càng" required>
+                        </div>
+                        <div class="row button">
+                            <input type="submit" value="Cập nhật">
+                        </div>
+
+                        @*<div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexImport"> Trang tính!</a></div>*@
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
-        $('.box-add-new-player').click(function (e) {
-            window.location = "/Phonebook/CreatePlayer";
-        });
-        function UpdatePlayer(dom) {
-            window.location = "/Phonebook/UpdatePlayer?playerId=" + dom.id;
-        }
 
         function deletePlayer(dom) {
-            if (confirm("Bạn muốn xóa địa chỉ này?")) {
+            if (confirm("Bạn muốn xóa người chơi này?")) {
                 executeConfirm(dom.id);
             }
         }
+
         function executeConfirm(playerId)
         {
             ShowOverlay(true);
@@ -222,32 +213,43 @@
             })
         }
 
-        @*function deletePlayer(dom) {
-            var prompt = new PromptBoxes();
-            prompt.confirm((isConfirm) => executeConfirm(isConfirm, dom.id), 'Bạn muốn xóa địa chỉ này?', 'Đồng ý', 'Hủy bỏ');
+        var modalCreate = document.getElementById("modal_Createphonebook");
+        function openPopupCreatePhonebook(dom) {
+            choosePhonebookId = dom.id;
+            modalCreate.style.display = "flex";
         }
-        function executeConfirm(isConfirm, playerId)
-        {
-            if (isConfirm)
-            {
-                ShowOverlay(true);
-                $.ajax({
+        function CloseModalCreatePhonebook() {
+            modalCreate.style.display = "none";
+        }
+        // Bắt sự kiện submit của biểu mẫu create
+        document.getElementById("createPlayerForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
+
+            var playerModel = {
+                name: document.getElementsByName("name")[0].value,
+                tileXac: document.getElementsByName("tileXac")[0].value,
+                tileThuong: document.getElementsByName("tileThuong")[0].value,
+                tileBaSo: document.getElementsByName("tileBaSo")[0].value,
+            }
+            var playerModels = [playerModel];
+            playerModels.push();
+            ShowOverlay(true);
+            playerJsons = JSON.stringify(playerModels);
+            $.ajax({
                     type: "POST",
-                    traditional: true,
                     data:
                     {
-                        "playerId": playerId,
+                        "playerJsons": playerJsons,
                     },
-                    url: "@Url.Action("ExecuteDeletePlayer", "Phonebook")",
+                    url: "@Url.Action("ExecuteCreatePlayer", "Phonebook")",
                     success: function (data)
                     {
-                        hideOverlay();
                         if (data.Success && data.Data) {
                             awesomeAlert({
                                 header: true,
                                 type: 'success',
                                 title: 'Thành công!',
-                                message: 'Xóa người chơi thành công.',
+                                message: 'Tạo mới người chơi thành công.',
                                 //bgColor: '#2dd284',
                                 img: '/assets/images/icon/success.svg',
                                 buttonOK: 'Xong!',
@@ -270,10 +272,88 @@
                                 closeStyle: 'circle'
                             }).then(res => false)
                         }
+                        hideOverlay();
                     },
                 })
+        });
+
+        var modalUpdate = document.getElementById("modal_Updatephonebook");
+        function openPopupUpdatepPhonebook(dom) {
+            var phonebooks = @Html.Raw(Json.Encode(phonebooks));
+            var phonebook = null;
+            for (var i = 0; i < phonebooks.length; i++) {
+                if (phonebooks[i].Id == dom.id) {
+                    phonebook = phonebooks[i];
+                    break;
+                }
             }
-        }*@
+            document.getElementsByName("id_update")[0].value = phonebook.Id;
+            document.getElementsByName("name_update")[0].value = phonebook.Name;
+            document.getElementsByName("tileXac_update")[0].value = phonebook.TileXac;
+            document.getElementsByName("tileThuong_update")[0].value = phonebook.TileThuong;
+            document.getElementsByName("tileBaSo_update")[0].value = phonebook.TileBaSo;
+            modalUpdate.style.display = "flex";
+        }
+        function CloseModalUpdatePhonebook() {
+            modalUpdate.style.display = "none";
+        }
+        // Bắt sự kiện submit của biểu mẫu update
+        document.getElementById("updatePlayerForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
+
+            var playerModel = {
+                id: document.getElementsByName("id_update")[0].value,
+                name: document.getElementsByName("name_update")[0].value,
+                tileXac: document.getElementsByName("tileXac_update")[0].value,
+                tileThuong: document.getElementsByName("tileThuong_update")[0].value,
+                tileBaSo: document.getElementsByName("tileBaSo_update")[0].value,
+            }
+            var playerModels = [playerModel];
+            playerModels.push();
+            ShowOverlay(true);
+            playerJsons = JSON.stringify(playerModels);
+            $.ajax({
+                    type: "POST",
+                    data:
+                    {
+                        "playerJsons": playerJsons,
+                    },
+                    url: "@Url.Action("ExecuteCreatePlayer", "Phonebook")",
+                    success: function (data)
+                    {
+                        if (data.Success && data.Data) {
+                            awesomeAlert({
+                                header: true,
+                                type: 'success',
+                                title: 'Thành công!',
+                                message: 'Cập nhật người chơi thành công.',
+                                //bgColor: '#2dd284',
+                                img: '/assets/images/icon/success.svg',
+                                buttonOK: 'Xong!',
+                                closeStyle: 'circle'
+                            }).then(res => window.location = "/Phonebook/ListPlayer")
+                        }
+                        else {
+                            var message = "Đã có lỗi xảy ra."
+                            if (!isNullOrEmpty(data.Message)) {
+                                message = data.Message;
+                            }
+                            awesomeAlert({
+                                header: true,
+                                type: 'error',
+                                title: 'Có lỗi!',
+                                message: message,
+                                //bgColor: '#2dd284',
+                                img: '/assets/images/icon/error.svg',
+                                buttonOK: 'Oke!',
+                                closeStyle: 'circle'
+                            }).then(res => false)
+                        }
+                        hideOverlay();
+                    },
+                })
+        });
+
     </script>
 </body>
 </html>
