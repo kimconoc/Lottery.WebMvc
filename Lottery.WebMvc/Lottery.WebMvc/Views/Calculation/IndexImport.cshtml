@@ -46,6 +46,89 @@
 <head>
     <style>
 
+        form {
+            padding: 0px 25px 0px 25px;
+        }
+
+            form .row {
+                height: 45px;
+                margin-bottom: 15px;
+                position: relative;
+            }
+
+                form .row input {
+                    height: 100%;
+                    width: 100%;
+                    outline: none;
+                    padding-left: 60px;
+                    border-radius: 5px;
+                    border: 1px solid lightgrey;
+                    transition: all 0.3s ease;
+                }
+
+
+                    form .row input:focus {
+                        border-color: #e3165b;
+                        /*box-shadow: inset 0px 0px 2px 2px rgba(26,188,156,0.25);*/
+                    }
+
+                    form .row input::placeholder {
+                        color: #999;
+                    }
+
+                form .row i {
+                    position: absolute;
+                    width: 47px;
+                    height: 100%;
+                    color: #fff;
+                    background: #e3165b;
+                    border: 1px solid #e3165b;
+                    border-radius: 5px 0 0 5px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+            form .pass {
+                margin: -8px 0 20px 0;
+            }
+
+                form .pass a {
+                    color: #e3165b;
+                    text-decoration: none;
+                }
+
+                    form .pass a:hover {
+                        text-decoration: underline;
+                    }
+
+            form .button button {
+                color: #fff;
+                font-weight: 500;
+                padding-left: 0px;
+                background: #e3165b;
+                border: 1px solid #e3165b;
+                cursor: pointer;
+            }
+
+                form .button input:hover {
+                    /*background: #12876f;*/
+                }
+
+            form .signup-link {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+                form .signup-link a {
+                    color: #e3165b;
+                    text-decoration: none;
+                }
+
+                    form .signup-link a:hover {
+                        text-decoration: underline;
+                    }
+        
     </style>
 </head>
 <body>
@@ -102,9 +185,24 @@
                             <span>Thưởng</span>
                             <input style="padding-left: 20px " id="input_ty_le_thuong" class="input-ty-le-thuong" required maxlength="4" placeholder="" type="number" value="75">
                         </div>
-                        <div>
+                        <div style="display: none;">
+                            <span>Đá thẳng</span>
+                            <input style="padding-left: 15px;" id="input_ty_le_da_thang" required maxlength="4" placeholder="" type="number" value="650">
+                        </div>
+                        <div style="display: none;">
+                            <span>Đá xiên</span>
+                            <input style="padding-left: 15px;" id="input_ty_le_da_xien" required maxlength="4" placeholder="" type="number" value="550">
+                        </div>
+                        <div style="display: none;">
                             <span>Ba số</span>
-                            <input style="padding-left: 15px " id="input_ty_le_ba_so" class="input-ty-le-ba-so" required maxlength="4" placeholder="" type="number" value="650">
+                            <input style="padding-left: 15px;" id="input_ty_le_ba_so" required maxlength="4" placeholder="" type="number" value="650">
+                        </div>
+                        <div style="display: none;">
+                            <span>Bốn số</span>
+                            <input style="padding-left: 15px;" id="input_ty_le_bon_so" class="input-ty-le-ba-so" required maxlength="4" placeholder="" type="number" value="5500">
+                        </div>
+                        <div>
+                            <i onclick="showModalEditValue(this)" id="icon_edit_value_modal" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="div-result">
@@ -147,7 +245,7 @@
     <div class="modal" tabindex="-1" role="dialog" id="modal_phonebook">
         <div class="modal-popup modal-dialog" role="document">
             <div class="modal-content">
-                <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalVoucher()">
+                <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalPhonebook()">
                     <span style="float:right;margin-right: -5px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
                 </button>
 
@@ -175,9 +273,21 @@
                                                 <span>Tiền thưởng</span>
                                                 <strong id="lbl_thuong">@item.TileThuong</strong>
                                             </div>
+                                            <div>
+                                                <span>Đá thẳng</span>
+                                                <strong id="lbl_thuong">650</strong>
+                                            </div>
+                                            <div>
+                                                <span>Đá xiên</span>
+                                                <strong id="lbl_thuong">550</strong>
+                                            </div>
                                             <div id="div_lbl_result" class="div-lbl-result">
                                                 <span>Ba số</span>
                                                 <strong id="lbl_result">@item.TileBaSo</strong>
+                                            </div>
+                                            <div id="div_lbl_result" class="div-lbl-result">
+                                                <span>Bốn số</span>
+                                                <strong id="lbl_result">5500</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -192,9 +302,39 @@
             </div>
         </div>
     </div>
+    <div class="modal" tabindex="-1" role="dialog" id="modal_edit_value">
+        <div class="modal-popup modal-dialog" role="document">
+            <div style="height:auto;padding-bottom:0px;" class="modal-content">
+                <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalEditValueModal()">
+                    <span style="float:right;margin-right: -5px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
+                </button>
+
+                <form>
+                    <div class="row">
+                        <input type="text" tabindex="1" id="tile_dathang">
+                    </div>
+                    <div class="row">
+                        <input type="text" tabindex="1" id="tile_daXien">
+                    </div>
+                    <div class="row">
+                        <input type="text" tabindex="1" id="tile_baSo">
+                    </div>
+                    <div class="row">
+                        <input type="text" tabindex="1" id="tile_bonSo">
+                    </div>
+                    <div class="row button">
+                        <button>Xác nhận</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
     <script>
 
         var modal = document.getElementById("modal_phonebook");
+        var modal_edit_value = document.getElementById("modal_edit_value");
         var userData = @Html.Raw(Json.Encode(userData));
         var choosePhonebookId;
 
@@ -213,7 +353,11 @@
         var select_number = "select_number";
         var nhap_so_diem = "nhap_so_diem";
         var div_result = "div_result";
+        var icon_edit_value_modal = "icon_edit_value_modal";
+        var input_ty_le_da_thang = "input_ty_le_da_thang";
+        var input_ty_le_da_xien = "input_ty_le_da_xien";
         var input_ty_le_ba_so = "input_ty_le_ba_so";
+        var input_ty_le_bon_so = "input_ty_le_bon_so";
         var input_ty_le_thuong = "input_ty_le_thuong";
         var input_ty_le_sap = "input_ty_le_sap";
         var lbl_viewTong = "lbl_viewTong";
@@ -231,7 +375,7 @@
             choosePhonebookId = dom.id;
             modal.style.display = "flex";
         }
-        function CloseModalVoucher() {
+        function CloseModalPhonebook() {
             modal.style.display = "none";
         }
         function ChoosePlayer(dom) {
@@ -246,14 +390,47 @@
             var randomIdOut = choosePhonebookId.substring(choosePhonebookId.length - 5);
             document.getElementById(nameInput + randomIdOut).value = phonebook.Name;
             document.getElementById(input_ty_le_sap + randomIdOut).value = phonebook.TileXac;
-            document.getElementById(input_ty_le_ba_so + randomIdOut).value = phonebook.TileBaSo;
             document.getElementById(input_ty_le_thuong + randomIdOut).value = phonebook.TileThuong;
 
             modal.style.display = "none";
         }
 
+        function showModalEditValue(dom) {
+            modal_edit_value.style.display = "flex";
+        }
+        function CloseModalEditValueModal() {
+            modal_edit_value.style.display = "none";
+        }
+
         $(document).ready(function () {
             getDesignDivCalculate();
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Đá thẳng',
+                floatLabelType: 'Auto',
+                value:'650'
+            });
+            inputobj.appendTo('#tile_dathang');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Đá xiên',
+                floatLabelType: 'Auto',
+                value: '550'
+            });
+            inputobj.appendTo('#tile_daXien');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Ba số',
+                floatLabelType: 'Auto',
+                value: '650'
+            });
+            inputobj.appendTo('#tile_baSo');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Bốn số',
+                floatLabelType: 'Auto',
+                value: '5500'
+            });
+            inputobj.appendTo('#tile_bonSo');
         });
 
         $('#btn_add_calculate').click(function (e) {
@@ -298,9 +475,6 @@
                 if (element.id && element.id == view_msg_loi) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
-                if (element.id && element.id == input_ty_le_ba_so) {
-                    element.id = element.id + randomIdOut;
-                }
                 if (element.id && element.id == nhap_so_diem) {
                     element.id = element.id + randomIdOut + randomIdIn;
                 }
@@ -314,6 +488,21 @@
                     element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == input_ty_le_thuong) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == icon_edit_value_modal) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_da_thang) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_da_xien) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_ba_so) {
+                    element.id = element.id + randomIdOut;
+                }
+                if (element.id && element.id == input_ty_le_bon_so) {
                     element.id = element.id + randomIdOut;
                 }
                 if (element.id && element.id == lbl_xac) {
@@ -575,10 +764,9 @@
                 var synTaxe = document.getElementById(idText_import_multiline).ej2_instances[0].properties.value
                 synTaxe = synTaxe.replace(/[\n\r]+/g, " ");
                 synTaxes.push(synTaxe)
-                
+
             }
 
-            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdOut;
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
@@ -586,7 +774,6 @@
                 synTaxes: synTaxes,
                 tileXac: document.getElementById(idInput_ty_le_sap).value,
                 tileThuong: document.getElementById(idInput_ty_le_thuong).value,
-                tileBaso: document.getElementById(idInput_ty_le_ba_so).value,
             };
 
             calculationImportJson = JSON.stringify(calculationImport);
@@ -737,13 +924,12 @@
             var randomIdfull = randomIdOut + randomIdIn
 
             var idText_import_multiline = text_import_multiline + randomIdfull;
-            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdOut;
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
 
             var elementArr = [];
 
-            if (document.getElementById(idText_import_multiline).ej2_instances[0].properties.value === "" 
+            if (document.getElementById(idText_import_multiline).ej2_instances[0].properties.value === ""
                 || document.getElementById(idText_import_multiline).ej2_instances[0].properties.value == null) {
                 var idDiv_textImportMultiline = div_textImportMultiline + randomIdfull;
                 var element = document.getElementById(idDiv_textImportMultiline);
@@ -757,11 +943,6 @@
             }
             if (document.getElementById(idInput_ty_le_thuong).value === "" || !isNumber(document.getElementById(idInput_ty_le_thuong).value)) {
                 var element = document.getElementById(idInput_ty_le_thuong);
-                element.classList.add("temporary-border");
-                elementArr.push(element);
-            }
-            if (document.getElementById(idInput_ty_le_ba_so).value === "" || !isNumber(document.getElementById(idInput_ty_le_ba_so).value)) {
-                var element = document.getElementById(idInput_ty_le_ba_so);
                 element.classList.add("temporary-border");
                 elementArr.push(element);
             }

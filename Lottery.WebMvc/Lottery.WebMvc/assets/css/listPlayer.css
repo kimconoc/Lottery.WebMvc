@@ -9,8 +9,8 @@
         }
 
     .container {
-        margin: 70px auto !important;
         font-size: 11px !important;
+        margin-top: -10px !important;
     }
 
     .wrapper .title {
@@ -19,7 +19,10 @@
     }
 
     input::placeholder {
-        font-size: 12px;
+        font-size: 12px !important;
+    }
+    .div-list-player .row-player .div-info {
+        gap: 12px !important;
     }
 }
 
