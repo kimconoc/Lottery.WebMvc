@@ -282,11 +282,11 @@
                                     </div>
                                     <div>
                                         <span>Đá thẳng</span>
-                                        <strong id="lbl_thuong">650</strong>
+                                        <strong id="lbl_thuong">@item.DaThang</strong>
                                     </div>
                                     <div>
                                         <span>Đá xiên</span>
-                                        <strong id="lbl_thuong">550</strong>
+                                        <strong id="lbl_thuong">@item.DaXien</strong>
                                     </div>
                                     <div id="div_lbl_result" class="div-lbl-result">
                                         <span>Ba số</span>
@@ -294,7 +294,7 @@
                                     </div>
                                     <div id="div_lbl_result" class="div-lbl-result">
                                         <span>Bốn số</span>
-                                        <strong id="lbl_result">5500</strong>
+                                        <strong id="lbl_result">@item.BonSo</strong>
                                     </div>
                                 </div>
                             </div>
@@ -329,7 +329,19 @@
                         </div>
                         <div class="row">
                             <i class="fa fa-calculator"></i>
+                            <input name="tileDaThang" type="number" placeholder="Đá thẳng" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileDaXien" type="number" placeholder="Đá xiên" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
                             <input name="tileBaSo" type="number" placeholder="Tỷ lệ ba càng" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileBonso" type="number" placeholder="Bốn số" required>
                         </div>
                         <div class="row button">
                             <input type="submit" value="Đăng ký">
@@ -369,7 +381,19 @@
                         </div>
                         <div class="row">
                             <i class="fa fa-calculator"></i>
+                            <input name="tileDaThang_update" type="number" placeholder="Đá thẳng" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileDaXien_update" type="number" placeholder="Đá xiên" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
                             <input name="tileBaSo_update" type="number" placeholder="Tỷ lệ ba càng" required>
+                        </div>
+                        <div class="row">
+                            <i class="fa fa-calculator"></i>
+                            <input name="tileBonSo_update" type="number" placeholder="Bốn số" required>
                         </div>
                         <div class="row button">
                             <input type="submit" value="Cập nhật">

@@ -46,17 +46,21 @@
 <head>
     <style>
 
-        form {
+        .e-input-group input.e-input, .e-float-input.e-input-group input, .e-input-group.e-control-wrapper input.e-input, .e-float-input.e-input-group.e-control-wrapper input, .e-float-input input, .e-float-input.e-control-wrapper input {
+            padding: 0px;
+        }
+
+        .form-modal {
             padding: 0px 25px 0px 25px;
         }
 
-            form .row {
+            .form-modal .row {
                 height: 45px;
                 margin-bottom: 15px;
                 position: relative;
             }
 
-                form .row input {
+                .form-modal .row input {
                     height: 100%;
                     width: 100%;
                     outline: none;
@@ -67,16 +71,16 @@
                 }
 
 
-                    form .row input:focus {
+                    .form-modal .row input:focus {
                         border-color: #e3165b;
                         /*box-shadow: inset 0px 0px 2px 2px rgba(26,188,156,0.25);*/
                     }
 
-                    form .row input::placeholder {
+                    .form-modal .row input::placeholder {
                         color: #999;
                     }
 
-                form .row i {
+                .form-modal .row i {
                     position: absolute;
                     width: 47px;
                     height: 100%;
@@ -89,20 +93,20 @@
                     justify-content: center;
                 }
 
-            form .pass {
+            .form-modal .pass {
                 margin: -8px 0 20px 0;
             }
 
-                form .pass a {
+                .form-modal .pass a {
                     color: #e3165b;
                     text-decoration: none;
                 }
 
-                    form .pass a:hover {
+                    .form-modal .pass a:hover {
                         text-decoration: underline;
                     }
 
-            form .button button {
+            .form-modal .button button {
                 color: #fff;
                 font-weight: 500;
                 padding-left: 0px;
@@ -111,21 +115,21 @@
                 cursor: pointer;
             }
 
-                form .button input:hover {
-                    /*background: #12876f;*/
-                }
+            .form-modal .button input:hover {
+                /*background: #12876f;*/
+            }
 
-            form .signup-link {
+            .form-modal .signup-link {
                 text-align: center;
                 margin-top: 20px;
             }
 
-                form .signup-link a {
+                .form-modal .signup-link a {
                     color: #e3165b;
                     text-decoration: none;
                 }
 
-                    form .signup-link a:hover {
+                    .form-modal .signup-link a:hover {
                         text-decoration: underline;
                     }
         
@@ -179,27 +183,27 @@
                         </div>
                         <div>
                             <span>Xác</span>
-                            <input style="padding-left: 15px " id="input_ty_le_sap" class="input-ty-le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap(this)" value="0.75">
+                            <input style="padding-left: 15px " id="input_ty_le_sap" class="input-ty-le_sap" required maxlength="4" placeholder="" type="number" onKeyUp="validaeInPutTyLeSap(this)" value="@userData.TileXac">
                         </div>
                         <div>
                             <span>Thưởng</span>
-                            <input style="padding-left: 20px " id="input_ty_le_thuong" class="input-ty-le-thuong" required maxlength="4" placeholder="" type="number" value="75">
+                            <input style="padding-left: 20px " id="input_ty_le_thuong" class="input-ty-le-thuong" required maxlength="4" placeholder="" type="number" value="@userData.TileThuong">
                         </div>
                         <div style="display: none;">
                             <span>Đá thẳng</span>
-                            <input style="padding-left: 15px;" id="input_ty_le_da_thang" required maxlength="4" placeholder="" type="number" value="650">
+                            <input style="padding-left: 15px;" id="input_ty_le_da_thang" required maxlength="4" placeholder="" type="number" value="@userData.DaThang">
                         </div>
                         <div style="display: none;">
                             <span>Đá xiên</span>
-                            <input style="padding-left: 15px;" id="input_ty_le_da_xien" required maxlength="4" placeholder="" type="number" value="550">
+                            <input style="padding-left: 15px;" id="input_ty_le_da_xien" required maxlength="4" placeholder="" type="number" value="@userData.DaXien">
                         </div>
                         <div style="display: none;">
                             <span>Ba số</span>
-                            <input style="padding-left: 15px;" id="input_ty_le_ba_so" required maxlength="4" placeholder="" type="number" value="650">
+                            <input style="padding-left: 15px;" id="input_ty_le_ba_so" required maxlength="4" placeholder="" type="number" value="@userData.TileBaSo">
                         </div>
                         <div style="display: none;">
                             <span>Bốn số</span>
-                            <input style="padding-left: 15px;" id="input_ty_le_bon_so" class="input-ty-le-ba-so" required maxlength="4" placeholder="" type="number" value="5500">
+                            <input style="padding-left: 15px;" id="input_ty_le_bon_so" class="input-ty-le-ba-so" required maxlength="4" placeholder="" type="number" value="@userData.BonSo">
                         </div>
                         <div>
                             <i onclick="showModalEditValue(this)" id="icon_edit_value_modal" class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -267,27 +271,27 @@
                                         <div class="div-info">
                                             <div>
                                                 <span>Tiền xác</span>
-                                                <strong id="lbl_xac">@item.TileXac</strong>
+                                                <strong>@item.TileXac</strong>
                                             </div>
                                             <div>
                                                 <span>Tiền thưởng</span>
-                                                <strong id="lbl_thuong">@item.TileThuong</strong>
+                                                <strong>@item.TileThuong</strong>
                                             </div>
                                             <div>
                                                 <span>Đá thẳng</span>
-                                                <strong id="lbl_thuong">650</strong>
+                                                <strong>@item.DaThang</strong>
                                             </div>
                                             <div>
                                                 <span>Đá xiên</span>
-                                                <strong id="lbl_thuong">550</strong>
+                                                <strong>@item.DaXien</strong>
                                             </div>
-                                            <div id="div_lbl_result" class="div-lbl-result">
+                                            <div>
                                                 <span>Ba số</span>
-                                                <strong id="lbl_result">@item.TileBaSo</strong>
+                                                <strong>@item.TileBaSo</strong>
                                             </div>
-                                            <div id="div_lbl_result" class="div-lbl-result">
+                                            <div>
                                                 <span>Bốn số</span>
-                                                <strong id="lbl_result">5500</strong>
+                                                <strong>@item.BonSo</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -309,7 +313,7 @@
                     <span style="float:right;margin-right: -5px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
                 </button>
 
-                <form>
+                <div class="form-modal">
                     <div class="row">
                         <input type="text" tabindex="1" id="tile_dathang">
                     </div>
@@ -323,10 +327,10 @@
                         <input type="text" tabindex="1" id="tile_bonSo">
                     </div>
                     <div class="row button">
-                        <button>Xác nhận</button>
+                        <button onclick="confirmEditValue()">Xác nhận</button>
                     </div>
 
-                </form>
+                </div>
 
             </div>
         </div>
@@ -337,6 +341,7 @@
         var modal_edit_value = document.getElementById("modal_edit_value");
         var userData = @Html.Raw(Json.Encode(userData));
         var choosePhonebookId;
+        var EditValueIdOut;
 
         var div_calculate = "div_calculate";
         var delete_div_calculate = "delete_div_calculate";
@@ -391,15 +396,33 @@
             document.getElementById(nameInput + randomIdOut).value = phonebook.Name;
             document.getElementById(input_ty_le_sap + randomIdOut).value = phonebook.TileXac;
             document.getElementById(input_ty_le_thuong + randomIdOut).value = phonebook.TileThuong;
+            document.getElementById(input_ty_le_da_thang + randomIdOut).value = phonebook.DaThang;
+            document.getElementById(input_ty_le_da_xien + randomIdOut).value = phonebook.DaXien;
+            document.getElementById(input_ty_le_ba_so + randomIdOut).value = phonebook.TileBaSo;
+            document.getElementById(input_ty_le_bon_so + randomIdOut).value = phonebook.BonSo;
 
             modal.style.display = "none";
         }
 
         function showModalEditValue(dom) {
+            var IdBtnAddRow = dom.id;
+            var randomIdOut = IdBtnAddRow.substring(IdBtnAddRow.length - 5);
+            EditValueIdOut = randomIdOut;
+            document.getElementById("tile_dathang").ej2_instances[0].value = document.getElementById(input_ty_le_da_thang + randomIdOut).value;
+            document.getElementById("tile_daXien").ej2_instances[0].value = document.getElementById(input_ty_le_da_xien + randomIdOut).value;
+            document.getElementById("tile_baSo").ej2_instances[0].value = document.getElementById(input_ty_le_ba_so + randomIdOut).value;
+            document.getElementById("tile_bonSo").ej2_instances[0].value = document.getElementById(input_ty_le_bon_so + randomIdOut).value;
             modal_edit_value.style.display = "flex";
         }
         function CloseModalEditValueModal() {
             modal_edit_value.style.display = "none";
+        }
+
+        function confirmEditValue() {
+            document.getElementById(input_ty_le_da_thang + EditValueIdOut).value = document.getElementById("tile_dathang").ej2_instances[0].value;
+            document.getElementById(input_ty_le_da_xien + EditValueIdOut).value = document.getElementById("tile_daXien").ej2_instances[0].value;
+            document.getElementById(input_ty_le_ba_so + EditValueIdOut).value = document.getElementById("tile_baSo").ej2_instances[0].value;
+            document.getElementById(input_ty_le_bon_so + EditValueIdOut).value = document.getElementById("tile_bonSo").ej2_instances[0].value;
         }
 
         $(document).ready(function () {
@@ -407,28 +430,28 @@
             var inputobj = new ej.inputs.TextBox({
                 placeholder: 'Đá thẳng',
                 floatLabelType: 'Auto',
-                value:'650'
+                value:(@userData.DaThang)
             });
             inputobj.appendTo('#tile_dathang');
 
             var inputobj = new ej.inputs.TextBox({
                 placeholder: 'Đá xiên',
                 floatLabelType: 'Auto',
-                value: '550'
+                value: (@userData.DaXien)
             });
             inputobj.appendTo('#tile_daXien');
 
             var inputobj = new ej.inputs.TextBox({
                 placeholder: 'Ba số',
                 floatLabelType: 'Auto',
-                value: '650'
+                value: (@userData.TileBaSo)
             });
             inputobj.appendTo('#tile_baSo');
 
             var inputobj = new ej.inputs.TextBox({
                 placeholder: 'Bốn số',
                 floatLabelType: 'Auto',
-                value: '5500'
+                value: (@userData.BonSo)
             });
             inputobj.appendTo('#tile_bonSo');
         });
@@ -769,11 +792,19 @@
 
             var idInput_ty_le_sap = input_ty_le_sap + randomIdOut;
             var idInput_ty_le_thuong = input_ty_le_thuong + randomIdOut;
+            var idInput_ty_le_da_thang = input_ty_le_da_thang + randomIdOut;
+            var idInput_ty_le_da_xien = input_ty_le_da_xien + randomIdOut;
+            var idInput_ty_le_ba_so = input_ty_le_ba_so + randomIdOut;
+            var idInput_ty_le_bon_so = input_ty_le_bon_so + randomIdOut;
 
             var calculationImport = {
                 synTaxes: synTaxes,
                 tileXac: document.getElementById(idInput_ty_le_sap).value,
                 tileThuong: document.getElementById(idInput_ty_le_thuong).value,
+                daThang: document.getElementById(idInput_ty_le_da_thang).value,
+                daXien: document.getElementById(idInput_ty_le_da_xien).value,
+                tileBaso: document.getElementById(idInput_ty_le_ba_so).value,
+                bonSo: document.getElementById(idInput_ty_le_bon_so).value,
             };
 
             calculationImportJson = JSON.stringify(calculationImport);
