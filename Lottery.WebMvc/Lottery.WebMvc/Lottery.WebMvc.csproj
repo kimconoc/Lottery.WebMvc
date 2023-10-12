@@ -169,6 +169,7 @@
     <Content Include="assets\css\calculationImport.css" />
     <Content Include="assets\css\listPlayer.css" />
     <Content Include="assets\css\login.css" />
+    <Content Include="assets\css\account.css" />
     <Content Include="assets\helpers\awesome-alert-main\awesomeAlert.js" />
     <Content Include="assets\helpers\datetimepicker-master\jquery.datetimepicker.css" />
     <Content Include="assets\helpers\datetimepicker-master\jquery.datetimepicker.full.min.js" />
@@ -281,6 +282,7 @@
     <Compile Include="MemCached\CacheHelper.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\PhonebookModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -571,6 +573,7 @@
     <Content Include="Views\Phonebook\ListPlayer.cshtml" />
     <Content Include="Views\Phonebook\UpdatePlayer.cshtml" />
     <Content Include="Views\Calculation\IndexImport.cshtml" />
+    <Content Include="Views\Account\Account.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -40,11 +40,7 @@ namespace Lottery.WebMvc.Controllers
                 }
                 else
                 {
-                    userData.UserAgent = IdentifyUserAgent();
-                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, model.LoginName, DateTime.Now, DateTime.Now.AddMinutes(720), false, JsonConvert.SerializeObject(userData), FormsAuthentication.FormsCookiePath);
-                    string hash = FormsAuthentication.Encrypt(ticket);
-                    HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
-                    Response.Cookies.Add(cookie);
+                    ExecuteSaveCookies(userData);
                     return RedirectToAction("IndexImport", "Calculation");
                 }
             }
@@ -56,6 +52,57 @@ namespace Lottery.WebMvc.Controllers
             return View(model);
         }
         public ActionResult Logout()
+        {
+            RemoteCookies();
+            return RedirectToAction("Login", "Account");
+        }
+        #endregion Login 
+
+        public ActionResult Account()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ExecuteUpdateAccount(string accountJson)
+        {
+            try
+            {
+                var account = JsonConvert.DeserializeObject<UserModel>(accountJson);
+
+                var ResultBase = provider.PutAsync<object>(ApiUri.PUT_UpdateUser, account);
+                if (ResultBase == null || ResultBase.Result == null || !ResultBase.Result.IsSuccessful)
+                {
+                    return View(Server_Error());
+                }
+
+                RemoteCookies();
+
+
+                User userData = null;
+                var dataBase = provider.GetAsync<User>(string.Format(ApiUri.GET_UserInfo + "/{0}", account.UserID));
+                if (dataBase != null && dataBase.Result != null && dataBase.Result.Data != null)
+                {
+                    userData = dataBase.Result.Data;
+                }
+                ExecuteSaveCookies(userData);
+                return Json(Success_Request(true));
+            }
+            catch 
+            {
+                return View(Server_Error());
+            }
+        }
+
+        private void ExecuteSaveCookies(User userData)
+        {
+            userData.UserAgent = IdentifyUserAgent();
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, userData.Account, DateTime.Now, DateTime.Now.AddMinutes(720), false, JsonConvert.SerializeObject(userData), FormsAuthentication.FormsCookiePath);
+            string hash = FormsAuthentication.Encrypt(ticket);
+            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, hash);
+            Response.Cookies.Add(cookie);
+        }
+        private void RemoteCookies()
         {
             if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
             {
@@ -70,9 +117,6 @@ namespace Lottery.WebMvc.Controllers
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, "");
             cookie.Expires = DateTime.Now.AddYears(-1);
             Response.Cookies.Add(cookie);
-
-            return RedirectToAction("Login", "Account");
         }
-        #endregion Login 
     }
 }

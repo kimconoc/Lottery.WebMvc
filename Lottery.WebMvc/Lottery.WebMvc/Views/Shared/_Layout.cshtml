@@ -62,38 +62,38 @@
                 <div class="mdc-list-group">
                     <nav class="mdc-list mdc-drawer-menu">
                         <!--<div class="mdc-list-item mdc-drawer-item">
-                            <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel" data-target="masterdata-sub-menu">-->
-                                @*<i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">calculate</i>*@
-                                <!--<i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
-                                Trang tính
-                                <i class="mdc-drawer-arrow material-icons">chevron_right</i>
+        <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel" data-target="masterdata-sub-menu">-->
+                        @*<i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">calculate</i>*@
+                        <!--<i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+            Trang tính
+            <i class="mdc-drawer-arrow material-icons">chevron_right</i>
+        </a>
+        <div class="mdc-expansion-panel" id="masterdata-sub-menu">
+            <nav class="mdc-list mdc-drawer-submenu">
+                <div style="display:flex;" class="mdc-list-item mdc-drawer-item">
+                    @{
+                        if (userData.UserAgent == (int)UserAgentEnum.Computer)
+                        {
+                            <a class="mdc-drawer-link" href="@Url.Action("Index", "Calculation")">
+                                Cú pháp
                             </a>
-                            <div class="mdc-expansion-panel" id="masterdata-sub-menu">
-                                <nav class="mdc-list mdc-drawer-submenu">
-                                    <div style="display:flex;" class="mdc-list-item mdc-drawer-item">
-                                        @{
-                                            if (userData.UserAgent == (int)UserAgentEnum.Computer)
-                                            {
-                                                <a class="mdc-drawer-link" href="@Url.Action("Index", "Calculation")">
-                                                    Cú pháp
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                <a class="mdc-drawer-link" href="@Url.Action("IndexMb", "Calculation")">
-                                                    Cú pháp
-                                                </a>
-                                            }
-                                        }
-                                    </div>
-                                    <div class="mdc-list-item mdc-drawer-item">
-                                        <a class="mdc-drawer-link" href="@Url.Action("IndexImport", "Calculation")">
-                                            Nhập liệu
-                                        </a>
-                                    </div>
-                                </nav>
-                            </div>
-                        </div>-->
+                        }
+                        else
+                        {
+                            <a class="mdc-drawer-link" href="@Url.Action("IndexMb", "Calculation")">
+                                Cú pháp
+                            </a>
+                        }
+                    }
+                </div>
+                <div class="mdc-list-item mdc-drawer-item">
+                    <a class="mdc-drawer-link" href="@Url.Action("IndexImport", "Calculation")">
+                        Nhập liệu
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </div>-->
 
                         <div class="mdc-list-item mdc-drawer-item">
                             <a class="mdc-drawer-link" href="@Url.Action("IndexImport", "Calculation")">
@@ -106,17 +106,17 @@
                             @{
                                 if (userData.UserAgent == (int)UserAgentEnum.Computer)
                                 {
-                                   <a class="mdc-drawer-link" href="@Url.Action("Index", "Calculation")">
-                                       <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
-                                       Nhập liệu
-                                   </a>
+                                    <a class="mdc-drawer-link" href="@Url.Action("Index", "Calculation")">
+                                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+                                        Nhập liệu
+                                    </a>
                                 }
                                 else
                                 {
                                     <a class="mdc-drawer-link" href="@Url.Action("IndexMb", "Calculation")">
-                                       <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
-                                       Nhập liệu
-                                   </a>
+                                        <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+                                        Nhập liệu
+                                    </a>
                                 }
                             }
                         </div>
@@ -125,6 +125,13 @@
                             <a class="mdc-drawer-link" href="@Url.Action("ListPlayer", "Phonebook")">
                                 <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">contact_phone</i>
                                 Danh bạ
+                            </a>
+                        </div>
+
+                        <div class="mdc-list-item mdc-drawer-item">
+                            <a class="mdc-drawer-link" href="@Url.Action("Account", "Account")">
+                                <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">account_circle</i>
+                                Tài khoản
                             </a>
                         </div>
 

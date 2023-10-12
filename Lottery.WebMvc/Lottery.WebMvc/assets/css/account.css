@@ -1,0 +1,125 @@
+﻿@media only screen and (max-width: 600px) {
+    .div-form-account {
+        width: 100% !important;
+    }
+    .icon-account {
+        font-size: 90px !important;
+    }
+}
+
+.container {
+    display: flex;
+    flex-flow: column;
+    margin-top: 12px;
+    max-width: 900px;
+    height: 85vh;
+}
+
+.heading {
+    margin: 20px 0px 15px;
+    /*color: #e3165b;*/
+    display: flex;
+    justify-content: space-between;
+}
+
+.div-form-account {
+    justify-content: center;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 15px;
+    background-color: white;
+    border: 5px solid #f1f1f1;
+    padding: 20px;
+    width: 600px;
+    margin: 0 auto;
+}
+
+.icon-account {
+    font-size: 110px;
+    display: flex;
+    justify-content: center;
+    color: #4286f4;
+    margin-bottom: 20px;
+}
+
+.form-account {
+    padding: 0px 25px 0px 25px;
+}
+
+    .form-account .row {
+        height: 45px;
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+        .form-account .row input {
+            height: 100%;
+            width: 100%;
+            outline: none;
+            padding-left: 60px;
+            border-radius: 5px;
+            border: 1px solid lightgrey;
+            transition: all 0.3s ease;
+        }
+
+
+            .form-account .row input:focus {
+                border-color: #e3165b;
+                /*box-shadow: inset 0px 0px 2px 2px rgba(26,188,156,0.25);*/
+            }
+
+            .form-account .row input::placeholder {
+                color: #999;
+            }
+
+        .form-account .row i {
+            position: absolute;
+            width: 47px;
+            height: 100%;
+            color: #fff;
+            background: #e3165b;
+            border: 1px solid #e3165b;
+            border-radius: 5px 0 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+    .form-account .pass {
+        margin: -8px 0 20px 0;
+    }
+
+        .form-account .pass a {
+            color: #e3165b;
+            text-decoration: none;
+        }
+
+            .form-account .pass a:hover {
+                text-decoration: underline;
+            }
+
+    .form-account .button button {
+        color: #fff;
+        font-weight: 500;
+        padding-left: 0px;
+        background: #e3165b;
+        border: 1px solid #e3165b;
+        cursor: pointer;
+    }
+
+    .form-account .button input:hover {
+        /*background: #12876f;*/
+    }
+
+    .form-account .signup-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+        .form-account .signup-link a {
+            color: #e3165b;
+            text-decoration: none;
+        }
+
+            .form-account .signup-link a:hover {
+                text-decoration: underline;
+            }
