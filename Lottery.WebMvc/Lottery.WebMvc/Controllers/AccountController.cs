@@ -78,7 +78,6 @@ namespace Lottery.WebMvc.Controllers
 
                 RemoteCookies();
 
-
                 User userData = null;
                 var dataBase = provider.GetAsync<User>(string.Format(ApiUri.GET_UserInfo + "/{0}", account.UserID));
                 if (dataBase != null && dataBase.Result != null && dataBase.Result.Data != null)
