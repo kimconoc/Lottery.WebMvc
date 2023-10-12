@@ -42,6 +42,8 @@
         .heading {
             margin: 20px 0px 15px;
             /*color: #e3165b;*/
+            display: flex;
+            justify-content: space-between;
         }
 
         .box-add-new-player {
@@ -150,7 +152,7 @@
         }
 
             .wrapper .title {
-                height: 90px;
+                height: 60px;
                 background: #e3165b;
                 /*background: #16a085;*/
                 border-radius: 5px 5px 0 0;
@@ -250,6 +252,10 @@
     <div class="container">
         <div class="heading">
             <h3>Danh bạ người chơi</h3>
+            <button onclick="goToBackCaculation()" style="background: #e3165b !important;" class="btn-core-accept">
+                <i style="margin-right:5px;" class="fa fa-chevron-circle-left"></i>
+                Trang tính
+            </button>
         </div>
         <div onclick="openPopupCreatePhonebook(this)" class="box-add-new-player">
             <i class="fa fa-plus"></i>
@@ -316,38 +322,29 @@
                     <div class="title"><span>Thêm mới</span></div>
                     <form id="createPlayerForm" action="#">
                         <div class="row">
-                            <i class="fa fa-user-plus"></i>
-                            <input name="name" type="text" placeholder="Tên người chơi" required>
+                            <input type="text" tabindex="1" id="name">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileXac" type="number" step="any" placeholder="Tỷ lệ xác" required>
+                            <input type="number" step="any" tabindex="1" id="tileXac">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileThuong" type="number" placeholder="Tỷ lệ thưởng" required>
+                            <input type="number" tabindex="1" id="tileThuong">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileDaThang" type="number" placeholder="Đá thẳng" required>
+                            <input type="number" tabindex="1" id="tileDaThang">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileDaXien" type="number" placeholder="Đá xiên" required>
+                            <input type="number" tabindex="1" id="tileDaXien">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileBaSo" type="number" placeholder="Tỷ lệ ba càng" required>
+                            <input type="number" tabindex="1" id="tileBaSo">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileBonso" type="number" placeholder="Bốn số" required>
+                            <input type="number" tabindex="1" id="tileBonso_create">
                         </div>
                         <div class="row button">
                             <input type="submit" value="Đăng ký">
                         </div>
-
-                        @*<div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexImport"> Trang tính!</a></div>*@
 
                     </form>
                 </div>
@@ -364,42 +361,32 @@
                     <div class="title"><span>Cập nhật</span></div>
                     <form id="updatePlayerForm" action="#">
                         <div style="display:none;" class="row">
-                            <i class="fa fa-id-card"></i>
-                            <input name="id_update" type="text" placeholder="Tên người chơi" required>
+                            <input type="text" tabindex="1" id="id_update">
                         </div>
                         <div class="row">
-                            <i class="fa fa-user-plus"></i>
-                            <input name="name_update" type="text" placeholder="Tên người chơi" required>
+                            <input type="text" tabindex="1" id="name_update">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileXac_update" type="number" step="any" placeholder="Tỷ lệ xác" required>
+                            <input type="number" step="any" tabindex="1" id="tileXac_update">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileThuong_update" type="number" placeholder="Tỷ lệ thưởng" required>
+                            <input type="number" tabindex="1" id="tileThuong_update">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileDaThang_update" type="number" placeholder="Đá thẳng" required>
+                            <input type="number" tabindex="1" id="tileDaThang_update">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileDaXien_update" type="number" placeholder="Đá xiên" required>
+                            <input type="number" tabindex="1" id="tileDaXien_update">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileBaSo_update" type="number" placeholder="Tỷ lệ ba càng" required>
+                            <input type="number" tabindex="1" id="tileBaSo_update">
                         </div>
                         <div class="row">
-                            <i class="fa fa-calculator"></i>
-                            <input name="tileBonSo_update" type="number" placeholder="Bốn số" required>
+                            <input type="number" tabindex="1" id="tileBonSo_update">
                         </div>
                         <div class="row button">
                             <input type="submit" value="Cập nhật">
                         </div>
-
-                        @*<div class="signup-link">Người chơi đã có trong danh bạ? <a href="/Calculation/IndexImport"> Trang tính!</a></div>*@
 
                     </form>
                 </div>
@@ -407,6 +394,122 @@
         </div>
     </div>
     <script>
+
+        $(document).ready(function () {
+
+            //Cho cập nhật
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'id_update',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#id_update');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Tên người chơi',
+                floatLabelType: 'Auto',
+                value:'',
+            });
+            inputobj.appendTo('#name_update');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Tỷ lệ xác',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileXac_update');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Tỷ lệ thưởng',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileThuong_update');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Đá thẳng',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileDaThang_update');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Đá xiên',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileDaXien_update');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Ba số',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileBaSo_update');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Bốn số',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileBonSo_update');
+
+            //Cho tạo mới
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Tên người chơi',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#name');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Tỷ lệ xác',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileXac');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Tỷ lệ thưởng',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileThuong');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Đá thẳng',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileDaThang');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Đá xiên',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileDaXien');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Ba số',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileBaSo');
+
+            var inputobj = new ej.inputs.TextBox({
+                placeholder: 'Bốn số',
+                floatLabelType: 'Auto',
+                value: '',
+            });
+            inputobj.appendTo('#tileBonso_create');
+
+
+        });
+
+        function goToBackCaculation() {
+            window.location = "/Calculation/IndexImport"
+        }
 
         function deletePlayer(dom) {
             if (confirm("Bạn muốn xóa người chơi này?")) {
@@ -473,10 +576,13 @@
             event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
 
             var playerModel = {
-                name: document.getElementsByName("name")[0].value,
-                tileXac: document.getElementsByName("tileXac")[0].value,
-                tileThuong: document.getElementsByName("tileThuong")[0].value,
-                tileBaSo: document.getElementsByName("tileBaSo")[0].value,
+                name: document.getElementById("name").ej2_instances[0].value,
+                tileXac: document.getElementById("tileXac").ej2_instances[0].value,
+                tileThuong: document.getElementById("tileThuong").ej2_instances[0].value,
+                tileBaSo: document.getElementById("tileBaSo").ej2_instances[0].value,
+                daThang: document.getElementById("tileDaThang").ej2_instances[0].value,
+                daXien: document.getElementById("tileDaXien").ej2_instances[0].value,
+                bonSo: document.getElementById("tileBonso_create").ej2_instances[0].value,
             }
             var playerModels = [playerModel];
             playerModels.push();
@@ -534,11 +640,15 @@
                     break;
                 }
             }
-            document.getElementsByName("id_update")[0].value = phonebook.Id;
-            document.getElementsByName("name_update")[0].value = phonebook.Name;
-            document.getElementsByName("tileXac_update")[0].value = phonebook.TileXac;
-            document.getElementsByName("tileThuong_update")[0].value = phonebook.TileThuong;
-            document.getElementsByName("tileBaSo_update")[0].value = phonebook.TileBaSo;
+            document.getElementById("id_update").ej2_instances[0].value = phonebook.Id;
+            document.getElementById("name_update").ej2_instances[0].value = phonebook.Name;
+            document.getElementById("tileXac_update").ej2_instances[0].value = phonebook.TileXac;
+            document.getElementById("tileThuong_update").ej2_instances[0].value = phonebook.TileThuong;
+            document.getElementById("tileDaThang_update").ej2_instances[0].value = phonebook.DaThang;
+            document.getElementById("tileDaXien_update").ej2_instances[0].value = phonebook.DaXien;
+            document.getElementById("tileBaSo_update").ej2_instances[0].value = phonebook.TileBaSo;
+            document.getElementById("tileBonSo_update").ej2_instances[0].value = phonebook.BonSo;
+
             modalUpdate.style.display = "flex";
         }
         function CloseModalUpdatePhonebook() {
@@ -549,11 +659,14 @@
             event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
 
             var playerModel = {
-                id: document.getElementsByName("id_update")[0].value,
-                name: document.getElementsByName("name_update")[0].value,
-                tileXac: document.getElementsByName("tileXac_update")[0].value,
-                tileThuong: document.getElementsByName("tileThuong_update")[0].value,
-                tileBaSo: document.getElementsByName("tileBaSo_update")[0].value,
+                id: document.getElementById("id_update").ej2_instances[0].value,
+                name: document.getElementById("name_update").ej2_instances[0].value,
+                tileXac: document.getElementById("tileXac_update").ej2_instances[0].value,
+                tileThuong: document.getElementById("tileThuong_update").ej2_instances[0].value,
+                tileBaSo: document.getElementById("tileBaSo_update").ej2_instances[0].value,
+                daThang: document.getElementById("tileDaThang_update").ej2_instances[0].value,
+                daXien: document.getElementById("tileDaXien_update").ej2_instances[0].value,
+                bonSo: document.getElementById("tileBonSo_update").ej2_instances[0].value,
             }
             var playerModels = [playerModel];
             playerModels.push();
