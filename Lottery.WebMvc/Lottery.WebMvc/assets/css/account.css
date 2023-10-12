@@ -5,6 +5,9 @@
     .icon-account {
         font-size: 90px !important;
     }
+    .container {
+        margin-top: -10px !important;
+    }
 }
 
 .container {
