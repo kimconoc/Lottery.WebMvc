@@ -270,9 +270,12 @@
                         <div class="row-player">
                             <div>
                                 <div class="head-row-player">
-                                    <h4 class="page-header margin-top-none">@item.Name</h4>
-                                    <div>
-                                        <i onclick="deletePlayer(this)" style="color: red;" id="@item.Id" class="fa fa-trash" aria-hidden="true"></i>
+                                    <div style="display:flex;">
+                                        <i style="color: #4286f4;" class="fas fa-user-circle"></i>
+                                        <h4 class="page-header margin-top-none">@item.Name</h4>
+                                    </div>
+                                    <div class="icon-execute">
+                                        <i onclick="deletePlayer(this)" style="color:#d9534f;" id="@item.Id" class="fa fa-trash" aria-hidden="true"></i>
                                         <i onclick="openPopupUpdatepPhonebook(this)" style="color: inherit;" class="fa fa-pencil-square-o" id="@item.Id" aria-hidden="true"></i>
                                     </div>
                                 </div>

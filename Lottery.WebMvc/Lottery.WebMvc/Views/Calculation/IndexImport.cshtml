@@ -248,13 +248,17 @@
                         {
                             foreach (var item in phonebooks)
                             {
-                                <div class="row-player">
+                                <div onclick="ChoosePlayer(this)" id="@item.Id" class="row-player">
                                     <div>
                                         <div class="head-row-player">
-                                            <h4 class="page-header margin-top-none">@item.Name</h4>
-                                            <div>
-                                                <i onclick="ChoosePlayer(this)" class="fa fa-eyedropper" id="@item.Id" aria-hidden="true"></i>
+                                             <div style="display:flex;">
+                                                <i style="color: #4286f4;" class="fas fa-user-circle"></i>
+                                                <h4 class="page-header margin-top-none">@item.Name</h4>
                                             </div>
+                                            @*<h4 class="page-header margin-top-none">@item.Name</h4>*@
+                                            @*<div>
+                                                <i class="fa fa-eyedropper" aria-hidden="true"></i>
+                                            </div>*@
                                         </div>
                                         <div class="margin-bottom-sm"></div>
                                         <div class="div-info">

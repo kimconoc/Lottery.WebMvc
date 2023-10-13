@@ -24,5 +24,9 @@
     .div-list-player .row-player .div-info {
         gap: 12px !important;
     }
+
+    .icon-execute i {
+        font-size: 14px !important;
+    }
 }
 

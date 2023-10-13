@@ -376,6 +376,7 @@ input {
 
                 .modal .modal-dialog .modal-content .div-list-player .row-player {
                     margin-bottom: 10px;
+                    cursor: pointer;
                 }
 
                     .modal .modal-dialog .modal-content .div-list-player .row-player .head-row-player {
