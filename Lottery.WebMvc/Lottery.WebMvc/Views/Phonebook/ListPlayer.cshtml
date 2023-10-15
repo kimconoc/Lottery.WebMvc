@@ -152,7 +152,7 @@
         }
 
             .wrapper .title {
-                height: 60px;
+                height: 55px;
                 background: #e3165b;
                 /*background: #16a085;*/
                 border-radius: 5px 5px 0 0;
@@ -162,6 +162,9 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+            }
+            .wrapper .title span{
+                font-size: 18px;
             }
 
             .wrapper form {
@@ -175,10 +178,9 @@
                 }
 
                     .wrapper form .row input {
-                        height: 100%;
+                        height: 35px;
                         width: 100%;
                         outline: none;
-                        padding-left: 60px;
                         border-radius: 5px;
                         border: 1px solid lightgrey;
                         transition: all 0.3s ease;
@@ -220,6 +222,7 @@
                 }
 
         .wrapper form .button input {
+            margin-top: 10px;
             color: #fff;
             font-weight: 500;
             padding-left: 0px;
@@ -245,6 +248,28 @@
         form .signup-link a:hover {
             text-decoration: underline;
         }
+
+        .div-row-input-val {
+            display: flex;
+            gap: 40px;
+        }
+
+        .div-row-input-val-radio {
+            margin-top: 10px;
+            margin-left: -10px;
+        }
+
+        .row-input-val {
+            flex: 1;
+            display: flex;
+            flex-flow: column;
+        }
+
+            .row-input-val span {
+                font-weight: 500;
+                margin-left: -5px;
+            }
+
     </style>
 </head>
 <body>
@@ -259,7 +284,7 @@
         </div>
         <div onclick="openPopupCreatePhonebook(this)" class="box-add-new-player">
             <i class="fa fa-plus"></i>
-            <span>Thêm người chơi</span>
+            <span>Thêm khách hàng</span>
         </div>
         <div style="overflow: auto;">
             <div class="div-list-player">
@@ -319,31 +344,28 @@
         <div class="modal-popup modal-dialog" role="document">
             <div class="modal-content">
                 <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalCreatePhonebook()">
-                    <span style="float:right;margin-right: 4px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
+                    <span style="float:right;margin-right: 7px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
                 </button>
                 <div class="wrapper">
-                    <div class="title"><span>Thêm mới</span></div>
+                    <div class="title"><span>Tạo khách hàng</span></div>
                     <form id="createPlayerForm" action="#">
-                        <div class="row">
-                            <input type="text" tabindex="1" id="name">
+                        <div class="div-row-input-val">
+                            <div class="row row-input-val">
+                                <span>
+                                    Tên:
+                                </span>
+                                <input type="text" tabindex="1" id="cr_name" required>
+                            </div>
+                            <div class="row row-input-val">
+                                <span>
+                                    SDT:
+                                </span>
+                                <input type="text" tabindex="1" id="cr_number_phone">
+                            </div>
                         </div>
-                        <div class="row">
-                            <input type="number" step="any" tabindex="1" id="tileXac">
-                        </div>
-                        <div class="row">
-                            <input type="number" tabindex="1" id="tileThuong">
-                        </div>
-                        <div class="row">
-                            <input type="number" tabindex="1" id="tileDaThang">
-                        </div>
-                        <div class="row">
-                            <input type="number" tabindex="1" id="tileDaXien">
-                        </div>
-                        <div class="row">
-                            <input type="number" tabindex="1" id="tileBaSo">
-                        </div>
-                        <div class="row">
-                            <input type="number" tabindex="1" id="tileBonso_create">
+                        <div class="div-row-input-val div-row-input-val-radio">
+                            <input type="radio" id="element1">
+                            <input type="radio" id="element2">
                         </div>
                         <div class="row button">
                             <input type="submit" value="Đăng ký">
@@ -358,7 +380,7 @@
         <div class="modal-popup modal-dialog" role="document">
             <div class="modal-content">
                 <button style="margin-top:-15px;" class="aria-hidden close" aria-label="Close" onclick="CloseModalUpdatePhonebook()">
-                    <span style="float:right;margin-right: 4px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
+                    <span style="float:right;margin-right: 7px;margin-top: 5px;font-size:30px;" aria-hidden="true">&times;</span>
                 </button>
                 <div class="wrapper">
                     <div class="title"><span>Cập nhật</span></div>
@@ -400,114 +422,13 @@
 
         $(document).ready(function () {
 
-            //Cho cập nhật
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'id_update',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#id_update');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Tên người chơi',
-                floatLabelType: 'Auto',
-                value:'',
-            });
-            inputobj.appendTo('#name_update');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Tỷ lệ xác',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileXac_update');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Tỷ lệ thưởng',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileThuong_update');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Đá thẳng',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileDaThang_update');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Đá xiên',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileDaXien_update');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Ba số',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileBaSo_update');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Bốn số',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileBonSo_update');
-
-            //Cho tạo mới
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Tên người chơi',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#name');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Tỷ lệ xác',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileXac');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Tỷ lệ thưởng',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileThuong');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Đá thẳng',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileDaThang');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Đá xiên',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileDaXien');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Ba số',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileBaSo');
-
-            var inputobj = new ej.inputs.TextBox({
-                placeholder: 'Bốn số',
-                floatLabelType: 'Auto',
-                value: '',
-            });
-            inputobj.appendTo('#tileBonso_create');
-
-
+            ej.base.enableRipple(true);
+            // Initialize RadioButton component.
+            var radiobutton = new ej.buttons.RadioButton({ label: 'Khách', name: 'khachorchu', enableRtl: 'true', checked: true });
+            // Render initialized RadioButton.
+            radiobutton.appendTo('#element1');
+            radiobutton = new ej.buttons.RadioButton({ label: 'Chủ', name: 'khachorchu', enableRtl: 'true' });
+            radiobutton.appendTo('#element2');
         });
 
         function goToBackCaculation() {
@@ -577,7 +498,8 @@
         // Bắt sự kiện submit của biểu mẫu create
         document.getElementById("createPlayerForm").addEventListener("submit", function (event) {
             event.preventDefault(); // Ngăn chặn biểu mẫu gửi đi mặc định
-
+            alert("Đang phát triển");
+            return;
             var playerModel = {
                 name: document.getElementById("name").ej2_instances[0].value,
                 tileXac: document.getElementById("tileXac").ej2_instances[0].value,
