@@ -18,6 +18,12 @@ namespace Lottery.WebMvc.Controllers
         #region Login
         public ActionResult Login()
         {
+            var userData = GetCurrentUser();
+            if (userData != null)
+            {
+                return RedirectToAction("IndexImport", "Calculation");
+            }    
+
             return View();
         }
         [HttpPost]
