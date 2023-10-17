@@ -477,7 +477,7 @@
                                 <span>
                                     Trúng ba con:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_nTrungBaCon">
+                                <input type="text" tabindex="1" id="cr_nTrungBaCon" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -491,7 +491,7 @@
                                 <span>
                                     Trúng bốn con:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_nTrungBonCon">
+                                <input type="text" tabindex="1" id="cr_nTrungBonCon" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -517,7 +517,7 @@
                                 <span>
                                     Trúng hai con bao:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_tTrungBaoHaiCon">
+                                <input type="text" tabindex="1" id="cr_tTrungBaoHaiCon" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -531,7 +531,7 @@
                                 <span>
                                     Trúng hai con đầu đui:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_tTrungHaiConDD">
+                                <input type="text" tabindex="1" id="cr_tTrungHaiConDD" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -545,7 +545,7 @@
                                 <span>
                                     Trúng đá thẳng:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_tTrungDaThang">
+                                <input type="text" tabindex="1" id="cr_tTrungDaThang" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -571,7 +571,7 @@
                                 <span>
                                     Trung xiên:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_tTrungDaXien">
+                                <input type="text" tabindex="1" id="cr_tTrungDaXien" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -597,7 +597,7 @@
                                 <span>
                                     Trúng ba con:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_tTrungBaCon">
+                                <input type="text" tabindex="1" id="cr_tTrungBaCon" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -611,7 +611,7 @@
                                 <span>
                                     Trúng bốn con:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_tTrungBonCon">
+                                <input type="text" tabindex="1" id="cr_tTrungBonCon" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -637,7 +637,7 @@
                                 <span>
                                     Trúng hai con bao:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_bTrungBaoHaiCon">
+                                <input type="text" tabindex="1" id="cr_bTrungBaoHaiCon" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -651,7 +651,7 @@
                                 <span>
                                     Trúng hai con đầu đui:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_bTrungHaiConDD">
+                                <input type="text" tabindex="1" id="cr_bTrungHaiConDD" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -665,7 +665,7 @@
                                 <span>
                                     Trúng đá thẳng:
                                 </span>
-                                <input type="text" tabindex="1" id="cr_bTrungDaThang">
+                                <input type="text" tabindex="1" id="cr_bTrungDaThang" required>
                             </div>
                         </div>
                         <div class="div-row-input-val">
@@ -680,11 +680,64 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div style="margin-left: -10px;margin-top:-3px;margin-bottom:7px;">
+                            <input id="cr_bcheckbox_show_daxien" type="checkbox" />
+                        </div>
+                        <div id="cr_show_bDaxien" style="display:none;">
+                            <div class="div-row-input-val">
+                                <div class="row row-input-val">
+                                    <span>
+                                        Cò đá xiên hai:
+                                    </span>
+                                    <input type="text" tabindex="1" id="cr_bCoXienHai">
+                                </div>
+                                <div class="row row-input-val">
+                                    <span>
+                                        Trúng đá xiên hai:
+                                    </span>
+                                    <input type="text" tabindex="1" id="cr_bTrungXienHai">
+                                </div>
+                            </div>
+                            <div class="div-row-input-val">
+                                <div class="row row-input-val">
+                                    <span>
+                                        Cò đá xiên ba:
+                                    </span>
+                                    <input type="text" tabindex="1" id="cr_bCoXienBa">
+                                </div>
+                                <div class="row row-input-val">
+                                    <span>
+                                        Trúng đá xiên ba:
+                                    </span>
+                                    <input type="text" tabindex="1" id="cr_bTrungXienBa">
+                                </div>
+                            </div>
+                            <div class="div-row-input-val">
+                                <div class="row row-input-val">
+                                    <span>
+                                        Cò đá xiên bốn:
+                                    </span>
+                                    <input type="text" tabindex="1" id="cr_bCoXienBon">
+                                </div>
+                                <div class="row row-input-val">
+                                    <span>
+                                        Trúng đá xiên bốn:
+                                    </span>
+                                    <input type="text" tabindex="1" id="cr_bTrungXienBon">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="div-row-input-val">
+                            <div class="row row-input-val">
+                                <span>
+                                    Phần trăm tổng:
+                                </span>
+                                <input type="text" tabindex="1" id="cr_bPhanTramTong">
+                            </div>
+                        </div>
                         <div class="row button">
                             <input type="submit" value="Đăng ký">
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -779,6 +832,17 @@
             radiobutton.appendTo('#cr_bCachTrungDaThang_kyRuoi');
             radiobutton = new ej.buttons.RadioButton({ label: 'Nhiều cặp', name: 'cr_bCachTrungDaThang', enableRtl: 'true', checked: true });
             radiobutton.appendTo('#cr_bCachTrungDaThang_nhieuCap');
+            // Render initialized CheckBox.
+            var checkbox = new ej.buttons.CheckBox({ label: 'Hiện đá xiên' });
+            checkbox.appendTo('#cr_bcheckbox_show_daxien');
+            checkbox.change = function (args) {
+                var element = document.getElementById("cr_show_bDaxien");
+                if (args.checked) {
+                    element.style.display = "block"; 
+                } else {
+                    element.style.display = "none"; 
+                }
+            };
         });
 
         function goToBackCaculation() {
